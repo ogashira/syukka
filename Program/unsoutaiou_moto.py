@@ -1,0 +1,62 @@
+#! python
+# -*- coding: cp932 -*-
+import csv
+import pandas as pd
+
+
+
+class Unsoutaiou_toke :
+    
+    # [–‹ÆŠº°ÄŞ,‘Šèæº°ÄŞ,‘Šèæ–¼Ì1,—X•Ö”Ô† ,—X•Ö”Ô†2,ZŠ1,Ä°Ù‹——£,Ä?
+    #  Ä°Ùs‚­s‚©‚È‚¢,VŠƒ‹——£,VŠƒ’†Œp‰ñ”,VŠƒs‚­s‚©‚È‚¢,¹²Ëİ,ŒÚ‹qw’è‰^‘—‰®
+    #  ,—AoŒü‚¯æ,“¾ˆÓæº°ÄŞ,”[“üæº°ÄŞ]
+    
+    def __init__(self):
+        # dl_df = pd.read_csv(
+        # r'\\192.168.1.247\‹¤—L\Œo—‰ÛÌ«ÙÀŞ\‰^’ÀŒvZŠÖŒW\unsoutaiou_toke.csv', 
+        # encoding='cp932'
+        # )
+        dl_df = pd.read_csv(
+                r'../master/untin/unsoutaiou_toke.csv',encoding='cp932'
+        )
+
+
+        self.unsoutaiou = dl_df.rename(columns={'‘Šèæ–¼Ì‚P':'”[“üæ–¼Ì‚P'})
+
+    def add_unsoutaiou(self, df):
+        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['”[“üæ–¼Ì‚P'])
+        add_unsoutaiou = pd.merge(df,dup_unsoutaiou, on='”[“üæ–¼Ì‚P'
+                                  , how='left')
+        return add_unsoutaiou
+        
+                
+
+    
+
+
+
+
+class Unsoutaiou_honsya :
+    
+
+    # [–‹ÆŠº°ÄŞ,‘Šèæº°ÄŞ,‘Šèæ–¼Ì1,—X•Ö”Ô† ,—X•Ö”Ô†2,ZŠ1,Ä°Ù‹—
+    #  Ä°Ùs‚­s‚©‚È‚¢,VŠƒ‹——£,VŠƒ’†Œp‰ñ”,VŠƒs‚­s‚©‚È‚¢,¹²Ëİ,ŒÚ‹qw’è‰^‘—‰®,
+    #  —AoŒü‚¯æ,“¾ˆÓæº°ÄŞ,”[“üæº°ÄŞ,‹v—¯•Ä‹——£] “y‹C‚É‚Í‹v—¯•Ä‹——£‚ª‚È‚¢B
+
+    def __init__(self):
+        # dl_df = pd.read_csv(
+        # r'\\192.168.1.247\‹¤—L\Œo—‰ÛÌ«ÙÀŞ\‰^’ÀŒvZŠÖŒW\unsoutaiou_honsya.csv', 
+        # encoding='cp932'
+        # )
+
+        dl_df = pd.read_csv(
+                r'../master/untin/unsoutaiou_honsya.csv',encoding='cp932'
+        )
+
+        self.unsoutaiou = dl_df.rename(columns={'‘Šèæ–¼Ì‚P':'”[“üæ–¼Ì‚P'})
+
+    def add_unsoutaiou(self, df):
+        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['”[“üæ–¼Ì‚P'])
+        add_unsoutaiou = pd.merge(df, dup_unsoutaiou, on='”[“üæ–¼Ì‚P'
+                                  , how='left')
+        return add_unsoutaiou

@@ -1,0 +1,52 @@
+#! python
+# -*- coding: cp932 -*-
+
+import os
+import pandas as pd
+
+
+class UntinKeisanSheet(object):
+    '''
+    packing‚©‚çuntin_moto‚ğó‚¯‚ÄA‰^’ÀŒvZ¼°Ä‚Éadd‰ñ”‚ğ•\¦‚·‚éB
+    •\¦‚µ‚½‚çAó’no‚Æadd‚ğŠ’è‚ÌÌ«ÙÀŞ‚É•Û‘¶‚·‚éBcreate_folder
+    Š’è‚ÌÌ«ÙÀŞ‚Ì’†‚ÉAsumi.csv‚ª‘¶İ‚µ‚È‚¯‚ê‚Î cnt = 1
+    sumi.csv‚ª‘¶İ‚·‚ê‚ÎAcnt ‚Ísumi.csv‚Ìadd—ñ‚Ìmax‚Æ‚·‚é
+    '''
+
+    def __init__(self, untin_moto):
+        
+        self.untin_moto = untin_moto
+        self.uriage_day = str(untin_moto.loc[0, 'o‰×—\’è“ú'])
+        folder_name = self.uriage_day
+        # Ì«ÙÀŞ‚ª‘¶İ‚µ‚È‚¯‚ê‚Îì‚éio‰×—\’è“ú‚ÌÌ«ÙÀŞ–¼j
+        if os.path.exists(r'../tmp/{}'.format(folder_name)):
+            pass
+        else:
+            os.mkdir(r'../tmp/{}'.format(folder_name))
+
+
+            
+    def sheet_add_cnt(self):
+        folder_name = self.uriage_day
+        if os.path.exists(r'../tmp/{}/add_cnt.csv'.format(folder_name)):
+            add_cnt = pd.read_csv(r'../tmp/{}/add_cnt.csv'.format(folder_name), 
+                                                               encoding='cp932')
+            cnt = add_cnt['add'].max()
+            moto_add = pd.merge(self.untin_moto, add_cnt, 
+                                  on = ['ó’‚m‚n', 'ó’s‚m‚n'], how = 'left')
+            moto_add = moto_add.fillna({'add': cnt+1})
+        else:
+            cnt = 1
+            moto_add = self.untin_moto.copy()
+            moto_add['add'] = cnt
+
+        moto_add_after = moto_add[['ó’‚m‚n', 'ó’s‚m‚n', 'add']]
+        moto_add_after.to_csv(r'../tmp/{}/add_cnt.csv'.format(folder_name), 
+                                                            encoding = 'cp932')
+
+
+
+
+        return moto_add
+
+    

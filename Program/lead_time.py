@@ -1,0 +1,102 @@
+#! python
+# -*- coding: cp932 -*-
+
+import csv
+from datetime import datetime
+import pandas as pd
+
+class LeadTime(object):
+
+    def __init__(self):
+
+        # ”z’B“ú”ÃŞ°À‚Ìæ“¾
+        nounyuusaki_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_nounyuusaki.csv', encoding = 'cp932')
+        # nounyuusaki_file = open(r'../master/selfMade/order_nounyuusaki.csv', encoding = 'cp932')
+        file_reader = csv.reader(nounyuusaki_file)
+        nounyuusaki_l = list(file_reader)
+        nounyuusaki_file.close()
+
+
+        #“ñŸŒ³Ø½Ä‚É‚·‚é
+        self.nounyuusaki = []
+        for row in nounyuusaki_l:
+            rows = []
+            rows.append(row[0])       # “¾ˆÓæƒR[ƒh
+            rows.append(row[1])       # ”[“üæƒR[ƒh
+            rows.append(row[3])       # ”z’B“ú”
+            rows.append(row[5])       # ”[“üæ–¼Ì
+            self.nounyuusaki.append(rows)
+
+        # 0—ñ:”NŒ“ú,1—ñ:“Œ—m‹x“ú, 2—ñ:‰^‘—‰®‹x“ú
+        eigyou_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_holiday.csv', encoding = 'cp932')
+        # eigyou_file = open(r'../master/selfMade/order_holiday.csv', encoding = 'cp932')
+        file_reader = csv.reader(eigyou_file)
+        header = next(file_reader)
+        self.unsou_eigyoubi = list(file_reader)
+        eigyou_file.close()
+
+
+        # **/**/** ‚ÌŒ`‚É‚·‚é
+        for row in self.unsou_eigyoubi:
+            time_data = datetime.strptime(row[0], '%Y/%m/%d')
+            row[0] = time_data.strftime('%Y/%m/%d') 
+            del row[1]  # ‚Q—ñ–Ú‚Ì—j“ú‚Ííœ‚·‚éB
+
+
+
+
+    def get_youbi(self, df_row):
+
+        tokui_code = df_row['“¾ˆÓæƒR[ƒh']
+        nounyuu_code = df_row['”[“üæƒR[ƒh']
+        syukkabi = df_row['o‰×—\’è“ú']
+        nouki = df_row['”[Šú']
+        syukkayotei = df_row['o‰×—\’è‘qŒÉ']
+
+
+        # ”z’B“ú”‚ğ‹‚ß‚é
+        nissuu = 0
+        for line in self.nounyuusaki:
+            if (
+            line[0] == tokui_code  and line[1] == nounyuu_code
+            ) or (
+            line[0] == tokui_code and line[1] == '' and pd.isnull(nounyuu_code)
+            ):
+                nissuu = int(line[2])
+
+        # ”[Šú‚©‚ç‘k‚Á‚Äo‰×“ú‚ğ‹‚ß‚éB
+        # ‰^‘—‰®‹x“ú‚Í”z’B“ú”‚É”‚¦‚È‚¢Bo‰×“ú‚ª“Œ—m‹x“ú‚¾‚Á‚½‚ç‘k‚Á‚Ä“Œ—m‰c‹Æ“ú‚Ü‚Å
+        # –ß‚éBo‰×“ú‚ªo‰×—\’è“ú‚æ‚è‚àŒãi‘å‚«‚¢j‚¾‚Á‚½‚çu—j“úˆá‚¢v‚Æ‚·‚éB
+        # 0—ñ:”NŒ“ú,1—ñ:“Œ—m‹x“ú, 2—ñ:‰^‘—‰®‹x“ú
+
+        for i in range(len(self.unsou_eigyoubi)):
+            if self.unsou_eigyoubi[i][0]== syukkabi:
+                syukka_idx = i                          #o‰×“ú—\’è“ú‚Ìindex
+            if self.unsou_eigyoubi[i][0] == nouki:
+                nouki_idx = i                           #”[Šú‚Ìindex
+                break
+                
+
+        while nissuu > 0 :
+            if self.unsou_eigyoubi[nouki_idx][2] == '‹x':
+                nouki_idx -= 1
+            else:
+                nouki_idx -= 1
+                nissuu -= 1
+        while self.unsou_eigyoubi[nouki_idx][1] == '‹x':
+                nouki_idx -= 1
+
+        calc_syukka_idx = nouki_idx               #”[Šú‚©‚çŒvZ‚µ‚½o‰×‚·‚×‚«“ú‚Ìidx
+
+
+        if syukka_idx < calc_syukka_idx :
+            syukkayotei.append('—j“ú')
+
+        return syukkayotei
+        
+
+
+
+
+        
+

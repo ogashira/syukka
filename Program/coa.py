@@ -1,0 +1,19 @@
+#! python
+# -*- coding: cp932 -*-
+
+import glob
+import shutil
+
+directory = r'//192.168.1.247/ã§óL/âcã∆â€Ã´Ÿ¿ﬁ/testreport/üNìc/'
+path = directory + '*20102951T*àÆê^ãÛ*.pdf'
+files = glob.glob(path)
+
+for file in files:
+    try:
+        new_file_path = './'
+        shutil.copy(file, new_file_path)
+
+    except FileNotFoundError:
+        print('File Not Found!')
+
+

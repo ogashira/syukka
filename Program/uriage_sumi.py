@@ -1,0 +1,106 @@
+#! python
+# -*- coding: cp932 -*-
+
+import pandas as pd
+import datetime
+
+
+class UriageSumi(object):
+    
+    def __init__ (self):
+
+        uriage_sumi = pd.read_csv(
+                r'../master/effitA/uriage_sumi.csv', 
+                skiprows = 1,
+                encoding='cp932'
+        )
+        uriage_sumi = uriage_sumi.rename(
+                columns = {
+                    '”„ã“ú':'o‰×—\’è“ú',
+                    '‰^‘—‹ÆÒ':'ˆË—Šæ',
+                    '©—Rg—p‹æ•ª‚P':'”z‘—‹æ•ª',
+                    '¿‹—\’è”NŒ“ú':'closeDate',
+                    'ŠÇ—ŒÂ”':'ó’”—Ê',
+                    'ŠÇ—’PˆÊ':'ó’’PˆÊ',
+                    'U‘ÖŒ³•i”Ô':'hinban',
+                    'U‘ÖŒ³”—Ê':'cans',
+                    'ƒƒbƒg‚m‚n':'lot',
+                }
+        )
+
+        uriage_sumi['o‰×—\’è“ú'] = uriage_sumi['o‰×—\’è“ú'].map(
+                lambda x : '{}/{}/{}'.format(str(x)[:4],str(x)[4:6],str(x)[6:])
+        )
+        uriage_sumi['closeDate'] = uriage_sumi['closeDate'].map(
+                lambda x : '{}/{}/{}'.format(str(x)[:4],str(x)[4:6],str(x)[6:])
+        )
+        uriage_sumi['”[Šú'] = uriage_sumi['”[Šú'].map(
+                lambda x : '{}/{}/{}'.format(str(x)[:4],str(x)[4:6],str(x)[6:])
+        )
+
+        self.uriage_sumi = uriage_sumi[uriage_sumi['“¾ˆÓæƒR[ƒh'] < 'T6000']
+
+
+    def get_uriage_sumi(self):
+        '''
+        self.uriage_sumi‚É'lot_dic'—ñ‚ğ’Ç‰Á‚µ‚Ä{lot:cans}‚Ì«‘‚ğ“¾‚é
+        Ÿ‚ÉAself.uriage_sumi‚Í•¡”LOT‚Ìê‡‚ÍLOT‚²‚Æ‚És‚ª‚ ‚é‚Ì‚ÅA
+        d•¡‚·‚éó’noAó’sno‚ÅA{lot:cans, lot:cans} ‚ÌŒ`‚É‚Ü‚Æ‚ß‚Ä‚Ps‚É‚·‚éB
+        '''
+
+        def get_dic_lot (row):
+            # {lot:cans}‚ÌŒ`‚É‚·‚é
+            dic_lot = {}
+            lot = row['lot']
+            if pd.isnull(row['hinban']):
+                cans = row['ó’”—Ê']
+            else:
+                cans = row['cans']
+            dic_lot[lot] = cans
+            return dic_lot
+
+        uriage_sumi = self.uriage_sumi.copy()
+        uriage_sumi['dic_lot'] = uriage_sumi.apply(get_dic_lot, axis=1)
+        
+        uriage_sumi = uriage_sumi.sort_values(['ó’‚m‚n', 'ó’s‚m‚n'])
+        uriage_sumi = uriage_sumi.reset_index()
+
+        
+        for i in range(len(uriage_sumi)-1):
+            JNo = uriage_sumi.loc[i, 'ó’‚m‚n']
+            JGNo = uriage_sumi.loc[i, 'ó’s‚m‚n']
+            dic_lot = uriage_sumi.loc[i, 'dic_lot']
+            j = 1
+            while uriage_sumi.loc[i+j, 'ó’‚m‚n'] == JNo and (
+                    uriage_sumi.loc[i+j, 'ó’s‚m‚n'] == JGNo):
+                add_dic_lot = uriage_sumi.loc[i+j, 'dic_lot']
+                add_lot = [k for k, v in add_dic_lot.items()][0]
+                add_cans = [v for k, v in add_dic_lot.items()][0]
+                
+                dic_lot[add_lot] = add_cans
+                
+                # .loc‚Å‚ÍƒGƒ‰[‚É‚È‚éB«‘‚âØ½Ä‚ğ‘ã“ü‚·‚é‚Æ‚«‚Í.at‚ğg‚¤
+                # .loc‚Å‚Í•¡”‘I‘ğ‚ÌˆÓ–¡‚ª‚ ‚é‚Ì‚Å’PˆêƒZƒ‹‚µ‚©‘I‘ğ‚Å‚«‚È‚¢.at‚ğg‚¤
+                uriage_sumi.at[i, 'dic_lot'] = dic_lot
+
+                uriage_sumi.loc[i+j, '“¾ˆÓæ’•¶‚m‚n'] = 'del'
+
+                # i+j‚ªÅIs‚Å‚ ‚Á‚½‚çwhile‚ğ”²‚¯‚é
+                if i + j == len(uriage_sumi)-1:
+                    break
+
+                j += 1
+
+        uriage_sumi2 = uriage_sumi.loc[uriage_sumi['“¾ˆÓæ’•¶‚m‚n'] != 'del', :]
+                
+        return uriage_sumi2
+
+
+    def uriage_check(self, untinForUriage):
+
+        uriage_sumi = self.get_uriage_sumi()
+        UU = untinForUriage
+
+        check_df = pd.merge(UU, uriage_sumi, on =['ó’‚m‚n', 'ó’s‚m‚n'], how = 'left')
+
+        return check_df

@@ -1,0 +1,425 @@
+#! python
+# -*- coding: cp932 -*-
+
+import pandas as pd
+import numpy as np
+from closeDate import *
+from zaiko import *
+from add_data import *
+from recorder import *
+from lead_time import *
+
+
+pd.set_option('display.max_columns', None)
+
+
+
+class Ajust_toke:
+
+    def __init__ (self, myfolder):
+        self.myfolder = myfolder
+
+    def get_allHauler(self, moto, untin):
+
+        def best_hauler(row):
+            nounyuusaki = row['”[“üæ–¼Ì‚P']
+            sitei = row['ŒÚ‹qw’è‰^‘—‰®']
+            address = row['ZŠ‚P']
+            torr = row['Ä°Ù']
+            niigata = row['VŠƒ']
+            keihin = row['¹²Ëİ']
+
+            dic = {'Ä°Ù':float(torr), 'VŠƒ':float(niigata), '¹²Ëİ':float(keihin)}
+            
+            #ŒÚ‹qw’è‰^‘—‰®‚ª‚ ‚éê‡‚Íƒ\ƒŒA–³‚¢ê‡‚ÍÅˆÀ’l‚Ì‰^‘—‰®‚ğ‘I‚Ô
+            #ÅˆÀ’l‚ª‚Q‚ÂˆÈã‚ ‚éê‡‚ğl—¶‚µ‚ÄAƒŠƒXƒg“à•ï•\‹L‚Å‹‚ß‚éB
+            if address == 'NoCalc':
+                best_hauler = ['”z’B']
+            elif address is np.nan:
+                best_hauler = ['npNan']
+            elif sitei != '–³‚µ' and sitei != '–³':
+                best_hauler = [sitei]
+            else:
+                best_hauler = [kv[0] for kv in dic.items() if kv[1] == 
+                               min(dic.values())]
+            
+            return best_hauler
+
+
+        syukkabi = moto.iloc[0,5]
+
+        untin['ˆË—Šæ'] = untin.apply(best_hauler, axis=1) 
+        untin['o‰×—\’è“ú'] = syukkabi
+
+        allHauler = untin[['o‰×—\’è“ú','ZŠ‚P','”[“üæ–¼Ì‚P','“¾ˆÓæƒR[ƒh',
+                           '”[“üæƒR[ƒh','weight','cans','Ä°Ù','VŠƒ','¹²Ëİ',
+                           'ÄÅĞ·Šz','ˆË—Šæ','—AoŒüæ']]
+
+
+
+        # ˆË—Šæ‚Ìlist‚ğƒŠƒeƒ‰ƒ‹‚É‚µ‚Ä‚¨‚­
+        allHauler2 = allHauler.copy()
+        allHauler2.loc[:,'ˆË—Šæ'] = allHauler2['ˆË—Šæ'].map(lambda x : x[0])
+        allHauler_sort = allHauler2.sort_values('ˆË—Šæ')
+
+        return allHauler_sort
+
+
+    def get_packingHinban(self, moto, allHauler):
+        
+        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
+        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
+        packingHinban = moto_addHinban[['o‰×—\’è“ú','ˆË—Šæ','cans','weight',
+                                        '“¾ˆÓæƒR[ƒh','”[“üæƒR[ƒh',
+                                        '”[“üæ–¼Ì‚P', 'hinban', '•i–¼','ó’”—Ê',
+                                        'ó’’PˆÊ','“¾ˆÓæ’•¶‚m‚n','”õl','o‰×',
+                                        'o‰×—\’è‘qŒÉ','—AoŒüæ','”[Šú', 'ó’‚m‚n',
+                                        'ó’s‚m‚n','add']]
+        
+        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        packingHinban = packingHinban.fillna({'ˆË—Šæ':'NoData'})
+
+        
+
+        # Ÿ‰ñ¿‹‚ğ‹‚ß‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        closeDate = CloseDate()
+
+        packingHinban2 = packingHinban.copy() 
+        packingHinban2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+        packingHinban2.apply(closeDate.get_closeDate, axis=1)
+
+        packingHinban3 = packingHinban2.copy()
+        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+            closeDate.get_jikai, axis = 1)
+
+
+        # ¬Aw‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        add_data = AddData()
+        
+        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                  add_data.get_coa, axis = 1)
+
+        
+        del add_data
+        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        lead_time = LeadTime()
+
+        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                lead_time.get_youbi, axis = 1)
+
+        del lead_time
+        #  “y—j”z’B‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        def get_dohai(df_row):
+            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
+            week = df_row['—j“ú']
+
+            if week == '“y':
+                syukka_souko.append('“y—j”z’B')
+            return syukka_souko
+
+
+        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                get_dohai, axis = 1)
+        
+
+
+        #  ‰c‹ÆŠ~‚ß‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        def get_siten_tome(df_row):
+            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
+            bikou = df_row['”õl']
+
+            if bikou.find('x“X~‚ß') >= 0 or bikou.find('x“X‚Ç‚ß') >= 0 or \
+                bikou.find('‰c‹ÆŠ~‚ß') >= 0 or bikou.find('‰c‹ÆŠ‚Ç‚ß') >= 0 :
+                syukka_souko.append('‰c‹ÆŠ')
+            return syukka_souko
+
+
+        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                get_siten_tome, axis = 1)
+
+
+
+        return packingHinban3
+
+        
+    def get_untinForUriage(self, moto, allHauler):
+        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
+        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
+        untinForUriage = moto_addHauler[['o‰×—\’è“ú','“¾ˆÓæƒR[ƒh','”[“üæƒR[ƒh',
+                                         'ˆË—Šæ','”õl','o‰×—\’è‘qŒÉ','ó’‚m‚n',
+                                         'ó’s‚m‚n','“¾ˆÓæ’•¶‚m‚n','•i”Ô','hinban',
+                                         'cans','”[Šú', 'toyo_untin','—AoŒüæ','o‰×','add']]
+
+
+        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        untinForUriage = untinForUriage.fillna({'ˆË—Šæ':'NoData'})
+
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        closeDate = CloseDate()
+
+        untinForUriage2 = untinForUriage.copy() 
+        untinForUriage2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+        untinForUriage2.apply(closeDate.get_closeDate, axis=1)
+
+        del closeDate
+
+        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        lead_time = LeadTime()
+
+        untinForUriage2.loc[:,'o‰×—\’è‘qŒÉ'] = untinForUriage2.apply(
+                lead_time.get_youbi, axis = 1)
+
+        del lead_time
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        
+        zaiko = Zaiko(self.myfolder)
+        recorder = Recorder(self.myfolder)
+        
+        txt ='”„ãˆ—“ü—Í—pÃŞ°Ài“y‹Cj' 
+        recorder.out_log(txt, '\n')
+        recorder.out_file(txt, '\n')
+
+        untinForUriage2['lot'] = untinForUriage2.apply(zaiko.get_lot, axis=1)
+        
+        recorder.out_log('')
+        recorder.out_file('')
+        recorder.out_log(untinForUriage2, '\n')
+        recorder.out_file(untinForUriage2, '\n')
+
+        del zaiko
+        del recorder
+
+
+
+        return untinForUriage2
+
+
+    def get_packingCoa(self, packingHinban, untinForUriage):
+        lot_data = untinForUriage[['ó’‚m‚n', 'ó’s‚m‚n', 'lot']]
+        packingCoa = pd.merge(packingHinban, lot_data, on =['ó’‚m‚n', 'ó’s‚m‚n'] 
+                , how = 'left')
+
+        packingCoa = packingCoa[[
+            'o‰×—\’è“ú', '“¾ˆÓæƒR[ƒh', '”[“üæƒR[ƒh', '”[“üæ–¼Ì‚P', 
+            'hinban', 'o‰×', 'ó’‚m‚n', 'ó’s‚m‚n', 'lot'
+        ]]
+
+        return packingCoa
+        
+
+
+
+
+class Ajust_honsya:
+
+
+    def __init__ (self, myfolder):
+        self.myfolder = myfolder
+
+
+    def get_allHauler(self, moto, untin):
+
+        def best_hauler(row):
+            nounyuusaki = row['”[“üæ–¼Ì‚P']
+            sitei = row['ŒÚ‹qw’è‰^‘—‰®']
+            address = row['ZŠ‚P']
+            torr = row['Ä°Ù']
+            niigata = row['VŠƒ']
+            keihin = row['¹²Ëİ']
+            kurume = row['‹v—¯•Ä']
+
+
+            dic = {'Ä°Ù':float(torr), 'VŠƒ':float(niigata), '¹²Ëİ':float(keihin), '‹v—¯•Ä':float(kurume)}
+            
+            #ŒÚ‹qw’è‰^‘—‰®‚ª‚ ‚éê‡‚Íƒ\ƒŒA–³‚¢ê‡‚ÍÅˆÀ’l‚Ì‰^‘—‰®‚ğ‘I‚Ô
+            #ÅˆÀ’l‚ª‚Q‚ÂˆÈã‚ ‚éê‡‚ğl—¶‚µ‚ÄAƒŠƒXƒg“à•ï•\‹L‚Å‹‚ß‚éB
+            if address == 'NoCalc':
+                best_hauler = ['NoCalc']
+            elif address is np.nan:
+                best_hauler = ['npNan']
+            elif sitei != '–³‚µ':
+                best_hauler = [sitei]
+            else:
+                best_hauler = [kv[0] for kv in dic.items() if kv[1] 
+                               == min(dic.values())]
+            
+            return best_hauler
+
+
+        syukkabi = moto.iloc[0,5]
+
+        untin['ˆË—Šæ'] = untin.apply(best_hauler, axis=1) 
+        untin['o‰×—\’è“ú'] = syukkabi
+
+        allHauler = untin[['o‰×—\’è“ú','ZŠ‚P','”[“üæ–¼Ì‚P','“¾ˆÓæƒR[ƒh',
+                           '”[“üæƒR[ƒh','weight','cans','Ä°Ù','VŠƒ','¹²Ëİ',
+                           '‹v—¯•Ä','ÄÅĞ·Šz','ˆË—Šæ','—AoŒüæ']]
+
+        # ˆË—Šæ‚Ìlist‚ğƒŠƒeƒ‰ƒ‹‚É‚µ‚Ä‚¨‚­
+        allHauler2 = allHauler.copy()
+        allHauler2.loc[:,'ˆË—Šæ'] = allHauler2['ˆË—Šæ'].map(lambda x : x[0])
+        allHauler_sort = allHauler2.sort_values('ˆË—Šæ')
+
+
+        return allHauler_sort
+
+
+
+
+    def get_packingHinban(self, moto, allHauler):
+        
+        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
+        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
+        packingHinban = moto_addHinban[['o‰×—\’è“ú', 'ˆË—Šæ','cans','weight','“¾ˆÓæƒR[ƒh',
+                                        '”[“üæƒR[ƒh','”[“üæ–¼Ì‚P', 'hinban', '•i–¼',
+                                        'ó’”—Ê','ó’’PˆÊ','“¾ˆÓæ’•¶‚m‚n',
+                                        '”õl','o‰×','o‰×—\’è‘qŒÉ','—AoŒüæ',
+                                        '”[Šú', 'ó’‚m‚n', 'ó’s‚m‚n','add']]
+
+
+        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        packingHinban = packingHinban.fillna({'ˆË—Šæ':'NoData'})
+
+
+        # Ÿ‰ñ¿‹‚ğ‹‚ß‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        closeDate = CloseDate()
+
+        packingHinban2 = packingHinban.copy() 
+        packingHinban2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+        packingHinban2.apply(closeDate.get_closeDate, axis=1)
+
+        packingHinban3 = packingHinban2.copy()
+        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+            closeDate.get_jikai, axis = 1)
+
+        # ¬Aw‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        add_data = AddData()
+        
+        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                  add_data.get_coa, axis = 1)
+
+        
+        del add_data
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        lead_time = LeadTime()
+
+        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                lead_time.get_youbi, axis = 1)
+
+        del lead_time
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        #  “y—j”z’B‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        def get_dohai(df_row):
+            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
+            week = df_row['—j“ú']
+
+            if week == '“y':
+                syukka_souko.append('“y—j”z’B')
+            return syukka_souko
+
+        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                get_dohai, axis = 1)
+
+        
+        #  ‰c‹ÆŠ~‚ß‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        def get_siten_tome(df_row):
+            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
+            bikou = df_row['”õl']
+
+            if bikou.find('x“X~‚ß') >= 0 or bikou.find('x“X‚Ç‚ß') >= 0 or \
+                bikou.find('‰c‹ÆŠ~‚ß') >= 0 or bikou.find('‰c‹ÆŠ‚Ç‚ß') >= 0 :
+                syukka_souko.append('‰c‹ÆŠ')
+            return syukka_souko
+
+
+        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+                get_siten_tome, axis = 1)
+        
+
+
+
+        return packingHinban3
+
+
+
+    def get_untinForUriage(self,moto, allHauler):
+        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
+        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
+        untinForUriage = moto_addHauler[['o‰×—\’è“ú','“¾ˆÓæƒR[ƒh',
+                                         '”[“üæƒR[ƒh','ˆË—Šæ','”õl',
+                                         'o‰×—\’è‘qŒÉ','ó’‚m‚n','ó’s‚m‚n',
+                                         '“¾ˆÓæ’•¶‚m‚n','•i”Ô','hinban',
+                                         'cans','”[Šú', 'toyo_untin', '—AoŒüæ','o‰×','add']]
+
+        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        untinForUriage = untinForUriage.fillna({'ˆË—Šæ':'NoData'})
+
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+        closeDate = CloseDate()
+
+        untinForUriage2 = untinForUriage.copy() 
+        untinForUriage2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+                untinForUriage2.apply(closeDate.get_closeDate, axis=1)
+
+        del closeDate
+
+        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        lead_time = LeadTime()
+
+        untinForUriage2.loc[:,'o‰×—\’è‘qŒÉ'] = untinForUriage2.apply(
+                lead_time.get_youbi, axis = 1)
+
+        del lead_time
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        zaiko = Zaiko(self.myfolder)
+        recorder = Recorder(self.myfolder)
+
+        txt ='”„ãˆ—“ü—Í—pÃŞ°Ài–{Ğj' 
+        recorder.out_log(txt, '\n')
+        recorder.out_file(txt, '\n')
+
+        untinForUriage2['lot'] = untinForUriage2.apply(zaiko.get_lot, axis=1)
+        
+        recorder.out_log('')
+        recorder.out_file('')
+        recorder.out_log(untinForUriage2, '\n')
+        recorder.out_file(untinForUriage2, '\n')
+
+        del zaiko
+        del recorder
+        
+
+        return untinForUriage2
+
+
+
+    def get_packingCoa(self, packingHinban, untinForUriage):
+        lot_data = untinForUriage[['ó’‚m‚n', 'ó’s‚m‚n', 'lot']]
+        packingCoa = pd.merge(packingHinban, lot_data, on =['ó’‚m‚n', 'ó’s‚m‚n'] 
+                , how = 'left')
+
+        packingCoa = packingCoa[[
+            'o‰×—\’è“ú', '“¾ˆÓæƒR[ƒh', '”[“üæƒR[ƒh', '”[“üæ–¼Ì‚P', 
+            'hinban', 'o‰×', 'ó’‚m‚n', 'ó’s‚m‚n', 'lot'
+        ]]
+
+        return packingCoa

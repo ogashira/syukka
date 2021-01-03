@@ -1,0 +1,15 @@
+*.txt
+*.ipynb
+*.py~
+*.pyc
+*.log
+*.csv
+*.CSV
+*.xlsx
+__pycache__
+master
+*.un~
+*.swp
+*.swo
+*.swn
+*.pdf
