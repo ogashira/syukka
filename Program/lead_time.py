@@ -4,14 +4,18 @@
 import csv
 from datetime import datetime
 import pandas as pd
+import os
 
 class LeadTime(object):
 
     def __init__(self):
 
         # ”z’B“ú”ÃŞ°À‚Ìæ“¾
-        nounyuusaki_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_nounyuusaki.csv', encoding = 'cp932')
-        # nounyuusaki_file = open(r'../master/selfMade/order_nounyuusaki.csv', encoding = 'cp932')
+        if os.name == 'nt':
+            nounyuusaki_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_nounyuusaki.csv', encoding = 'cp932')
+        else:    
+            nounyuusaki_file = open(r'../master/selfMade/order_nounyuusaki.csv', encoding = 'cp932')
+
         file_reader = csv.reader(nounyuusaki_file)
         nounyuusaki_l = list(file_reader)
         nounyuusaki_file.close()
@@ -28,8 +32,11 @@ class LeadTime(object):
             self.nounyuusaki.append(rows)
 
         # 0—ñ:”NŒ“ú,1—ñ:“Œ—m‹x“ú, 2—ñ:‰^‘—‰®‹x“ú
-        eigyou_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_holiday.csv', encoding = 'cp932')
-        # eigyou_file = open(r'../master/selfMade/order_holiday.csv', encoding = 'cp932')
+        if os.name == 'nt':
+            eigyou_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_holiday.csv', encoding = 'cp932')
+        else:
+            eigyou_file = open(r'../master/selfMade/order_holiday.csv', encoding = 'cp932')
+
         file_reader = csv.reader(eigyou_file)
         header = next(file_reader)
         self.unsou_eigyoubi = list(file_reader)

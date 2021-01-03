@@ -2,6 +2,7 @@
 # -*- coding: cp932 -*-
 import csv
 import pandas as pd
+import os
 
 
 
@@ -12,13 +13,15 @@ class Unsoutaiou_toke :
     #  ,輸出向け先,得意先ｺｰﾄﾞ,納入先ｺｰﾄﾞ]
     
     def __init__(self):
-        dl_df = pd.read_csv(
-        r'\\192.168.1.247\共有\経理課ﾌｫﾙﾀﾞ\運賃計算関係\unsoutaiou_toke.csv', 
-        encoding='cp932'
-        )
-        # dl_df = pd.read_csv(
-                # r'../master/untin/unsoutaiou_toke.csv',encoding='cp932'
-        # )
+        if os.name == 'nt':
+            dl_df = pd.read_csv(
+            r'\\192.168.1.247\共有\経理課ﾌｫﾙﾀﾞ\運賃計算関係\unsoutaiou_toke.csv', 
+            encoding='cp932'
+            )
+        else:
+            dl_df = pd.read_csv(
+                    r'../master/untin/unsoutaiou_toke.csv',encoding='cp932'
+            )
 
 
         self.unsoutaiou = dl_df.rename(
@@ -62,14 +65,15 @@ class Unsoutaiou_honsya :
     #  輸出向け先,得意先ｺｰﾄﾞ,納入先ｺｰﾄﾞ,久留米距離] 土気には久留米距離がない。
 
     def __init__(self):
-        dl_df = pd.read_csv(
-        r'\\192.168.1.247\共有\経理課ﾌｫﾙﾀﾞ\運賃計算関係\unsoutaiou_honsya.csv', 
-        encoding='cp932'
-        )
-
-        # dl_df = pd.read_csv(
-                # r'../master/untin/unsoutaiou_honsya.csv',encoding='cp932'
-        # )
+        if os.name == 'nt':
+            dl_df = pd.read_csv(
+            r'\\192.168.1.247\共有\経理課ﾌｫﾙﾀﾞ\運賃計算関係\unsoutaiou_honsya.csv', 
+            encoding='cp932'
+            )
+        else:
+            dl_df = pd.read_csv(
+                    r'../master/untin/unsoutaiou_honsya.csv',encoding='cp932'
+            )
 
         self.unsoutaiou = dl_df.rename(
                 columns={'相手先名称１':'納入先名称１','ｹｲﾋﾝ':'ｹｲﾋﾝ向'}

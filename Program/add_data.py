@@ -3,19 +3,22 @@
 
 import openpyxl
 import pandas as pd
+import os
 
 class AddData(object):
 
     def __init__(self):
 
     #輸出塗料連絡表の取得
-        wb = openpyxl.load_workbook(
-            r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/櫻田/☆☆☆/売上処理(水野課長用)/' \
-            r'出荷時添付リスト(20200731時点最新版).xlsx', data_only=True
-        )
-        # wb = openpyxl.load_workbook(
-           # r'../master/出荷時添付リスト(20200731時点最新版).xlsx', data_only=True
-        # )
+        if os.name == 'nt':
+            wb = openpyxl.load_workbook(
+                r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/櫻田/☆☆☆/売上処理(水野課長用)/' \
+                r'出荷時添付リスト(20200731時点最新版).xlsx', data_only=True
+            )
+        else:
+            wb = openpyxl.load_workbook(
+               r'../master/出荷時添付リスト(20200731時点最新版).xlsx', data_only=True
+            )
         ws = wb['成績表']
         
         #二次元ﾘｽﾄにする

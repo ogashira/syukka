@@ -2,6 +2,7 @@
 # -*- coding: cp932 -*-
 
 import jaconv, csv, openpyxl
+import os
 from datetime import datetime, date, timedelta
 from recorder import *
 
@@ -27,12 +28,15 @@ class Zaiko:
 
      
     #輸出塗料連絡表の取得
-        wb = openpyxl.load_workbook(
-            r'//192.168.1.247/Guest/輸出塗料連絡表.xlsx', data_only=True
-        )
-        # wb = openpyxl.load_workbook(
-           # r'../master/輸出塗料連絡表.xlsx', data_only=True
-        # )
+        if os.name == 'nt':
+            wb = openpyxl.load_workbook(
+                r'//192.168.1.247/Guest/輸出塗料連絡表.xlsx', data_only=True
+            )
+        else:
+            wb = openpyxl.load_workbook(
+               r'../master/輸出塗料連絡表.xlsx', data_only=True
+            )
+
         ws = wb['輸出塗料連絡表']
         
         # シートを保護したときのパスワードをセット

@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import re
 import sys
+import os
 from unsoutaiou import *
 from untin_toke import *
 from untin_honsya import *
@@ -19,9 +20,12 @@ from untin_keisan_sheet import *
 class Packing :
 	
     def __init__(self):
-        hinban_file = open(r'//192.168.1.247/‹¤—L/‹Zp‰ÛÌ«ÙÀŞ/200. effit_data/'
-                           r'Ï½À/hinban.csv', encoding='cp932')
-        # hinban_file = open(r'../master/hinban.csv', encoding='cp932')
+        if os.name == 'nt':
+            hinban_file = open(r'//192.168.1.247/‹¤—L/‹Zp‰ÛÌ«ÙÀŞ/200. effit_data/'
+                               r'Ï½À/hinban.csv', encoding='cp932')
+        else:
+            hinban_file = open(r'../master/hinban.csv', encoding='cp932')
+
         file_reader = csv.reader(hinban_file)
         header = next(file_reader)
         hinban = list(file_reader)

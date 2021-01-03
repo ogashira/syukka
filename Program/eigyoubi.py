@@ -6,6 +6,8 @@ import datetime
 from datetime import timedelta
 from datetime import date
 import csv
+import os
+
 
 
 
@@ -14,7 +16,11 @@ class Eigyoubi:
 
     def __init__(self):
         #‹x“ú•\‚Ìæ“¾
-        eigyou_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_holiday.csv', encoding = 'cp932')
+        if os.name == 'nt':
+            eigyou_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_holiday.csv', encoding = 'cp932')
+        else:
+            eigyou_file = open(r'../master/selfMade/order_holiday.csv', encoding = 'cp932')
+            
         file_reader = csv.reader(eigyou_file)
         header = next(file_reader)
         eigyoubi_l = list(file_reader)
