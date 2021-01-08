@@ -8,6 +8,7 @@ import numpy as np
 import re
 import sys
 import os
+import platform
 from unsoutaiou import *
 from untin_toke import *
 from untin_honsya import *
@@ -20,11 +21,16 @@ from untin_keisan_sheet import *
 class Packing :
 	
     def __init__(self):
-        if os.name == 'nt':
-            hinban_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/'
-                               r'ﾏｽﾀ/hinban.csv', encoding='cp932')
+        pf = platform.system()
+        if pf == 'Windows':
+            mypath = (r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/'\
+                      r'hinban.csv') 
+        elif pf == 'Linux':
+            mypath = (r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/hinban.csv')
         else:
-            hinban_file = open(r'../master/hinban.csv', encoding='cp932')
+            mypath = r'../master/hinban.csv'
+
+        hinban_file = open(mypath, encoding='cp932')
 
         file_reader = csv.reader(hinban_file)
         header = next(file_reader)

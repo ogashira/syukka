@@ -1,7 +1,8 @@
 #! python
 # -*- coding: utf-8 -*-
 
-
+import platform
+import sys
 
 from effitA import EffitA
 from eigyoubi import Eigyoubi
@@ -24,7 +25,16 @@ del eigyoubi
 
 
 dt_now = datetime.now().strftime('%Y%m%d_%H%M%S')
-myfolder = r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/' + dt_now
+pf = platform.system()
+if pf == 'Windows':
+    myfolder = r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/' + dt_now
+elif pf == 'Linux':
+    myfolder = r'/mnt/public/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/' + dt_now
+else:
+    print('ご使用のマシンではserverに入れません')
+    sys.exit()
+
+    
 os.makedirs(myfolder)
 
 

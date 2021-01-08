@@ -7,6 +7,7 @@ from datetime import timedelta
 from datetime import date
 import csv
 import os
+import platform
 
 
 
@@ -16,10 +17,14 @@ class Eigyoubi:
 
     def __init__(self):
         #休日表の取得
-        if os.name == 'nt':
-            eigyou_file = open(r'//192.168.1.247/共有/受注check/master/order_holiday.csv', encoding = 'cp932')
+        pf = platform.system()
+        if pf == 'Windows':
+            mypath = r'//192.168.1.247/共有/受注check/master/order_holiday.csv'
+        elif pf == 'Linux':
+            mypath = r'/mnt/public/受注check/master/order_holiday.csv'
         else:
-            eigyou_file = open(r'../master/selfMade/order_holiday.csv', encoding = 'cp932')
+            mypath = r'../master/selfMade/order_holiday.csv'
+        eigyou_file = open(mypath, encoding = 'cp932')
             
         file_reader = csv.reader(eigyou_file)
         header = next(file_reader)

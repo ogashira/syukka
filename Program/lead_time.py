@@ -5,16 +5,23 @@ import csv
 from datetime import datetime
 import pandas as pd
 import os
+import platform
+
 
 class LeadTime(object):
 
     def __init__(self):
 
         # 配達日数ﾃﾞｰﾀの取得
-        if os.name == 'nt':
-            nounyuusaki_file = open(r'//192.168.1.247/共有/受注check/master/order_nounyuusaki.csv', encoding = 'cp932')
-        else:    
-            nounyuusaki_file = open(r'../master/selfMade/order_nounyuusaki.csv', encoding = 'cp932')
+        pf = platform.system()
+        if pf == 'Windows':
+            mypath = r'//192.168.1.247/共有/受注check/master/order_nounyuusaki.csv'
+        elif pf == 'Linux':
+            mypath = r'/mnt/public/受注check/master/order_nounyuusaki.csv'
+        else:
+            mypath = r'../master/selfMade/order_nounyuusaki.csv'
+
+        nounyuusaki_file = open(mypath, encoding = 'cp932')
 
         file_reader = csv.reader(nounyuusaki_file)
         nounyuusaki_l = list(file_reader)
@@ -32,10 +39,16 @@ class LeadTime(object):
             self.nounyuusaki.append(rows)
 
         # 0列:年月日,1列:東洋休日, 2列:運送屋休日
-        if os.name == 'nt':
-            eigyou_file = open(r'//192.168.1.247/共有/受注check/master/order_holiday.csv', encoding = 'cp932')
+        if pf == 'Windows':
+            mypath = r'//192.168.1.247/共有/受注check/master/order_holiday.csv'
+        elif pf == 'Linux':
+            mypath = r'/mnt/public/受注check/master/order_holiday.csv'
         else:
-            eigyou_file = open(r'../master/selfMade/order_holiday.csv', encoding = 'cp932')
+            mypath = r'../master/selfMade/order_holiday.csv'
+
+        eigyou_file = open(mypath, encoding = 'cp932')
+        
+        nounyuusaki_file = open(mypath, encoding = 'cp932')
 
         file_reader = csv.reader(eigyou_file)
         header = next(file_reader)

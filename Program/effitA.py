@@ -8,6 +8,7 @@ import time
 import pyperclip
 import numpy as np
 import pandas as pd
+import platform
 
 from recorder import Recorder
 
@@ -27,8 +28,14 @@ class EffitA(object):
         点青の状態になっているようにする。
         '''
         pyautogui.PAUSE = 1
-        subprocess.Popen(r'//192.168.1.245/effit_A/Menu/EMN300I.exe toyo_user' \
-                         r',生産C10,1,admin,東洋工業塗料')
+
+        pf = platform.system()
+        if pf == 'Windows':
+            subprocess.Popen(r'//192.168.1.245/effit_A/Menu/EMN300I.exe toyo_user' \
+                             r',生産C10,1,admin,東洋工業塗料')
+        else:
+            subprocess.Popen(r'/mnt/effitA/Menu/EMN300I.exe toyo_user' \
+                             r',生産C10,1,admin,東洋工業塗料')
         time.sleep(10)
         
         pyautogui.typewrite('honsya')

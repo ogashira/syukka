@@ -3,6 +3,7 @@
 
 import jaconv, csv, openpyxl
 import os
+import platform
 from datetime import datetime, date, timedelta
 from recorder import *
 
@@ -28,14 +29,15 @@ class Zaiko:
 
      
     #輸出塗料連絡表の取得
-        if os.name == 'nt':
-            wb = openpyxl.load_workbook(
-                r'//192.168.1.247/Guest/輸出塗料連絡表.xlsx', data_only=True
-            )
+        pf = platform.system()
+        if pf == 'Windows':
+            mypath = r'//192.168.1.247/Guest/輸出塗料連絡表.xlsx'
+        elif pf == 'Linux':
+            mypath = r'/mnt/guest/輸出塗料連絡表.xlsx'
         else:
-            wb = openpyxl.load_workbook(
-               r'../master/輸出塗料連絡表.xlsx', data_only=True
-            )
+            mypath = r'../master/輸出塗料連絡表.xlsx'
+
+        wb = openpyxl.load_workbook(mypath, data_only=True)
 
         ws = wb['輸出塗料連絡表']
         
