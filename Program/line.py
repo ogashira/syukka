@@ -1,14 +1,14 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 import requests
 
 line_notify_token = 'rx0E3JUiU9JVbQj7WeIbZF9AAKXj3m2quZjSy6Ffhiw'
 line_notify_api = 'https://notify-api.line.me/api/notify'
-message = 'o‰×‚Ìoutput‚ğŠ’è‚ÌƒtƒHƒ‹ƒ_‚É“ü‚ê‚Ü‚µ‚½B'
+message = 'å‡ºè·ã®outputã‚’æ‰€å®šã®ãƒ•ã‚©ãƒ«ãƒ€ã«å…¥ã‚Œã¾ã—ãŸã€‚'
 
 
 payload = {'message': message}
-headers = {'Authorization': 'Bearer ' + line_notify_token}  # ”­s‚µ‚½ƒg[ƒNƒ“
+headers = {'Authorization': 'Bearer ' + line_notify_token}  # ç™ºè¡Œã—ãŸãƒˆãƒ¼ã‚¯ãƒ³
 line_notify = requests.post(line_notify_api, data=payload, headers=headers)

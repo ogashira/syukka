@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import pandas as pd
 import numpy as np
@@ -21,13 +21,13 @@ class Kenpin(object):
     def __init__(self, factory, packingHinban, untinForUriage, myfolder):
         
         if factory == 'toke':
-            self.kenpin_folder = r'\\192.168.3.204\effitA_HT\‘—Mƒf[ƒ^\kenpin.csv' 
-            self.syukka_koujou = 'o‰×HêF@0002 “y‹CHê'
-            self.factory = '“y‹C'
+            self.kenpin_folder = r'\\192.168.3.204\effitA_HT\é€ä¿¡ãƒ‡ãƒ¼ã‚¿\kenpin.csv' 
+            self.syukka_koujou = 'å‡ºè·å·¥å ´ï¼š@0002 åœŸæ°—å·¥å ´'
+            self.factory = 'åœŸæ°—'
         elif factory == 'honsya':
-            self.kenpin_folder = r'C:\effitA_HT\‘—Mƒf[ƒ^\kenpin.csv'
-            self.syukka_koujou = 'o‰×HêF@0001 –{ĞHê'
-            self.factory = '–{Ğ'
+            self.kenpin_folder = r'C:\effitA_HT\é€ä¿¡ãƒ‡ãƒ¼ã‚¿\kenpin.csv'
+            self.syukka_koujou = 'å‡ºè·å·¥å ´ï¼š@0001 æœ¬ç¤¾å·¥å ´'
+            self.factory = 'æœ¬ç¤¾'
         else:
             self.kenpin_folder = r'./kenpin_mac.csv'
             self.syukka_koujou = 'mac : @0000 fromMac'
@@ -45,26 +45,26 @@ class Kenpin(object):
     def get_kenpin(self):
         
         def get_kubun(df_row):
-            iraisaki = df_row['ˆË—Šæ']
-            yotei_souko = df_row['o‰×—\’è‘qŒÉ_y']
-            syukkabi = df_row['o‰×—\’è“ú']
+            iraisaki = df_row['ä¾é ¼å…ˆ']
+            yotei_souko = df_row['å‡ºè·äºˆå®šå€‰åº«_y']
+            syukkabi = df_row['å‡ºè·äºˆå®šæ—¥']
             cans = df_row['cans']
             unsou = unsou_dic[iraisaki][0]
             unsou_code = unsou_dic[iraisaki][1]
-            if '‰c‹ÆŠ' in yotei_souko:
-                kubun = '‰c‹ÆŠ'
+            if 'å–¶æ¥­æ‰€' in yotei_souko:
+                kubun = 'å–¶æ¥­æ‰€'
                 kubun_no = 3
-            elif '“y—j”z’B' in yotei_souko:
-                kubun = '“y—j”z’B'
+            elif 'åœŸæ›œé…é”' in yotei_souko:
+                kubun = 'åœŸæ›œé…é”'
                 kubun_no = 2
-            elif '—j“ú' in yotei_souko:
-                kubun = '—j“úˆá‚¢'
+            elif 'æ›œæ—¥' in yotei_souko:
+                kubun = 'æ›œæ—¥é•ã„'
                 kubun_no = 4
-            elif 'j“ú”z’B' in yotei_souko:
-                kubun = 'j“ú”z’B'
+            elif 'ç¥æ—¥é…é”' in yotei_souko:
+                kubun = 'ç¥æ—¥é…é”'
                 kubun_no = 5
             else:
-                kubun = '’Êí'
+                kubun = 'é€šå¸¸'
                 kubun_no = 1
                 
             cans = int(cans)
@@ -74,47 +74,47 @@ class Kenpin(object):
 
 
 
-        unsou_dic = {'Ä°Ù':['ƒg[ƒ‹','U0001'], 'VŠƒ':['VŠƒ‰^—A','U0009'], 
-                '–¼“S':['–¼“S','U0002'], '¼”Z':['¼”Z','U0003'], 
-                'ÄÅĞ':['ƒgƒiƒ~','U0004'], '•ŸR':['•ŸR','U0006'], 
-                '”z’B':['”z’B','U0008'], '²ì':['²ì‹}•Ö','U0010'], 
-                '¹²Ëİ':['ƒPƒCƒqƒ“','U0007'], '‹v—¯•Ä':['‹v—¯•Ä','U0005'],
+        unsou_dic = {'ï¾„ï½°ï¾™':['ãƒˆãƒ¼ãƒ«','U0001'], 'æ–°æ½Ÿ':['æ–°æ½Ÿé‹è¼¸','U0009'], 
+                'åé‰„':['åé‰„','U0002'], 'è¥¿æ¿ƒ':['è¥¿æ¿ƒ','U0003'], 
+                'ï¾„ï¾…ï¾':['ãƒˆãƒŠãƒŸ','U0004'], 'ç¦å±±':['ç¦å±±','U0006'], 
+                'é…é”':['é…é”','U0008'], 'ä½å·':['ä½å·æ€¥ä¾¿','U0010'], 
+                'ï½¹ï½²ï¾‹ï¾':['ã‚±ã‚¤ãƒ’ãƒ³','U0007'], 'ä¹…ç•™ç±³':['ä¹…ç•™ç±³','U0005'],
                 'npNan':['npNan','npNan'], 'NoData':['NoData', 'NoData'],
                 'NoCalc':['NoCalc','NoCalc']}
         
         haisou_kubun = {
-        '’Êí': 1, '“y—j”z’B': 2, '‰c‹ÆŠ': 3, '—j“úˆá‚¢': 4, 'j“ú”z’B': 5
+        'é€šå¸¸': 1, 'åœŸæ›œé…é”': 2, 'å–¶æ¥­æ‰€': 3, 'æ›œæ—¥é•ã„': 4, 'ç¥æ—¥é…é”': 5
         }
 
 
 
         merg_data = self.packingHinban[
-        ['ó’‚m‚n','ó’s‚m‚n','ó’”—Ê','o‰×—\’è‘qŒÉ', '•i–¼','ó’’PˆÊ', 
-        '”[“üæ–¼Ì‚P']
+        ['å—æ³¨ï¼®ï¼¯','å—æ³¨è¡Œï¼®ï¼¯','å—æ³¨æ•°é‡','å‡ºè·äºˆå®šå€‰åº«', 'å“å','å—æ³¨å˜ä½', 
+        'ç´å…¥å…ˆåç§°ï¼‘']
         ]
 
         kenpin = pd.merge(self.untinForUriage, merg_data, 
-                on=['ó’‚m‚n','ó’s‚m‚n'], how = 'left')
+                on=['å—æ³¨ï¼®ï¼¯','å—æ³¨è¡Œï¼®ï¼¯'], how = 'left')
         
         kenpin[['unsou','unsou_code','kubun','kubun_no','cans',
-            'o‰×—\’è“ú']]  = kenpin.apply(get_kubun, axis = 1)
+            'å‡ºè·äºˆå®šæ—¥']]  = kenpin.apply(get_kubun, axis = 1)
 
         kenpin = kenpin[
-        ['“¾ˆÓæƒR[ƒh','”[“üæƒR[ƒh','unsou_code','unsou','kubun_no','kubun',
-        'o‰×—\’è“ú','hinban','•i–¼','lot','cans','ó’”—Ê','ó’’PˆÊ',
-        '”[“üæ–¼Ì‚P','—AoŒüæ', '“¾ˆÓæ’•¶‚m‚n', '”õl','add']
+        ['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰','ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰','unsou_code','unsou','kubun_no','kubun',
+        'å‡ºè·äºˆå®šæ—¥','hinban','å“å','lot','cans','å—æ³¨æ•°é‡','å—æ³¨å˜ä½',
+        'ç´å…¥å…ˆåç§°ï¼‘','è¼¸å‡ºå‘å…ˆ', 'å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯', 'å‚™è€ƒ','add']
         ]
 
-        # lot‚ª«‘‚Å‚Q‚ÂˆÈã‚Ì‚à‚Ì‚ğƒŠƒeƒ‰ƒ‹‚É‚µ‚ÄAs‚ğ‘‚â‚·B>>>>>>>>>>>>>>>
+        # lotãŒè¾æ›¸ã§ï¼’ã¤ä»¥ä¸Šã®ã‚‚ã®ã‚’ãƒªãƒ†ãƒ©ãƒ«ã«ã—ã¦ã€è¡Œã‚’å¢—ã‚„ã™ã€‚>>>>>>>>>>>>>>>
         
-        # df_list‚Ékenpin‚ğ‚Ps‚¸‚Â“ü‚ê‚é
+        # df_listã«kenpinã‚’ï¼‘è¡Œãšã¤å…¥ã‚Œã‚‹
         df_list = []
         for i in range(len(kenpin)):
             df = kenpin.iloc[[i]]
             df_list.append(df)
         
-        # lot‚Ìkey‚Ævalue‚ğcans‚Æó’”—Ê‚É“ü‚ê‚È‚ª‚çAºËß°‚ğ
-        # df_list2‚É“ü‚ê‚Ä‚¢‚­
+        # lotã®keyã¨valueã‚’cansã¨å—æ³¨æ•°é‡ã«å…¥ã‚ŒãªãŒã‚‰ã€ï½ºï¾‹ï¾Ÿï½°ã‚’
+        # df_list2ã«å…¥ã‚Œã¦ã„ã
         df_list2 = []    
         for df in df_list:
             lots = df.iloc[0,9]
@@ -123,13 +123,13 @@ class Kenpin(object):
             for k, v in lots.items():
                 df2 = df.copy()
                 cans = df2.loc[:, 'cans']
-                kg = df2.loc[:,'ó’”—Ê']
+                kg = df2.loc[:,'å—æ³¨æ•°é‡']
                 ratio = kg/cans
-                # lot‚ª‚Qí—ŞˆÈã‚ ‚Á‚½ê‡‚Ìcans‚Ækg‚ğŒvZ‚·‚éB
+                # lotãŒï¼’ç¨®é¡ä»¥ä¸Šã‚ã£ãŸå ´åˆã®cansã¨kgã‚’è¨ˆç®—ã™ã‚‹ã€‚
                 df2.loc[:,'lot'] = k
                 if k != 'short':
                     df2.loc[:, 'cans'] = int(v)
-                    df2.loc[:, 'ó’”—Ê'] = int(v * ratio)
+                    df2.loc[:, 'å—æ³¨æ•°é‡'] = int(v * ratio)
                 else:
                     df2.loc[:,'lot'] = None
                     
@@ -150,14 +150,14 @@ class Kenpin(object):
     def create_kenpin(self):
 
         df_kara2 = self.get_kenpin()
-        df_kara2 = df_kara2.loc[(df_kara2['—AoŒüæ'] != 'y') & (df_kara2['hinban'] != '999998'), :]
-        df_kara2 = df_kara2[['unsou_code','unsou','kubun_no','kubun','o‰×—\’è“ú','hinban','•i–¼','lot','cans','ó’”—Ê']]
+        df_kara2 = df_kara2.loc[(df_kara2['è¼¸å‡ºå‘å…ˆ'] != 'y') & (df_kara2['hinban'] != '999998'), :]
+        df_kara2 = df_kara2[['unsou_code','unsou','kubun_no','kubun','å‡ºè·äºˆå®šæ—¥','hinban','å“å','lot','cans','å—æ³¨æ•°é‡']]
         
         try:
             df_kara2.to_csv(self.kenpin_folder, index=False, header = False , encoding='cp932')
         except Exception as ex:
-            print('************kenpin.csvì¬ƒGƒ‰[****************')
-            print('Folder‚ªŒ©‚Â‚©‚ç‚È‚¢‚Ì‚ÅA{}‚Ìkenpin.csv‚ğmyfolder‚É•ú‚è‚İ‚Ü‚·'.format(self.factory))
+            print('************kenpin.csvä½œæˆã‚¨ãƒ©ãƒ¼****************')
+            print('FolderãŒè¦‹ã¤ã‹ã‚‰ãªã„ã®ã§ã€{}ã®kenpin.csvã‚’myfolderã«æ”¾ã‚Šè¾¼ã¿ã¾ã™'.format(self.factory))
             df_kara2.to_csv(self.myfolder + '/kenpin_' + self.factory + '.csv', index=False, header = False , encoding='cp932')
 
 
@@ -167,25 +167,25 @@ class Kenpin(object):
     def get_syukka_jisseki_syoukai(self):
         
 
-        # ‘Šèæ—ªÌÃŞ°À‚Ìæ“¾
-        # nounyuusaki = pd.read_csv(r'//192.168.1.247/‹¤—L/ó’check/master/order_nounyuusaki.csv', encoding = 'cp932')
+        # ç›¸æ‰‹å…ˆç•¥ç§°ï¾ƒï¾ï½°ï¾€ã®å–å¾—
+        # nounyuusaki = pd.read_csv(r'//192.168.1.247/å…±æœ‰/å—æ³¨check/master/order_nounyuusaki.csv', encoding = 'cp932')
         nounyuusaki = pd.read_csv(r'../master/selfMade/order_nounyuusaki.csv', encoding = 'cp932')
 
-        #merge—pƒf[ƒ^‚É‰ÁH‚·‚é
-        merge_data = nounyuusaki[['‘ŠèæƒR[ƒh‚P','‘ŠèæƒR[ƒh‚Q','‘Šèæ—ªÌ']]
+        #mergeç”¨ãƒ‡ãƒ¼ã‚¿ã«åŠ å·¥ã™ã‚‹
+        merge_data = nounyuusaki[['ç›¸æ‰‹å…ˆã‚³ãƒ¼ãƒ‰ï¼‘','ç›¸æ‰‹å…ˆã‚³ãƒ¼ãƒ‰ï¼’','ç›¸æ‰‹å…ˆç•¥ç§°']]
         merge_data = merge_data.rename(
-        columns = {'‘ŠèæƒR[ƒh‚P':'“¾ˆÓæƒR[ƒh', '‘ŠèæƒR[ƒh‚Q':'”[“üæƒR[ƒh', '‘Šèæ—ªÌ':'”[“üæ–¼'}
+        columns = {'ç›¸æ‰‹å…ˆã‚³ãƒ¼ãƒ‰ï¼‘':'å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰', 'ç›¸æ‰‹å…ˆã‚³ãƒ¼ãƒ‰ï¼’':'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰', 'ç›¸æ‰‹å…ˆç•¥ç§°':'ç´å…¥å…ˆå'}
         )
 
-        # merge_data‚ÌNaN‚ğ‹ó•¶š‚É‚µ‚Ä‚¨‚­B‚±‚¤‚µ‚È‚¢‚Æmerge‚ª‚Å‚«‚È‚¢B
+        # merge_dataã®NaNã‚’ç©ºæ–‡å­—ã«ã—ã¦ãŠãã€‚ã“ã†ã—ãªã„ã¨mergeãŒã§ããªã„ã€‚
         merge_data = merge_data.fillna('')
         
         kenpin_moto = self.get_kenpin()
         kenpin_moto = kenpin_moto.fillna('')
         
-        kenpin_merge = pd.merge(kenpin_moto, merge_data, on = ['“¾ˆÓæƒR[ƒh', '”[“üæƒR[ƒh'], how = 'left')
+        kenpin_merge = pd.merge(kenpin_moto, merge_data, on = ['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰', 'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰'], how = 'left')
 
-        # unsou_code‚Ækubun_no‚Ìƒ^ƒvƒ‹‚ğset‚É“ü‚ê‚Äd•¡‚ğ‚È‚­‚·B>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # unsou_codeã¨kubun_noã®ã‚¿ãƒ—ãƒ«ã‚’setã«å…¥ã‚Œã¦é‡è¤‡ã‚’ãªãã™ã€‚>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         # {(U0009, 1), (U0009, 4), (U0005, 1)......}
         unsou_set = set()
         for i in range(len(kenpin_merge)):
@@ -204,12 +204,12 @@ class Kenpin(object):
             unsou = kenpin_split.iloc[0,3]
             kubun = kenpin_split.iloc[0,5]
 
-            unsou_gyousya = '‰^‘—‹ÆÒF{} {}     ”z‘—‹æ•ªF{} {}'.format(unsou_code, unsou, kubun_no, kubun)
+            unsou_gyousya = 'é‹é€æ¥­è€…ï¼š{} {}     é…é€åŒºåˆ†ï¼š{} {}'.format(unsou_code, unsou, kubun_no, kubun)
 
             sheet_name = '{}_{}'.format(unsou, kubun)
             barcode_str = unsou_code + str(kubun_no)
 
-            # ˆê’Uƒo[ƒR[ƒh‚ğpng‚Å•Û‘¶ 
+            # ä¸€æ—¦ãƒãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’pngã§ä¿å­˜ 
             code39 = barcode.get_barcode_class('code39')
             barcode_img = code39(barcode_str, writer=ImageWriter(), add_checksum = False)
             barcode_img.save(r'./barcode_{}'.format(i))
@@ -217,42 +217,42 @@ class Kenpin(object):
             ws_new = wb.create_sheet(title = sheet_name,index= i)
             ws = wb[sheet_name]
 
-            ws.sheet_view.showGridLines = False  # ˜gü‚ğÁ‚·
-            ws['E1'].value = 'o‰×ÀÑÆ‰ï'
+            ws.sheet_view.showGridLines = False  # æ ç·šã‚’æ¶ˆã™
+            ws['E1'].value = 'å‡ºè·å®Ÿç¸¾ç…§ä¼š'
             ws['A2'].value = self.syukka_koujou
             ws['A3'].value = unsou_gyousya
 
             
 
-            kenpin_split = kenpin_split[['o‰×—\’è“ú','”[“üæ–¼','•i–¼','lot','ó’”—Ê',
-                'ó’’PˆÊ','“¾ˆÓæ’•¶‚m‚n','cans','”õl','—AoŒüæ','add']]
+            kenpin_split = kenpin_split[['å‡ºè·äºˆå®šæ—¥','ç´å…¥å…ˆå','å“å','lot','å—æ³¨æ•°é‡',
+                'å—æ³¨å˜ä½','å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯','cans','å‚™è€ƒ','è¼¸å‡ºå‘å…ˆ','add']]
             syukka_jisseki_syoukai = kenpin_split.rename(
-            columns = {'o‰×—\’è“ú':'”„ã“ú','lot':'Û¯ÄNo.','ó’”—Ê':'”„ã”—Ê',
-            'ó’’PˆÊ':'’PˆÊ','“¾ˆÓæ’•¶‚m‚n':'’•¶No.','cans':'ŠÊ”'}
+            columns = {'å‡ºè·äºˆå®šæ—¥':'å£²ä¸Šæ—¥','lot':'ï¾›ï½¯ï¾„No.','å—æ³¨æ•°é‡':'å£²ä¸Šæ•°é‡',
+            'å—æ³¨å˜ä½':'å˜ä½','å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯':'æ³¨æ–‡No.','cans':'ç¼¶æ•°'}
             )
 
             side = Side(style='thin', color='000000')
             border = Border(top=side, bottom=side, left=side, right=side)
 
-            ws.cell(4 , 1).value = 's'
+            ws.cell(4 , 1).value = 'è¡Œ'
             ws.cell(4 , 1).border = border
-            ws.cell(4 , 2).value = '”„ã“ú'
+            ws.cell(4 , 2).value = 'å£²ä¸Šæ—¥'
             ws.cell(4 , 2).border = border
-            ws.cell(4 , 3).value = '”[“üæ–¼'
+            ws.cell(4 , 3).value = 'ç´å…¥å…ˆå'
             ws.cell(4 , 3).border = border
-            ws.cell(4 , 4).value = '•i–¼'
+            ws.cell(4 , 4).value = 'å“å'
             ws.cell(4 , 4).border = border
-            ws.cell(4 , 5).value = 'Û¯ÄNo.'
+            ws.cell(4 , 5).value = 'ï¾›ï½¯ï¾„No.'
             ws.cell(4 , 5).border= border
-            ws.cell(4 , 6).value = '”„ã”—Ê'
+            ws.cell(4 , 6).value = 'å£²ä¸Šæ•°é‡'
             ws.cell(4 , 6).border = border
-            ws.cell(4 , 7).value = '’PˆÊ'
+            ws.cell(4 , 7).value = 'å˜ä½'
             ws.cell(4 , 7).border = border
-            ws.cell(4 , 8).value = '’•¶No.'
+            ws.cell(4 , 8).value = 'æ³¨æ–‡No.'
             ws.cell(4 , 8).border = border
-            ws.cell(4 , 9).value = 'ŠÊ”'
+            ws.cell(4 , 9).value = 'ç¼¶æ•°'
             ws.cell(4 , 9).border = border
-            ws.cell(4 , 10).value = '”õl'
+            ws.cell(4 , 10).value = 'å‚™è€ƒ'
             ws.cell(4 , 10).border = border
             ws.cell(4 , 11).value = 'y'
             ws.cell(4 , 11).border = border
@@ -270,7 +270,7 @@ class Kenpin(object):
             
             
             def get_east_asian_width_count(text):
-                # ‘SŠp‰p”‚Í'F',‘SŠp‚©‚È‚Í'W', “Áê•¶š‚Í'A'‚ª•Ô‚éB 
+                # å…¨è§’è‹±æ•°ã¯'F',å…¨è§’ã‹ãªã¯'W', ç‰¹æ®Šæ–‡å­—ã¯'A'ãŒè¿”ã‚‹ã€‚ 
                 count = 0
                 for c in text:
                     if unicodedata.east_asian_width(c) in 'FWA':
@@ -280,13 +280,13 @@ class Kenpin(object):
                 return count
 
 
-            # column‚Ì•¶š”‚©‚ç—ñ‚ğ’²®‚·‚é
+            # columnã®æ–‡å­—æ•°ã‹ã‚‰åˆ—ã‚’èª¿æ•´ã™ã‚‹
             for col in ws.columns:
                 max_length = 0
                 column = col[0].column
             
                 for cell in col:
-                    if cell.row < 4: # ‚Rs–Ú‚Ü‚Å‚Íautofit‚³‚¹‚È‚¢B
+                    if cell.row < 4: # ï¼“è¡Œç›®ã¾ã§ã¯autofitã•ã›ãªã„ã€‚
                         continue
                     cell.font = Font(size=10)
                     count = get_east_asian_width_count(str(cell.value))
@@ -298,7 +298,7 @@ class Kenpin(object):
                 ws.column_dimensions[get_column_letter(column)].width = adjusted_width
                 # ws.column_dimensions[column].width = adjusted_width
 
-            # ws‚Éƒo[ƒR[ƒh‚ğ“\‚è•t‚¯
+            # wsã«ãƒãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’è²¼ã‚Šä»˜ã‘
             img = barcode_img
             img = openpyxl.drawing.image.Image(r'./barcode_{}.png'.format(i))
             img.width = 72*3.5
@@ -310,7 +310,7 @@ class Kenpin(object):
                 ws.row_dimensions[j].height = 18
 
              
-            # ˆóüİ’è
+            # å°åˆ·è¨­å®š
             ws.page_setup.orientation = ws.ORIENTATION_LANDSCAPE
             ws.page_setup.fitToWidth = 1
             ws.page_setup.fitToHeight = 0
@@ -323,13 +323,13 @@ class Kenpin(object):
 
             i += 1
 
-        wb.save('{}/o‰×ÀÑÆ‰ï_{}.xlsx'.format(self.myfolder, self.factory))
+        wb.save('{}/å‡ºè·å®Ÿç¸¾ç…§ä¼š_{}.xlsx'.format(self.myfolder, self.factory))
 
         
         '''
-        2020/12/18 ’†‘º‚³‚ñ‚©‚ç‚ÌˆË—Š
-        o‰×ÀÑÆ‰ï‚Ì¹²Ëİ•Ö‚Ì‚İA‘“à‚Æ—Ao‚Å¼°Ä‚ğ•ª‚¯‚é
-        —Ao‚Ìê‡‚ÍÅI—ñ‚É'y'‚ª“ü‚Á‚Ä‚¢‚é‚©‚ç‚»‚ê‚Å¯•Ê‚·‚é
+        2020/12/18 ä¸­æ‘ã•ã‚“ã‹ã‚‰ã®ä¾é ¼
+        å‡ºè·å®Ÿç¸¾ç…§ä¼šã®ï½¹ï½²ï¾‹ï¾ä¾¿ã®ã¿ã€å›½å†…ã¨è¼¸å‡ºã§ï½¼ï½°ï¾„ã‚’åˆ†ã‘ã‚‹
+        è¼¸å‡ºã®å ´åˆã¯æœ€çµ‚åˆ—ã«'y'ãŒå…¥ã£ã¦ã„ã‚‹ã‹ã‚‰ãã‚Œã§è­˜åˆ¥ã™ã‚‹
         '''
         
 

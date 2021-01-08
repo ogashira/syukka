@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import csv
 import pandas as pd
@@ -62,18 +62,18 @@ class Untin_honsya :
     def get_torr(self,dist,weight,YN,address,tyuukei):
 		
         '''
-		#‚Ç‚¿‚ç‚Ì‰^’À•\‚ğg‚¤‚©H –{Ğ‚Å‚ÍL“‡A“Ş—Ç‚Ì‰^’À•\‚Í–³‚¢
-        if 'L“‡Œ§'in address or '“Ş—ÇŒ§' in address:
+		#ã©ã¡ã‚‰ã®é‹è³ƒè¡¨ã‚’ä½¿ã†ã‹ï¼Ÿ æœ¬ç¤¾ã§ã¯åºƒå³¶ã€å¥ˆè‰¯ã®é‹è³ƒè¡¨ã¯ç„¡ã„
+        if 'åºƒå³¶çœŒ'in address or 'å¥ˆè‰¯çœŒ' in address:
             untin_mtx = self.torr_nara_hirosima
         else:
             untin_mtx = self.torr
        ''' 
     
-        #ƒg[ƒ‹‚Ì‰^’À‚ğ‹‚ß‚é
+        #ãƒˆãƒ¼ãƒ«ã®é‹è³ƒã‚’æ±‚ã‚ã‚‹
         if YN == '-':
             return float('inf')
         
-        #Šî–{—¿‹àstd_fare‚ğ‹‚ß‚é
+        #åŸºæœ¬æ–™é‡‘std_fareã‚’æ±‚ã‚ã‚‹
         dist_idx = 0
         for i  in range(len(self.torr[0])-1,0,-1): 
             if float(self.torr[0][i].replace(',','')) >= dist : 
@@ -88,7 +88,7 @@ class Untin_honsya :
                     std_fare = self.torr[i][dist_idx].replace(',', '')
                     break
         
-        #’†Œp—¿‹à‚ğ‹‚ß‚é
+        #ä¸­ç¶™æ–™é‡‘ã‚’æ±‚ã‚ã‚‹
         if tyuukei == 0:
             tyuukei_fare = 0
         else:
@@ -108,7 +108,7 @@ class Untin_honsya :
         if YN == '-':
             return float('inf')
 
-        #Šî–{—¿‹àstd_fare‚ğ‹‚ß‚é
+        #åŸºæœ¬æ–™é‡‘std_fareã‚’æ±‚ã‚ã‚‹
         dist_idx = 0
         for i in range(len(self.niigata[0])-1, 0, -1):
             if float(self.niigata[0][i].replace(',','')) >= dist :
@@ -123,7 +123,7 @@ class Untin_honsya :
                     std_fare = self.niigata[i][dist_idx].replace(',', '')
                     break
        
-        #’†Œp—¿‹à‚ğ‹‚ß‚é
+        #ä¸­ç¶™æ–™é‡‘ã‚’æ±‚ã‚ã‚‹
         if tyuukei == 0:
             tyuukei_fare = 0
         else:
@@ -138,14 +138,14 @@ class Untin_honsya :
         
         
     def get_keihin(self, keihin, weight):
-        #keihin = 'ˆ¤’m','‰¡•l','-', ‚È‚Ç 
+        #keihin = 'æ„›çŸ¥','æ¨ªæµœ','-', ãªã© 
         if keihin == '-':
             return float('inf')
             
-        #Šî–{—¿‹àstd_fare‚ğ‹‚ß‚é
+        #åŸºæœ¬æ–™é‡‘std_fareã‚’æ±‚ã‚ã‚‹
         weight_idx = 0
         for i in range(len(self.keihin[0])-1, 0, -1):
-            #¹²Ëİ‚¾‚¯‚Íd—Ê‚ª–¢–•\¦
+            #ï½¹ï½²ï¾‹ï¾ã ã‘ã¯é‡é‡ãŒæœªæº€è¡¨ç¤º
             if float(self.keihin[0][i].replace(',','')) > weight : 
                 weight_idx = i
                 break
@@ -158,8 +158,8 @@ class Untin_honsya :
                     std_fare = self.keihin[i][weight_idx].replace(',', '')
                     break
         '''
-        '-'‚È‚ç‚Îs‚©‚È‚¢‚©‚ç–³ŒÀ‘åA100ˆÈ‰º‚Ì”’l‚È‚ç‚Îd—Ê‚ğŠ|‚¯‚éB
-        ‚»‚êˆÈŠO‚Ì”’l‚Í‚»‚Ì‚Ü‚Ü‰^’ÀB
+        '-'ãªã‚‰ã°è¡Œã‹ãªã„ã‹ã‚‰ç„¡é™å¤§ã€100ä»¥ä¸‹ã®æ•°å€¤ãªã‚‰ã°é‡é‡ã‚’æ›ã‘ã‚‹ã€‚
+        ãã‚Œä»¥å¤–ã®æ•°å€¤ã¯ãã®ã¾ã¾é‹è³ƒã€‚
         '''
         if std_fare == '-':
             keihin_fare = float('inf')
@@ -175,13 +175,13 @@ class Untin_honsya :
 
     def get_tonami_diff(self, designation, weight):
         
-        if designation != 'ÄÅĞ':
+        if designation != 'ï¾„ï¾…ï¾':
             return 0
 
         tonami_new = 0
         for i in range(len(self.tonami_new)-1, 0, -1):
             if float(self.tonami_new[i][0]) >= weight :
-                #ƒRƒ“ƒ}‚ª‚ ‚éƒP[ƒX‚ª‚ ‚é‚Ì‚Å...
+                #ã‚³ãƒ³ãƒãŒã‚ã‚‹ã‚±ãƒ¼ã‚¹ãŒã‚ã‚‹ã®ã§...
                 tonami_new_price = self.tonami_new[i][1].replace(',', '')
                 break                        
         tonami_old = 0
@@ -194,11 +194,11 @@ class Untin_honsya :
             
 
     def get_kurume(self, dist_YN, weight): 
-        #‹v—¯•Ä‚Ì‰^’À‚ğ‹‚ß‚é
+        #ä¹…ç•™ç±³ã®é‹è³ƒã‚’æ±‚ã‚ã‚‹
         if dist_YN == '-':
             return float('inf')
         
-        #Šî–{—¿‹àstd_fare‚ğ‹‚ß‚é
+        #åŸºæœ¬æ–™é‡‘std_fareã‚’æ±‚ã‚ã‚‹
         dist_idx = 0
         for i  in range(len(self.kurume[0])-1,0,-1): 
             if float(self.kurume[0][i].replace(',','')) >= float(dist_YN) : 
@@ -215,20 +215,20 @@ class Untin_honsya :
         return std_fare
 
 
-	#apply‚Ådf‚Ìs‚ğó‚¯æ‚é
+	#applyã§dfã®è¡Œã‚’å—ã‘å–ã‚‹
     def get_untin(self, df_row):
-        nounyuusaki = df_row['”[“üæ–¼Ì‚P']
+        nounyuusaki = df_row['ç´å…¥å…ˆåç§°ï¼‘']
         weight = df_row['weight']
-        address = df_row['ZŠ‚P']
-        torr_dist = df_row['Ä°Ù‹——£']
-        torr_tyuukei = df_row['Ä°Ù’†Œp‰ñ”']
-        torr_YN = df_row['Ä°Ùs‚­s‚©‚È‚¢']
-        niigata_dist = df_row['VŠƒ‹——£']
-        niigata_tyuukei = df_row['VŠƒ’†Œp‰ñ”']
-        niigata_YN = df_row['VŠƒs‚­s‚©‚È‚¢']
-        keihin = df_row['¹²ËİŒü']
-        designation = df_row['ŒÚ‹qw’è‰^‘—‰®']
-        kurume_distYN = df_row['‹v—¯•Ä‹——£']
+        address = df_row['ä½æ‰€ï¼‘']
+        torr_dist = df_row['ï¾„ï½°ï¾™è·é›¢']
+        torr_tyuukei = df_row['ï¾„ï½°ï¾™ä¸­ç¶™å›æ•°']
+        torr_YN = df_row['ï¾„ï½°ï¾™è¡Œãè¡Œã‹ãªã„']
+        niigata_dist = df_row['æ–°æ½Ÿè·é›¢']
+        niigata_tyuukei = df_row['æ–°æ½Ÿä¸­ç¶™å›æ•°']
+        niigata_YN = df_row['æ–°æ½Ÿè¡Œãè¡Œã‹ãªã„']
+        keihin = df_row['ï½¹ï½²ï¾‹ï¾å‘']
+        designation = df_row['é¡§å®¢æŒ‡å®šé‹é€å±‹']
+        kurume_distYN = df_row['ä¹…ç•™ç±³è·é›¢']
 
         if address != 'NoCalc' and address is not np.nan:
             torr_fare = self.get_torr(torr_dist,weight,torr_YN,address

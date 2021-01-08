@@ -1,5 +1,5 @@
 #! python3
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 import datetime
@@ -15,9 +15,9 @@ import os
 class Eigyoubi:
 
     def __init__(self):
-        #‹x“ú•\‚Ìæ“¾
+        #ä¼‘æ—¥è¡¨ã®å–å¾—
         if os.name == 'nt':
-            eigyou_file = open(r'//192.168.1.247/‹¤—L/ó’check/master/order_holiday.csv', encoding = 'cp932')
+            eigyou_file = open(r'//192.168.1.247/å…±æœ‰/å—æ³¨check/master/order_holiday.csv', encoding = 'cp932')
         else:
             eigyou_file = open(r'../master/selfMade/order_holiday.csv', encoding = 'cp932')
             
@@ -27,10 +27,10 @@ class Eigyoubi:
         eigyou_file.close()
 
 
-        #“ñŸŒ³Ø½Ä‚É‚·‚é
+        #äºŒæ¬¡å…ƒï¾˜ï½½ï¾„ã«ã™ã‚‹
         self.eigyoubi = []
         for row in eigyoubi_l:
-            if row[2] == '‹x':
+            if row[2] == 'ä¼‘':
                 continue
             else:           
                 time_data = datetime.datetime.strptime(row[0], '%Y/%m/%d')

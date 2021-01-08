@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import jaconv, csv, openpyxl
 import os
@@ -7,13 +7,13 @@ from datetime import datetime, date, timedelta
 from recorder import *
 
 '''
-”„ãˆ—‚Ì‚½‚ß‚ÌİŒÉ‚Ìˆø‚«“–‚ÄiLOTj‚ğs‚¤
-—Ao»•i‚Ìê‡‚ÍA—Ao“h—¿˜A—•\‚Ìlot‚ğˆø‚«“–‚Ä‚éB
-‚µ‚©‚µA—Ao“h—¿˜A—•\‚É‚Í•i”ÔA•i–¼‚ª–³‚¢‚Ì‚ÅAŒ»İŒÉÃŞ°À‚É‚ ‚é
-•i”Ô‚Ìlot‚ğ’²‚×‚ÄA‚Ç‚ê‚ª—Ao“h—¿˜A—•\‚ÌƒI[ƒ_[No‚ÌLOT‚È‚Ì‚©‚ğ’²‚×‚Äˆø‚«“–‚Ä‚éB
-‘“àó’»•i‚ÍAˆê’v‚·‚éŠÊ”‚ÌLOT‚©‚çˆø‚«“–‚Ä‚éB“¯‚É“¯”‚ÌŠÊ”‚ªˆê’v‚µ‚½ê‡
-‚ÍA»‘¢“ú‚ªó’“ú‚æ‚è‚àŒã‚È‚ç‚Î‚Ç‚¿‚ç‚Å‚à‚æ‚¢B
-Œ©‚İ•i‚Ìê‡‚ÍAŒÃ‚¢LOT‚©‚çˆø‚«“–‚Ä‚éB
+å£²ä¸Šå‡¦ç†ã®ãŸã‚ã®åœ¨åº«ã®å¼•ãå½“ã¦ï¼ˆLOTï¼‰ã‚’è¡Œã†
+è¼¸å‡ºè£½å“ã®å ´åˆã¯ã€è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã®lotã‚’å¼•ãå½“ã¦ã‚‹ã€‚
+ã—ã‹ã—ã€è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã«ã¯å“ç•ªã€å“åãŒç„¡ã„ã®ã§ã€ç¾åœ¨åº«ï¾ƒï¾ï½°ï¾€ã«ã‚ã‚‹
+å“ç•ªã®lotã‚’èª¿ã¹ã¦ã€ã©ã‚ŒãŒè¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã®ã‚ªãƒ¼ãƒ€ãƒ¼Noã®LOTãªã®ã‹ã‚’èª¿ã¹ã¦å¼•ãå½“ã¦ã‚‹ã€‚
+å›½å†…å—æ³¨è£½å“ã¯ã€ä¸€è‡´ã™ã‚‹ç¼¶æ•°ã®LOTã‹ã‚‰å¼•ãå½“ã¦ã‚‹ã€‚åŒæ™‚ã«åŒæ•°ã®ç¼¶æ•°ãŒä¸€è‡´ã—ãŸå ´åˆ
+ã¯ã€è£½é€ æ—¥ãŒå—æ³¨æ—¥ã‚ˆã‚Šã‚‚å¾Œãªã‚‰ã°ã©ã¡ã‚‰ã§ã‚‚ã‚ˆã„ã€‚
+è¦‹è¾¼ã¿å“ã®å ´åˆã¯ã€å¤ã„LOTã‹ã‚‰å¼•ãå½“ã¦ã‚‹ã€‚
 '''
 
 
@@ -27,25 +27,25 @@ class Zaiko:
 
 
      
-    #—Ao“h—¿˜A—•\‚Ìæ“¾
+    #è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã®å–å¾—
         if os.name == 'nt':
             wb = openpyxl.load_workbook(
-                r'//192.168.1.247/Guest/—Ao“h—¿˜A—•\.xlsx', data_only=True
+                r'//192.168.1.247/Guest/è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨.xlsx', data_only=True
             )
         else:
             wb = openpyxl.load_workbook(
-               r'../master/—Ao“h—¿˜A—•\.xlsx', data_only=True
+               r'../master/è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨.xlsx', data_only=True
             )
 
-        ws = wb['—Ao“h—¿˜A—•\']
+        ws = wb['è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨']
         
-        # ƒV[ƒg‚ğ•ÛŒì‚µ‚½‚Æ‚«‚ÌƒpƒXƒ[ƒh‚ğƒZƒbƒg
+        # ã‚·ãƒ¼ãƒˆã‚’ä¿è­·ã—ãŸã¨ãã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ã‚»ãƒƒãƒˆ
         ws.protection.password = 'gijutu'
         
-        # ƒV[ƒg‚Ì•ÛŒì‚ğ‰ğœ
+        # ã‚·ãƒ¼ãƒˆã®ä¿è­·ã‚’è§£é™¤
         ws.protection.disable()
 
-        #“ñŸŒ³Ø½Ä‚É‚·‚é
+        #äºŒæ¬¡å…ƒï¾˜ï½½ï¾„ã«ã™ã‚‹
         yusyutuRenraku = []
         for row in ws.rows:
             rows = []
@@ -53,20 +53,20 @@ class Zaiko:
                 rows.append(cell.value)
             yusyutuRenraku.append(rows)
         
-        #orderNo_lot = {'VNN3044:{20090501H : 3, 20091852T: 5,...},.....} ‚ÌŒ`‚É‚·‚é
+        #orderNo_lot = {'VNN3044:{20090501H : 3, 20091852T: 5,...},.....} ã®å½¢ã«ã™ã‚‹
         orderNo_lot = {}
         lot_cans = {}
         for line in yusyutuRenraku:
             if line[3]== None :
                 continue
             else:
-                #¬•¶š‚ğ‘å•¶š‚É‚·‚é
+                #å°æ–‡å­—ã‚’å¤§æ–‡å­—ã«ã™ã‚‹
                 orderNo = str(line[3]).upper() 
-                #‘SŠp‚ğ”¼Šp‚É‚·‚é(”š‚à‹L†‚à)
+                #å…¨è§’ã‚’åŠè§’ã«ã™ã‚‹(æ•°å­—ã‚‚è¨˜å·ã‚‚)
                 orderNo = jaconv.z2h(orderNo,digit=True,ascii=True) 
-                #‹ó”’‚ğœ‹
+                #ç©ºç™½ã‚’é™¤å»
                 orderNo = orderNo.replace(' ','') 
-                orderNo = orderNo.replace('@','')
+                orderNo = orderNo.replace('ã€€','')
                 lot = str(line[5]).upper()
                 lot = jaconv.z2h(lot,digit=True,ascii=True)
                 
@@ -85,28 +85,28 @@ class Zaiko:
         '''
 
 
-    # Œ»İŒÉÃŞ°À‚Ìæ“¾ 
+    # ç¾åœ¨åº«ï¾ƒï¾ï½°ï¾€ã®å–å¾— 
         zaiko = pd.read_csv(r'../master/effitA/zaiko.csv',encoding='cp932')
-        zaiko = zaiko.loc[(zaiko['‘qŒÉ']=='‘åã‘qŒÉ')|(zaiko['‘qŒÉ']=='–{Ğ‘qŒÉ')
-                          |(zaiko['‘qŒÉ']=='“y‹C‘qŒÉ'), ['•i”Ô','ƒƒbƒgNo',
-                          'İŒÉ”—ÊiŒ»İj','‘qŒÉ']]
+        zaiko = zaiko.loc[(zaiko['å€‰åº«']=='å¤§é˜ªå€‰åº«')|(zaiko['å€‰åº«']=='æœ¬ç¤¾å€‰åº«')
+                          |(zaiko['å€‰åº«']=='åœŸæ°—å€‰åº«'), ['å“ç•ª','ãƒ­ãƒƒãƒˆNo',
+                          'åœ¨åº«æ•°é‡ï¼ˆç¾åœ¨ï¼‰','å€‰åº«']]
         zaiko = zaiko.fillna("")
         
-        genzaiko_d = zaiko.to_dict(orient='split') #dataframe ‚ğ«‘‚É‚·‚é
-        genzaiko_l = genzaiko_d['data'] # «‘‚©‚çkey=data(“ñŸŒ³Ø½Ä•”•ªj‚ğæ‚èo‚·
-        genzaiko_l = sorted(genzaiko_l, key=lambda x: x[1]) #LOT‚Åƒ\[ƒg
-        self.genzaiko_l = sorted(genzaiko_l, key=lambda x: x[0]) #X‚ÉA•i”Ô‚Åƒ\[ƒg
+        genzaiko_d = zaiko.to_dict(orient='split') #dataframe ã‚’è¾æ›¸ã«ã™ã‚‹
+        genzaiko_l = genzaiko_d['data'] # è¾æ›¸ã‹ã‚‰key=data(äºŒæ¬¡å…ƒï¾˜ï½½ï¾„éƒ¨åˆ†ï¼‰ã‚’å–ã‚Šå‡ºã™
+        genzaiko_l = sorted(genzaiko_l, key=lambda x: x[1]) #LOTã§ã‚½ãƒ¼ãƒˆ
+        self.genzaiko_l = sorted(genzaiko_l, key=lambda x: x[0]) #æ›´ã«ã€å“ç•ªã§ã‚½ãƒ¼ãƒˆ
 
         '''
-        [['S10-E-C', '20052603H', '3', '–{Ğ‘qŒÉ'],
-        ['S10-E-C', '20071405H', '15', '–{Ğ‘qŒÉ'],
-        ['S10-P3', '20071331H', '4', '‘åã‘qŒÉ'],
-        ['S11-PT04S-T', '20091451T', '60', '“y‹C‘qŒÉ'],
-        ['S11-PT04S-T-R-EX', '20091454T', '8', '“y‹C‘qŒÉ'],......]
+        [['S10-E-C', '20052603H', '3', 'æœ¬ç¤¾å€‰åº«'],
+        ['S10-E-C', '20071405H', '15', 'æœ¬ç¤¾å€‰åº«'],
+        ['S10-P3', '20071331H', '4', 'å¤§é˜ªå€‰åº«'],
+        ['S11-PT04S-T', '20091451T', '60', 'åœŸæ°—å€‰åº«'],
+        ['S11-PT04S-T-R-EX', '20091454T', '8', 'åœŸæ°—å€‰åº«'],......]
         '''
 
-    # ó’Œ©‚İ»•iÃŞ°À‚Ìæ“¾
-        JM_file = open('../master/selfMade/ó’Œ©‚İØ½Ä.csv',encoding='cp932')
+    # å—æ³¨è¦‹è¾¼ã¿è£½å“ï¾ƒï¾ï½°ï¾€ã®å–å¾—
+        JM_file = open('../master/selfMade/å—æ³¨è¦‹è¾¼ã¿ï¾˜ï½½ï¾„.csv',encoding='cp932')
         file_reader = csv.reader(JM_file)
         JM = list(file_reader)
         JM_file.close()
@@ -118,36 +118,36 @@ class Zaiko:
             self.JM_data[hinban] = JorM
 
 
-    # ó’DT.csv ‚Ìæ“¾
-        JDT = pd.read_csv(r'../master/effitA/ó’DT.csv', skiprows = 1
+    # å—æ³¨DT.csv ã®å–å¾—
+        JDT = pd.read_csv(r'../master/effitA/å—æ³¨DT.csv', skiprows = 1
                           , encoding = 'cp932')
-        JDT = JDT.drop_duplicates(['ó’‚m‚n'])
-        JDT = JDT.loc[:,['ó’‚m‚n','ó’“ú']]
-        self.JDT_d = dict(zip(JDT['ó’‚m‚n'], JDT['ó’“ú']))
+        JDT = JDT.drop_duplicates(['å—æ³¨ï¼®ï¼¯'])
+        JDT = JDT.loc[:,['å—æ³¨ï¼®ï¼¯','å—æ³¨æ—¥']]
+        self.JDT_d = dict(zip(JDT['å—æ³¨ï¼®ï¼¯'], JDT['å—æ³¨æ—¥']))
     
  
 
-# « method
+# â†“ method
 
 
 
     def get_lot(self,df_row):
-        '''lot‚Ìˆø‚«“–‚Ä‚ğs‚¤B
-        —AoŒüæ‚ªy‚È‚ç‚Îdefpattern_y‚Åˆ—,‚»‚êˆÈŠO‚Í‚»‚ê‚¼‚ê‚ÌÊßÀ°İ
+        '''lotã®å¼•ãå½“ã¦ã‚’è¡Œã†ã€‚
+        è¼¸å‡ºå‘å…ˆãŒyãªã‚‰ã°defpattern_yã§å‡¦ç†,ãã‚Œä»¥å¤–ã¯ãã‚Œãã‚Œã®ï¾Šï¾Ÿï¾€ï½°ï¾
         '''
 
         recorder = Recorder(self.myfolder)
         
-        #pattern‚ğŒˆ’è‚·‚éŠÖ”
+        #patternã‚’æ±ºå®šã™ã‚‹é–¢æ•°
         def get_pattern(hinban):
-            if self.JM_data.get(hinban, '-') =='ó’»•i':
+            if self.JM_data.get(hinban, '-') =='å—æ³¨è£½å“':
                 return 'J'
-            elif self.JM_data.get(hinban, '-') == 'Œ©‚İ»•i':
+            elif self.JM_data.get(hinban, '-') == 'è¦‹è¾¼ã¿è£½å“':
                 return 'M'
             else:
                 return '-'
 
-        #İŒÉ‚ğˆø‚­ŠÖ”
+        #åœ¨åº«ã‚’å¼•ãé–¢æ•°
         def zaiko_minus(k, cans):
             for line in self.genzaiko_l:
                 if line[1] == k:
@@ -156,12 +156,12 @@ class Zaiko:
 
         def pattern_y(hinban,cans,orderNo, syukka_souko, lot) :
             '''
-            —Ao“h—¿˜A—•\‚Ì•i”ÔAlot‚ªŒ»İŒÉ‚É‚È‚©‚Á‚½‚çAƒƒbƒZ[ƒW‚ğo‚·‚ªA
-            {}‚Ì‚Ü‚Üprogram‚Íis‚·‚éB
-            Œ»İŒÉ‚ª‰^’ÀŒvZƒV[ƒg‚Ìo‰×ŠÊ”‚æ‚è‚à‘«‚è‚È‚©‚Á‚½‚çAƒƒbƒZ[ƒW‚ğ
-            o‚µA{'short':0}‚Åprogram‚Íis‚·‚éB
-            —Ao“h—¿˜A—•\‚Ìo‰×ŠÊ”‚Í–³‹‚·‚éiŒ©‚Ä‚¢‚È‚¢j
-            o‰×‘qŒÉ‚ÆİŒÉ‘qŒÉ‚ª•sˆê’v‚Ìê‡A{'short':0}‚¾‚µ‚Ä”„ã—§‚Ä‚È‚¢
+            è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã®å“ç•ªã€lotãŒç¾åœ¨åº«ã«ãªã‹ã£ãŸã‚‰ã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡ºã™ãŒã€
+            {}ã®ã¾ã¾programã¯é€²è¡Œã™ã‚‹ã€‚
+            ç¾åœ¨åº«ãŒé‹è³ƒè¨ˆç®—ã‚·ãƒ¼ãƒˆã®å‡ºè·ç¼¶æ•°ã‚ˆã‚Šã‚‚è¶³ã‚Šãªã‹ã£ãŸã‚‰ã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’
+            å‡ºã—ã€{'short':0}ã§programã¯é€²è¡Œã™ã‚‹ã€‚
+            è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã®å‡ºè·ç¼¶æ•°ã¯ç„¡è¦–ã™ã‚‹ï¼ˆè¦‹ã¦ã„ãªã„ï¼‰
+            å‡ºè·å€‰åº«ã¨åœ¨åº«å€‰åº«ãŒä¸ä¸€è‡´ã®å ´åˆã€{'short':0}ã ã—ã¦å£²ä¸Šç«‹ã¦ãªã„
             '''
             yusyutu = self.yusyutuRenrakuLot.get(orderNo, {})
             # {20090501H : 3, 20091852T : 5....}
@@ -178,7 +178,7 @@ class Zaiko:
                                 lot[zaiko_lot] =  yusyutu_cans
                                 zaiko_minus(zaiko_lot, yusyutu_cans)
                             else:
-                                txt = '—Ao»•i{}‚Ì{}‚ÌİŒÉ‚ª‘«‚è‚Ü‚¹‚ñ'\
+                                txt = 'è¼¸å‡ºè£½å“{}ã®{}ã®åœ¨åº«ãŒè¶³ã‚Šã¾ã›ã‚“'\
                                                       .format(hinban,zaiko_lot)
                                 recorder.out_log(txt)
                                 recorder.out_file(txt)
@@ -186,7 +186,7 @@ class Zaiko:
                                 break                 
                             
             if lot == {}:
-                txt = '—Ao»•i{}‚ª—Ao“h—¿˜A—•\‚É‚È‚¢‚©Ao‰×—\’è‘qŒÉ‚Æˆá‚¤‘qŒÉ‚É‚ ‚è‚Ü‚·'.format(hinban)
+                txt = 'è¼¸å‡ºè£½å“{}ãŒè¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã«ãªã„ã‹ã€å‡ºè·äºˆå®šå€‰åº«ã¨é•ã†å€‰åº«ã«ã‚ã‚Šã¾ã™'.format(hinban)
                 recorder.out_log(txt)
                 recorder.out_file(txt,'\n')
                  
@@ -195,9 +195,9 @@ class Zaiko:
                 total = 0
                 for v in lot.values():
                     total += int(v)
-                if total != int(cans):#Œ³‚Ìo‰×ŠÊ”‚Ætotal‚ğ”äŠr‚µ‚Ä‚¢‚é
-                    recorder.out_log('E—Ao»•i(' + hinban + ')‚ÌİŒÉ‚ª‡‚¢‚Ü‚¹‚ñB')
-                    recorder.out_file('E—Ao»•i(' + hinban + ')‚ÌİŒÉ‚ª‡‚¢‚Ü‚¹‚ñB')
+                if total != int(cans):#å…ƒã®å‡ºè·ç¼¶æ•°ã¨totalã‚’æ¯”è¼ƒã—ã¦ã„ã‚‹
+                    recorder.out_log('ãƒ»è¼¸å‡ºè£½å“(' + hinban + ')ã®åœ¨åº«ãŒåˆã„ã¾ã›ã‚“ã€‚')
+                    recorder.out_file('ãƒ»è¼¸å‡ºè£½å“(' + hinban + ')ã®åœ¨åº«ãŒåˆã„ã¾ã›ã‚“ã€‚')
                     lot['short'] = 0
 
 
@@ -209,7 +209,7 @@ class Zaiko:
 
 
         def pattern_J(hinban,cans,JNo, syukka_souko, lot):
-            #“r’†‚ÌİŒÉˆø‚«“–‚Ä‚ÅAcans‚Í•Ï‰»‚·‚é‚Ì‚Åo‰×ŠÊ”‚ğsyukka_cans‚Æ‚µ‚Äæ‚Á‚Ä‚¨‚­
+            #é€”ä¸­ã®åœ¨åº«å¼•ãå½“ã¦ã§ã€cansã¯å¤‰åŒ–ã™ã‚‹ã®ã§å‡ºè·ç¼¶æ•°ã‚’syukka_cansã¨ã—ã¦å–ã£ã¦ãŠã
             syukka_cans = cans
             dt_now = datetime.now()
             mytoday = dt_now.strftime('%Y%m%d')
@@ -218,7 +218,7 @@ class Zaiko:
             J_date = datetime.strptime(J_date, '%Y/%m/%d')
             J_zaiko = {}
 
-            #if‚Éˆø‚Á‚©‚©‚ç‚È‚¢‚Æ187s‚Ì‚Æ‚±‚ë‚Å’è‹`‚³‚ê‚Ä‚¢‚È‚­‚ÄƒGƒ‰[‚É‚È‚é‚©‚çB
+            #ifã«å¼•ã£ã‹ã‹ã‚‰ãªã„ã¨187è¡Œã®ã¨ã“ã‚ã§å®šç¾©ã•ã‚Œã¦ã„ãªãã¦ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹ã‹ã‚‰ã€‚
             zaiko_souko = ''
             zaiko_lot = ''
             for line in self.genzaiko_l:   
@@ -234,18 +234,18 @@ class Zaiko:
                             and zaiko_souko[:2] == syukka_souko[:2]:
                         J_zaiko[zaiko_lot] = zaiko_cans
                         
-            #«‘‚ğ‚k‚n‚s‚Åƒ\[ƒg‚·‚é‚ÆƒŠƒXƒg‚É‚È‚é‚Ì‚ÅA‚Ü‚½«‘‚É‚·‚éB
+            #è¾æ›¸ã‚’ï¼¬ï¼¯ï¼´ã§ã‚½ãƒ¼ãƒˆã™ã‚‹ã¨ãƒªã‚¹ãƒˆã«ãªã‚‹ã®ã§ã€ã¾ãŸè¾æ›¸ã«ã™ã‚‹ã€‚
             J_zaiko = sorted(J_zaiko.items())
             J_zaiko = dict(J_zaiko)
             
-            #ŠÊ”‚ªİŒÉ‚Æo‰×ŠÊ”‚Æ‚Ò‚Á‚½‚èˆê’v‚·‚éLOT‚ğˆø‚«“–‚Ä‚é
+            #ç¼¶æ•°ãŒåœ¨åº«ã¨å‡ºè·ç¼¶æ•°ã¨ã´ã£ãŸã‚Šä¸€è‡´ã™ã‚‹LOTã‚’å¼•ãå½“ã¦ã‚‹
             for k, v in J_zaiko.items():
                 if float(v) == cans:
                     lot[k] = cans
                     zaiko_minus(k, cans)
                     break
             else:
-                for k, v in J_zaiko.items(): #İŒÉ‚ªo‰×ŠÊ”ˆÈã‚ÌLOT‚ğˆø‚«“–‚Ä‚é
+                for k, v in J_zaiko.items(): #åœ¨åº«ãŒå‡ºè·ç¼¶æ•°ä»¥ä¸Šã®LOTã‚’å¼•ãå½“ã¦ã‚‹
                     if float(v) >= cans:
                         lot[k] = cans
                         zaiko_minus(k, cans)
@@ -253,23 +253,23 @@ class Zaiko:
 
             # if zaiko_souko[:2] != syukka_souko[:2]:
             #     lot['short'] = 0 
-            #     recorder.out_log('Eo‰×‚·‚é‘qŒÉ‚ÆİŒÉ‚ª‚ ‚é‘qŒÉ‚ªˆê’v‚µ‚Ä‚Ü‚¹‚ñ(' \
+            #     recorder.out_log('ãƒ»å‡ºè·ã™ã‚‹å€‰åº«ã¨åœ¨åº«ãŒã‚ã‚‹å€‰åº«ãŒä¸€è‡´ã—ã¦ã¾ã›ã‚“(' \
             #                      + hinban + ':' + zaiko_lot + ')')
-            #     recorder.out_file('Eo‰×‚·‚é‘qŒÉ‚ÆİŒÉ‚ª‚ ‚é‘qŒÉ‚ªˆê’v‚µ‚Ä‚Ü‚¹‚ñ(' \
+            #     recorder.out_file('ãƒ»å‡ºè·ã™ã‚‹å€‰åº«ã¨åœ¨åº«ãŒã‚ã‚‹å€‰åº«ãŒä¸€è‡´ã—ã¦ã¾ã›ã‚“(' \
             #                       + hinban + ':' + zaiko_lot + ')')
             
             if lot == {}:
-                recorder.out_log('Eó’»•i(' + hinban + ')‚ÌLOT‚ªˆø‚«“–‚Ä‚Å‚«' \
-                                 '‚Ü‚¹‚ñB')
-                recorder.out_file('Eó’»•i(' + hinban + ')‚ÌLOT‚ªˆø‚«“–‚Ä‚Å' \
-                                  '‚«‚Ü‚¹‚ñB')
+                recorder.out_log('ãƒ»å—æ³¨è£½å“(' + hinban + ')ã®LOTãŒå¼•ãå½“ã¦ã§ã' \
+                                 'ã¾ã›ã‚“ã€‚')
+                recorder.out_file('ãƒ»å—æ³¨è£½å“(' + hinban + ')ã®LOTãŒå¼•ãå½“ã¦ã§' \
+                                  'ãã¾ã›ã‚“ã€‚')
             else:
                 total = 0
                 for v in lot.values():
                     total += int(v)
-                if total < int(syukka_cans):#Œ³‚Ìo‰×ŠÊ”‚Ætotal‚ğ”äŠr‚µ‚Ä‚¢‚é
-                    recorder.out_log('Eó’»•i(' + hinban + ')‚ÌİŒÉ‚ª‘«‚è‚Ü‚¹‚ñB')
-                    recorder.out_file('Eó’»•i(' + hinban + ')‚ÌİŒÉ‚ª‘«‚è‚Ü‚¹‚ñB')
+                if total < int(syukka_cans):#å…ƒã®å‡ºè·ç¼¶æ•°ã¨totalã‚’æ¯”è¼ƒã—ã¦ã„ã‚‹
+                    recorder.out_log('ãƒ»å—æ³¨è£½å“(' + hinban + ')ã®åœ¨åº«ãŒè¶³ã‚Šã¾ã›ã‚“ã€‚')
+                    recorder.out_file('ãƒ»å—æ³¨è£½å“(' + hinban + ')ã®åœ¨åº«ãŒè¶³ã‚Šã¾ã›ã‚“ã€‚')
                     lot['short'] = 0
 
             return lot
@@ -278,37 +278,37 @@ class Zaiko:
 
         def pattern_M(hinban,cans, syukka_souko, lot):
             M_zaiko = []
-            #“r’†‚ÌİŒÉˆø‚«“–‚Ä‚ÅAcans‚Í•Ï‰»‚·‚é‚Ì‚Åo‰×ŠÊ”‚ğsyukka_cans‚Æ‚µ‚Äæ‚Á‚Ä‚¨‚­
+            #é€”ä¸­ã®åœ¨åº«å¼•ãå½“ã¦ã§ã€cansã¯å¤‰åŒ–ã™ã‚‹ã®ã§å‡ºè·ç¼¶æ•°ã‚’syukka_cansã¨ã—ã¦å–ã£ã¦ãŠã
             syukka_cans = cans
-            if syukka_souko == '‘åã’¼‘—':
+            if syukka_souko == 'å¤§é˜ªç›´é€':
                 for line in self.genzaiko_l:   
-                    if line[0] == hinban and line[3] == 'ˆÚ“®‘qŒÉ' and float(line[2]) > 0 :
+                    if line[0] == hinban and line[3] == 'ç§»å‹•å€‰åº«' and float(line[2]) > 0 :
                         add_l = []
                         add_l.append(line[1])
                         add_l.append(line[2])
                         add_l.append(line[3])
                         M_zaiko.append(add_l)
-            elif syukka_souko == '“y‹Co‰×':
+            elif syukka_souko == 'åœŸæ°—å‡ºè·':
                 for line in self.genzaiko_l:   
-                    if line[0] == hinban and line[3] == '“y‹C‘qŒÉ' and float(line[2]) > 0  :
+                    if line[0] == hinban and line[3] == 'åœŸæ°—å€‰åº«' and float(line[2]) > 0  :
                         add_l = []
                         add_l.append(line[1])
                         add_l.append(line[2])
                         add_l.append(line[3])
                         M_zaiko.append(add_l)
-            elif syukka_souko == '–{Ğo‰×':
+            elif syukka_souko == 'æœ¬ç¤¾å‡ºè·':
                 for line in self.genzaiko_l:   
-                    if line[0] == hinban and line[3] == '–{Ğ‘qŒÉ' and float(line[2]) > 0  :
+                    if line[0] == hinban and line[3] == 'æœ¬ç¤¾å€‰åº«' and float(line[2]) > 0  :
                         add_l = []
                         add_l.append(line[1])
                         add_l.append(line[2])
                         add_l.append(line[3])
                         M_zaiko.append(add_l)
                         
-            #‚QŸŒ³Ø½Ä‚ğLOT‚Åƒ\[ƒg‚·‚éB
+            #ï¼’æ¬¡å…ƒï¾˜ï½½ï¾„ã‚’LOTã§ã‚½ãƒ¼ãƒˆã™ã‚‹ã€‚
             M_zaiko = sorted(M_zaiko)
             
-            #LOT‚Ìˆø‚«“–‚ÄAcans‚Í‚O‚É‚È‚é‚Ü‚ÅŒ¸‚Á‚Ä‚¢‚­
+            #LOTã®å¼•ãå½“ã¦ã€cansã¯ï¼ã«ãªã‚‹ã¾ã§æ¸›ã£ã¦ã„ã
             for i in range(len(M_zaiko)):
                 if float(cans) > float(M_zaiko[i][1]):
                     tmp = float(M_zaiko[i][1])
@@ -324,31 +324,31 @@ class Zaiko:
                     break
         
             if lot == {}:
-                recorder.out_log('EŒ©‚İ»•i(' + hinban + ')‚ÌLOT‚ªˆø‚«“–‚Ä‚Å‚«‚Ü‚¹‚ñB')
-                recorder.out_file('EŒ©‚İ»•i(' + hinban + ')‚ÌLOT‚ªˆø‚«“–‚Ä‚Å‚«‚Ü‚¹‚ñB')
+                recorder.out_log('ãƒ»è¦‹è¾¼ã¿è£½å“(' + hinban + ')ã®LOTãŒå¼•ãå½“ã¦ã§ãã¾ã›ã‚“ã€‚')
+                recorder.out_file('ãƒ»è¦‹è¾¼ã¿è£½å“(' + hinban + ')ã®LOTãŒå¼•ãå½“ã¦ã§ãã¾ã›ã‚“ã€‚')
             else:
                 total = 0
                 for v in lot.values():
                     total += int(v)
-                if total < int(syukka_cans):#Œ³‚Ìo‰×ŠÊ”‚Ætotal‚ğ”äŠr‚µ‚Ä‚¢‚é
-                    recorder.out_log('EŒ©‚İ»•i(' + hinban + ')‚ÌİŒÉ‚ª‘«‚è‚Ü‚¹‚ñB')
-                    recorder.out_file('EŒ©‚İ»•i(' + hinban + ')‚ÌİŒÉ‚ª‘«‚è‚Ü‚¹‚ñB')
+                if total < int(syukka_cans):#å…ƒã®å‡ºè·ç¼¶æ•°ã¨totalã‚’æ¯”è¼ƒã—ã¦ã„ã‚‹
+                    recorder.out_log('ãƒ»è¦‹è¾¼ã¿è£½å“(' + hinban + ')ã®åœ¨åº«ãŒè¶³ã‚Šã¾ã›ã‚“ã€‚')
+                    recorder.out_file('ãƒ»è¦‹è¾¼ã¿è£½å“(' + hinban + ')ã®åœ¨åº«ãŒè¶³ã‚Šã¾ã›ã‚“ã€‚')
                     lot['short'] =0
 
 
             return lot
 
 
-        #ª ‚±‚±‚Ü‚Åmethod“à‚ÌŠÖ”
+        #â†‘ ã“ã“ã¾ã§methodå†…ã®é–¢æ•°
 
 
 
         hinban = df_row['hinban']
         cans = df_row['cans']
-        yusyutu = df_row['—AoŒüæ']
-        orderNo = df_row['“¾ˆÓæ’•¶‚m‚n']
-        JNo = df_row['ó’‚m‚n']
-        syukka_souko = df_row['o‰×']
+        yusyutu = df_row['è¼¸å‡ºå‘å…ˆ']
+        orderNo = df_row['å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯']
+        JNo = df_row['å—æ³¨ï¼®ï¼¯']
+        syukka_souko = df_row['å‡ºè·']
         lot = {}
         if yusyutu == 'y':
             lot = pattern_y(hinban, cans, orderNo, syukka_souko, lot)
@@ -357,12 +357,12 @@ class Zaiko:
             pattern = get_pattern(hinban)
             if pattern == 'J':
                 lot = pattern_J(hinban,cans,JNo, syukka_souko, lot)
-                # JNo‚Íó’“ú‚ğ‹‚ß‚é‚½‚ß‚É•K—vBó’»•i‚Ì»‘¢“ú‚Íó’“ú‚æ‚è‚àŒã‚ª•K{‚È‚½‚ßB
+                # JNoã¯å—æ³¨æ—¥ã‚’æ±‚ã‚ã‚‹ãŸã‚ã«å¿…è¦ã€‚å—æ³¨è£½å“ã®è£½é€ æ—¥ã¯å—æ³¨æ—¥ã‚ˆã‚Šã‚‚å¾ŒãŒå¿…é ˆãªãŸã‚ã€‚
             elif pattern == 'M':
                 lot = pattern_M(hinban,cans, syukka_souko, lot)
             else:
-                recorder.out_log('Eó’Œ©‚İØ½Ä.csv‚É»•i‚ÌÃŞ°À‚ª‚ ‚è‚Ü‚¹‚ñ(' + hinban + ')')
-                recorder.out_file('Eó’Œ©‚İØ½Ä.csv‚É»•i‚ÌÃŞ°À‚ª‚ ‚è‚Ü‚¹‚ñ(' + hinban + ')' )
+                recorder.out_log('ãƒ»å—æ³¨è¦‹è¾¼ã¿ï¾˜ï½½ï¾„.csvã«è£½å“ã®ï¾ƒï¾ï½°ï¾€ãŒã‚ã‚Šã¾ã›ã‚“(' + hinban + ')')
+                recorder.out_file('ãƒ»å—æ³¨è¦‹è¾¼ã¿ï¾˜ï½½ï¾„.csvã«è£½å“ã®ï¾ƒï¾ï½°ï¾€ãŒã‚ã‚Šã¾ã›ã‚“(' + hinban + ')' )
                 
         return lot
 

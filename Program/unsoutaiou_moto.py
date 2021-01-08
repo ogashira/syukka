@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 import csv
 import pandas as pd
 
@@ -7,13 +7,13 @@ import pandas as pd
 
 class Unsoutaiou_toke :
     
-    # [–‹ÆŠº°ÄŞ,‘Šèæº°ÄŞ,‘Šèæ–¼Ì1,—X•Ö”Ô† ,—X•Ö”Ô†2,ZŠ1,Ä°Ù‹——£,Ä?
-    #  Ä°Ùs‚­s‚©‚È‚¢,VŠƒ‹——£,VŠƒ’†Œp‰ñ”,VŠƒs‚­s‚©‚È‚¢,¹²Ëİ,ŒÚ‹qw’è‰^‘—‰®
-    #  ,—AoŒü‚¯æ,“¾ˆÓæº°ÄŞ,”[“üæº°ÄŞ]
+    # [äº‹æ¥­æ‰€ï½ºï½°ï¾„ï¾,ç›¸æ‰‹å…ˆï½ºï½°ï¾„ï¾,ç›¸æ‰‹å…ˆåç§°1,éƒµä¾¿ç•ªå· ,éƒµä¾¿ç•ªå·2,ä½æ‰€1,ï¾„ï½°ï¾™è·é›¢,ï¾„?
+    #  ï¾„ï½°ï¾™è¡Œãè¡Œã‹ãªã„,æ–°æ½Ÿè·é›¢,æ–°æ½Ÿä¸­ç¶™å›æ•°,æ–°æ½Ÿè¡Œãè¡Œã‹ãªã„,ï½¹ï½²ï¾‹ï¾,é¡§å®¢æŒ‡å®šé‹é€å±‹
+    #  ,è¼¸å‡ºå‘ã‘å…ˆ,å¾—æ„å…ˆï½ºï½°ï¾„ï¾,ç´å…¥å…ˆï½ºï½°ï¾„ï¾]
     
     def __init__(self):
         # dl_df = pd.read_csv(
-        # r'\\192.168.1.247\‹¤—L\Œo—‰ÛÌ«ÙÀŞ\‰^’ÀŒvZŠÖŒW\unsoutaiou_toke.csv', 
+        # r'\\192.168.1.247\å…±æœ‰\çµŒç†èª²ï¾Œï½«ï¾™ï¾€ï¾\é‹è³ƒè¨ˆç®—é–¢ä¿‚\unsoutaiou_toke.csv', 
         # encoding='cp932'
         # )
         dl_df = pd.read_csv(
@@ -21,11 +21,11 @@ class Unsoutaiou_toke :
         )
 
 
-        self.unsoutaiou = dl_df.rename(columns={'‘Šèæ–¼Ì‚P':'”[“üæ–¼Ì‚P'})
+        self.unsoutaiou = dl_df.rename(columns={'ç›¸æ‰‹å…ˆåç§°ï¼‘':'ç´å…¥å…ˆåç§°ï¼‘'})
 
     def add_unsoutaiou(self, df):
-        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['”[“üæ–¼Ì‚P'])
-        add_unsoutaiou = pd.merge(df,dup_unsoutaiou, on='”[“üæ–¼Ì‚P'
+        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['ç´å…¥å…ˆåç§°ï¼‘'])
+        add_unsoutaiou = pd.merge(df,dup_unsoutaiou, on='ç´å…¥å…ˆåç§°ï¼‘'
                                   , how='left')
         return add_unsoutaiou
         
@@ -39,13 +39,13 @@ class Unsoutaiou_toke :
 class Unsoutaiou_honsya :
     
 
-    # [–‹ÆŠº°ÄŞ,‘Šèæº°ÄŞ,‘Šèæ–¼Ì1,—X•Ö”Ô† ,—X•Ö”Ô†2,ZŠ1,Ä°Ù‹—
-    #  Ä°Ùs‚­s‚©‚È‚¢,VŠƒ‹——£,VŠƒ’†Œp‰ñ”,VŠƒs‚­s‚©‚È‚¢,¹²Ëİ,ŒÚ‹qw’è‰^‘—‰®,
-    #  —AoŒü‚¯æ,“¾ˆÓæº°ÄŞ,”[“üæº°ÄŞ,‹v—¯•Ä‹——£] “y‹C‚É‚Í‹v—¯•Ä‹——£‚ª‚È‚¢B
+    # [äº‹æ¥­æ‰€ï½ºï½°ï¾„ï¾,ç›¸æ‰‹å…ˆï½ºï½°ï¾„ï¾,ç›¸æ‰‹å…ˆåç§°1,éƒµä¾¿ç•ªå· ,éƒµä¾¿ç•ªå·2,ä½æ‰€1,ï¾„ï½°ï¾™è·
+    #  ï¾„ï½°ï¾™è¡Œãè¡Œã‹ãªã„,æ–°æ½Ÿè·é›¢,æ–°æ½Ÿä¸­ç¶™å›æ•°,æ–°æ½Ÿè¡Œãè¡Œã‹ãªã„,ï½¹ï½²ï¾‹ï¾,é¡§å®¢æŒ‡å®šé‹é€å±‹,
+    #  è¼¸å‡ºå‘ã‘å…ˆ,å¾—æ„å…ˆï½ºï½°ï¾„ï¾,ç´å…¥å…ˆï½ºï½°ï¾„ï¾,ä¹…ç•™ç±³è·é›¢] åœŸæ°—ã«ã¯ä¹…ç•™ç±³è·é›¢ãŒãªã„ã€‚
 
     def __init__(self):
         # dl_df = pd.read_csv(
-        # r'\\192.168.1.247\‹¤—L\Œo—‰ÛÌ«ÙÀŞ\‰^’ÀŒvZŠÖŒW\unsoutaiou_honsya.csv', 
+        # r'\\192.168.1.247\å…±æœ‰\çµŒç†èª²ï¾Œï½«ï¾™ï¾€ï¾\é‹è³ƒè¨ˆç®—é–¢ä¿‚\unsoutaiou_honsya.csv', 
         # encoding='cp932'
         # )
 
@@ -53,10 +53,10 @@ class Unsoutaiou_honsya :
                 r'../master/untin/unsoutaiou_honsya.csv',encoding='cp932'
         )
 
-        self.unsoutaiou = dl_df.rename(columns={'‘Šèæ–¼Ì‚P':'”[“üæ–¼Ì‚P'})
+        self.unsoutaiou = dl_df.rename(columns={'ç›¸æ‰‹å…ˆåç§°ï¼‘':'ç´å…¥å…ˆåç§°ï¼‘'})
 
     def add_unsoutaiou(self, df):
-        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['”[“üæ–¼Ì‚P'])
-        add_unsoutaiou = pd.merge(df, dup_unsoutaiou, on='”[“üæ–¼Ì‚P'
+        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['ç´å…¥å…ˆåç§°ï¼‘'])
+        add_unsoutaiou = pd.merge(df, dup_unsoutaiou, on='ç´å…¥å…ˆåç§°ï¼‘'
                                   , how='left')
         return add_unsoutaiou

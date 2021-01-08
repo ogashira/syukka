@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import pandas as pd
 import openpyxl
@@ -22,78 +22,78 @@ class Gyoumu:
 
         def get_dupli(packingHinban):
 
-            '''—Ao‚Æ‘“à‚É‚í‚¯‚Ä‚©‚çdupliŒãconcat‚·‚é
-            y‚ª‚È‚¢ê‡‹ó‚Ìdataframe‚ªo—ˆA‚»‚ê‚ğconcat‚·‚é‚ÆA
-            dupli‚Ìboolean‚ªfloat‚É‚È‚Á‚Ä‚µ‚Ü‚¤BTrue¨1, False¨0
-            ‚»‚±‚ÅAconcat‚ÌŒã‚ÉAdupli‚ÌÃŞ°À‚ğbool‚ÉƒLƒƒƒXƒg‚·‚éB'''
+            '''è¼¸å‡ºã¨å›½å†…ã«ã‚ã‘ã¦ã‹ã‚‰dupliå¾Œconcatã™ã‚‹
+            yãŒãªã„å ´åˆç©ºã®dataframeãŒå‡ºæ¥ã€ãã‚Œã‚’concatã™ã‚‹ã¨ã€
+            dupliã®booleanãŒfloatã«ãªã£ã¦ã—ã¾ã†ã€‚Trueâ†’1, Falseâ†’0
+            ãã“ã§ã€concatã®å¾Œã«ã€dupliã®ï¾ƒï¾ï½°ï¾€ã‚’boolã«ã‚­ãƒ£ã‚¹ãƒˆã™ã‚‹ã€‚'''
         
             
             def moji_henkan(moji): 
                 moji = jaconv.z2h(moji,digit=True,ascii=True) 
                 moji = moji.replace(' ', '')
-                moji = moji.replace('@', '')
+                moji = moji.replace('ã€€', '')
                 moji = moji.upper()
                 return moji
 
 
 
 
-            PH_domestic = packingHinban.loc[packingHinban['—AoŒüæ'] \
+            PH_domestic = packingHinban.loc[packingHinban['è¼¸å‡ºå‘å…ˆ'] \
                 != 'y',:].copy()
-            PH_export = packingHinban.loc[packingHinban['—AoŒüæ'] \
+            PH_export = packingHinban.loc[packingHinban['è¼¸å‡ºå‘å…ˆ'] \
                 == 'y', :].copy()
             
-            #‘“à‚Ìdupli ”õl“à‚Ì•¶š‚ğ”¼Šp¬•¶š‹ó”’–³‚µ‚É‚·‚éB
-            PH_domestic.loc[:,'mojiHenkan'] = PH_domestic['”õl'].map(moji_henkan)
-            PH_domestic['dupli'] = PH_domestic.duplicated(subset=['”[“üæ–¼Ì‚P', 'mojiHenkan'],keep='first')
-            #—Ao‚Ìdupli
-            PH_export['dupli'] = PH_export.duplicated(subset=['“¾ˆÓæ’•¶‚m‚n'] \
+            #å›½å†…ã®dupli å‚™è€ƒå†…ã®æ–‡å­—ã‚’åŠè§’å°æ–‡å­—ç©ºç™½ç„¡ã—ã«ã™ã‚‹ã€‚
+            PH_domestic.loc[:,'mojiHenkan'] = PH_domestic['å‚™è€ƒ'].map(moji_henkan)
+            PH_domestic['dupli'] = PH_domestic.duplicated(subset=['ç´å…¥å…ˆåç§°ï¼‘', 'mojiHenkan'],keep='first')
+            #è¼¸å‡ºã®dupli
+            PH_export['dupli'] = PH_export.duplicated(subset=['å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯'] \
                                                       ,keep='first')
             
-            #concatŒãindex‚ğreset
+            #concatå¾Œindexã‚’reset
             PH_con = pd.concat([PH_domestic, PH_export], sort=True)
             PH_con.loc[:,'dupli'] = PH_con.loc[:, 'dupli'].map(lambda x: bool(x))
 
-            PH_con = PH_con.sort_values(['“¾ˆÓæƒR[ƒh', 'mojiHenkan'])
+            PH_con = PH_con.sort_values(['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰', 'mojiHenkan'])
 
             PH_con.reset_index(inplace=True, drop=True)
             
             return PH_con
 
 
-        packingHinban = P_H.sort_values(['“¾ˆÓæƒR[ƒh', '”õl'])
+        packingHinban = P_H.sort_values(['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰', 'å‚™è€ƒ'])
 
 
-        #packingHinban‚Édupli‚ğ’Ç‰Á(dupli‚Íd•ª‚¯‚Ì–ÚˆÀAd•¡‚Ì–Úˆó)
+        #packingHinbanã«dupliã‚’è¿½åŠ (dupliã¯ä»•åˆ†ã‘ã®ç›®å®‰ã€é‡è¤‡ã®ç›®å°)
         packingHinban = get_dupli(packingHinban)
 
 
         '''
-        dataframe‚Ìs‚ğ‚Ps‚¸‚Â•ª‰ğ‚µ‚ÄAlist‚É“ü‚ê‚éB
-        •ª‰ğ‚µ‚½dataframe‚Ìindex‚Í‚»‚ê‚¼‚êˆá‚¤‚±‚Æ‚É’ˆÓ‚·‚éB
-        index ‚P‚Â–Ú‚Í0A‚Q‚Â–Ú‚Í1A‚R‚Â–Ú‚Í‚Q.....‚Æ‚È‚Á‚Ä‚¢‚éB
+        dataframeã®è¡Œã‚’ï¼‘è¡Œãšã¤åˆ†è§£ã—ã¦ã€listã«å…¥ã‚Œã‚‹ã€‚
+        åˆ†è§£ã—ãŸdataframeã®indexã¯ãã‚Œãã‚Œé•ã†ã“ã¨ã«æ³¨æ„ã™ã‚‹ã€‚
+        index ï¼‘ã¤ç›®ã¯0ã€ï¼’ã¤ç›®ã¯1ã€ï¼“ã¤ç›®ã¯ï¼’.....ã¨ãªã£ã¦ã„ã‚‹ã€‚
         '''
         df_list = []
         for i in range(len(packingHinban)):
-            #copy‚µ‚½‚à‚Ì‚ğappend‚µ‚È‚¢‚ÆŒãX˜A½‘ã“ü‚Æ‚È‚Á‚Äwarning‚ª‚Å‚éB¨¦1
-            # ¦1 ‚ÅAdf_list2[i]‚ğcopy‚µ‚Ä˜A½‘ã“ü‚ğ”ğ‚¯‚é‚±‚Æ‚à‚Å‚«‚é
+            #copyã—ãŸã‚‚ã®ã‚’appendã—ãªã„ã¨å¾Œã€…é€£é–ä»£å…¥ã¨ãªã£ã¦warningãŒã§ã‚‹ã€‚â†’â€»1
+            # â€»1 ã§ã€df_list2[i]ã‚’copyã—ã¦é€£é–ä»£å…¥ã‚’é¿ã‘ã‚‹ã“ã¨ã‚‚ã§ãã‚‹
             df = packingHinban.iloc[i : i + 1].copy()
             df_list.append(df)
 
 
         '''
-        duplicated‚Ìdf‚Ìkeep = 'first'‚É‚µ‚½‚Ì‚ÅAÅ‰‚Ìdupli‚Í•K‚¸false‚É‚È‚éB
-        dupli‚ªfalse‚¾‚Á‚½‚ç‰º‚Ìj‚Ìroop‚É‚Í‚¢‚éBroop‚Å‚ÍA‰º‚Ìdupli‚ªtrue‚È‚ç‚ÎA
-        df‚ğconcat‚µ‘±‚¯‚éB
-        false‚ªo‚½“_‚Åroop‚ğ”²‚¯‚Äi‚Ìroop‚ğ‘±‚¯‚éB
-        i‚Ìroop‚ÍAdupli‚ªtrue‚Ì‚Í‰½‚à‚µ‚È‚¢B
+        duplicatedã®dfã®keep = 'first'ã«ã—ãŸã®ã§ã€æœ€åˆã®dupliã¯å¿…ãšfalseã«ãªã‚‹ã€‚
+        dupliãŒfalseã ã£ãŸã‚‰ä¸‹ã®jã®roopã«ã¯ã„ã‚‹ã€‚roopã§ã¯ã€ä¸‹ã®dupliãŒtrueãªã‚‰ã°ã€
+        dfã‚’concatã—ç¶šã‘ã‚‹ã€‚
+        falseãŒå‡ºãŸæ™‚ç‚¹ã§roopã‚’æŠœã‘ã¦iã®roopã‚’ç¶šã‘ã‚‹ã€‚
+        iã®roopã¯ã€dupliãŒtrueã®æ™‚ã¯ä½•ã‚‚ã—ãªã„ã€‚
         '''
         df_list2 = df_list.copy()
         if len(df_list2) == 1:
-            df_list2[0].loc[:,'‘d—Ê'] = df_list2[0].loc[:,'weight'].sum()
+            df_list2[0].loc[:,'ç·é‡é‡'] = df_list2[0].loc[:,'weight'].sum()
         else:        
             for i in range(len(df_list2)):
-                #index‚ª‚»‚ê‚¼‚êˆá‚¤‚Ì‚ÅAloc[i, 'supli'] ‚É‚·‚é
+                #indexãŒãã‚Œãã‚Œé•ã†ã®ã§ã€loc[i, 'supli'] ã«ã™ã‚‹
                 if df_list2[i].loc[i, 'dupli'] == False:
                     j = i + 1
                     for j in range(j,len(df_list2)):
@@ -102,11 +102,11 @@ class Gyoumu:
                             df_list2[i].loc[:,'dupli'] = 'concat'
                         else:
                             break
-                    # ¦1 ‚±‚±‚Åwarning‚ª‚Å‚é
-                    df_list2[i].loc[:,'‘d—Ê'] = df_list2[i].loc[:,'weight'].sum()
+                    # â€»1 ã“ã“ã§warningãŒã§ã‚‹
+                    df_list2[i].loc[:,'ç·é‡é‡'] = df_list2[i].loc[:,'weight'].sum()
 
 
-        #dupli‚ªFalse‚Ü‚½‚Íconcat‚Ì‚à‚Ì‚¾‚¯‚ğlist3‚É“ü‚ê‚éB
+        #dupliãŒFalseã¾ãŸã¯concatã®ã‚‚ã®ã ã‘ã‚’list3ã«å…¥ã‚Œã‚‹ã€‚
         df_list3 = []
         
         for i in range(len(df_list2)):
@@ -127,16 +127,16 @@ class Gyoumu:
 
 
 
-        result = result[['ˆË—Šæ','cans','‘d—Ê','“¾ˆÓæƒR[ƒh','”[“üæƒR[ƒh',
-                         '”[“üæ–¼Ì‚P', '•i–¼','“¾ˆÓæ’•¶‚m‚n','”õl','o‰×',
-                         'o‰×—\’è‘qŒÉ','add']]
+        result = result[['ä¾é ¼å…ˆ','cans','ç·é‡é‡','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰','ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰',
+                         'ç´å…¥å…ˆåç§°ï¼‘', 'å“å','å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯','å‚™è€ƒ','å‡ºè·',
+                         'å‡ºè·äºˆå®šå€‰åº«','add']]
 
 
 
 
         recorder = Recorder(self.myfolder)
         
-        txt = '‹Æ–±o‰×€”õ—pÃŞ°Ài{}j'.format(factory)
+        txt = 'æ¥­å‹™å‡ºè·æº–å‚™ç”¨ï¾ƒï¾ï½°ï¾€ï¼ˆ{}ï¼‰'.format(factory)
         recorder.out_log('')
         recorder.out_file('')
         recorder.out_log(txt, '\n')
@@ -144,8 +144,8 @@ class Gyoumu:
         recorder.out_file(txt, '\n')
         recorder.out_file(result, '\n')
 
-        #packingHinban‚ğexcelŒ`®‚ÅfilePath‚É•Û‘¶‚·‚éB
-        filePath = '{}/{}‹Æ–±_packing.xlsx'.format(myfolder, factory)
+        #packingHinbanã‚’excelå½¢å¼ã§filePathã«ä¿å­˜ã™ã‚‹ã€‚
+        filePath = '{}/{}æ¥­å‹™_packing.xlsx'.format(myfolder, factory)
         result.to_excel(filePath, index = False)
         #recorder.out_csv(result, filePath)
 
@@ -163,7 +163,7 @@ class Gyoumu:
         max_row = ws.max_row
 
         def get_east_asian_width_count(text):
-            # ‘SŠp‰p”‚Í'F',‘SŠp‚©‚È‚Í'W', “Áê•¶š‚Í'A'‚ª•Ô‚éB 
+            # å…¨è§’è‹±æ•°ã¯'F',å…¨è§’ã‹ãªã¯'W', ç‰¹æ®Šæ–‡å­—ã¯'A'ãŒè¿”ã‚‹ã€‚ 
             count = 0
             for c in text:
                 if unicodedata.east_asian_width(c) in 'FWA':
@@ -183,12 +183,12 @@ class Gyoumu:
                     border = Border(top = Side(style='medium', color='000000'))
                     ws.cell(i, j).border = border
                 
-                # ‚Psíœ‚µ‚½•ª‚¾‚¯-1‚·‚é
+                # ï¼‘è¡Œå‰Šé™¤ã—ãŸåˆ†ã ã‘-1ã™ã‚‹
                 i -= 1 
 
             i += 1
 
-        # column‚Ì•¶š”‚©‚ç—ñ‚ğ’²®‚·‚é
+        # columnã®æ–‡å­—æ•°ã‹ã‚‰åˆ—ã‚’èª¿æ•´ã™ã‚‹
         for col in ws.columns:
             max_length = 0
             column = col[0].column
@@ -211,7 +211,7 @@ class Gyoumu:
         for i in range(max_row + 1):
             ws.row_dimensions[i].height = 20
 
-        # ˆóüİ’è
+        # å°åˆ·è¨­å®š
         ws.page_setup.orientation = ws.ORIENTATION_LANDSCAPE
         ws.page_setup.fitToWidth = 1
         ws.page_setup.fitToHeight = 0

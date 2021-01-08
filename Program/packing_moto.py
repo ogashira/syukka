@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import jaconv
 import csv
@@ -16,49 +16,49 @@ from toyo_untin import *
 class Packing :
 	
     def __init__(self):
-        hinban_file = open(r'//192.168.1.247/‹¤—L/‹Zp‰ÛÌ«ÙÀŞ/200. effit_data/'
-                           r'Ï½À/hinban.csv', encoding='cp932')
+        hinban_file = open(r'//192.168.1.247/å…±æœ‰/æŠ€è¡“èª²ï¾Œï½«ï¾™ï¾€ï¾/200. effit_data/'
+                           r'ï¾ï½½ï¾€/hinban.csv', encoding='cp932')
         # hinban_file = open(r'../master/hinban.csv', encoding='cp932')
         file_reader = csv.reader(hinban_file)
         header = next(file_reader)
         hinban = list(file_reader)
         hinban_file.close()
         
-        #self.tanjuu = [•i”ÔA•i–¼A’Pd]
+        #self.tanjuu = [å“ç•ªã€å“åã€å˜é‡]
         self.tanjuu = []
         for line in hinban:
         	lines = [ line[0], line[7], line[41] ]
         	self.tanjuu.append(lines)
         
-        #‰^’ÀŒvZ¼°Ä_‰ü‚ÌŒ³¼°Ä
-        self.untin_moto = pd.read_csv(r'../master/effitA/‰^’ÀŒvZ¼°Ä_‰ü.csv',
+        #é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹ã®å…ƒï½¼ï½°ï¾„
+        self.untin_moto = pd.read_csv(r'../master/effitA/é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹.csv',
                                       encoding='cp932',skiprows=1)
         if self.untin_moto.shape[0] == 0 :
-            print('‰^’ÀŒvZ¼°Ä_‰ü.csv ‚ÉÃŞ°À‚ª‚ ‚è‚Ü‚¹‚ñBI—¹‚µ‚Ü‚·B')
+            print('é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹.csv ã«ï¾ƒï¾ï½°ï¾€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚çµ‚äº†ã—ã¾ã™ã€‚')
             sys.exit()
 
-        self.untin_moto = self.untin_moto.sort_values(by=['“¾ˆÓæƒR[ƒh', 
-                                                          '”[“üæ–¼Ì‚P'])
+        self.untin_moto = self.untin_moto.sort_values(by=['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰', 
+                                                          'ç´å…¥å…ˆåç§°ï¼‘'])
         
         
-        #±ÄÛİÍß°ÙŠÊg—p‚Ì•i”ÔiŠÊ‚Ìd‚³3kgj
+        #ï½±ï¾„ï¾›ï¾ï¾ï¾Ÿï½°ï¾™ç¼¶ä½¿ç”¨ã®å“ç•ªï¼ˆç¼¶ã®é‡ã•3kgï¼‰
         AT_file = open(r'../master/selfMade/AT_un_pl.csv', encoding='cp932')
         file_reader = csv.reader(AT_file)
 
         self.AT_un_pl = []
-        for row in file_reader: #ˆêŸŒ³Ø½Ä‚É‚·‚é‚½‚ß
+        for row in file_reader: #ä¸€æ¬¡å…ƒï¾˜ï½½ï¾„ã«ã™ã‚‹ãŸã‚
             self.AT_un_pl.append(''.join(row))
 
         AT_file.close()
             
-        #•¶š—ñ’†‚Ì-1-‚ğ-‚ÉA•¶š—ñÅŒã‚Ì-1‚ğíœ‚·‚éB
+        #æ–‡å­—åˆ—ä¸­ã®-1-ã‚’-ã«ã€æ–‡å­—åˆ—æœ€å¾Œã®-1ã‚’å‰Šé™¤ã™ã‚‹ã€‚
         def change_hinban(hinban):
             chg_hinban = re.sub('-1-','-',hinban)
             chg_hinban = re.sub('-1$','',chg_hinban)
             return chg_hinban
             
         
-        #’PˆÊ‚ªCN‚Ì•i”Ô‚Ì-EX-THI‚ğ-EX‚É‚·‚é
+        #å˜ä½ãŒCNã®å“ç•ªã®-EX-THIã‚’-EXã«ã™ã‚‹
         def change_hinban_mukesaki(hinban):
             chg_hinban = re.sub('-EX-.*$','-EX', hinban)
             return chg_hinban
@@ -67,7 +67,7 @@ class Packing :
         # In[43]:
         
         
-        #Ø½Ätanjuu‚ğg‚Á‚ÄA•i”Ô‚©‚ç“ü‚ê–Ú‚ğ‹‚ß‚é
+        #ï¾˜ï½½ï¾„tanjuuã‚’ä½¿ã£ã¦ã€å“ç•ªã‹ã‚‰å…¥ã‚Œç›®ã‚’æ±‚ã‚ã‚‹
         def get_ireme(hinban):
             ireme = 0
             for line in self.tanjuu:
@@ -77,11 +77,11 @@ class Packing :
             return ireme
         
         
-        #•i–¼‚ğ¬•¶šA”¼Šp‚É‚µ‚Ä‚©‚ç(15KG)‚Ì@15‚ğæ‚èo‚µ @'ireme2'‚Æ‚·‚éB
+        #å“åã‚’å°æ–‡å­—ã€åŠè§’ã«ã—ã¦ã‹ã‚‰(15KG)ã®ã€€15ã‚’å–ã‚Šå‡ºã— ã€€'ireme2'ã¨ã™ã‚‹ã€‚
         def get_ireme2(hinmei):
-            # ‘å•¶š‚ğ¬•¶š‚É•ÏŠ·
+            # å¤§æ–‡å­—ã‚’å°æ–‡å­—ã«å¤‰æ›
             hinmei = hinmei.lower() 
-            #‘SŠp‚ğ”¼Šp‚É‚·‚é(”š‚à‹L†‚à)
+            #å…¨è§’ã‚’åŠè§’ã«ã™ã‚‹(æ•°å­—ã‚‚è¨˜å·ã‚‚)
             hinmei = jaconv.z2h(hinmei,digit=True,ascii=True) 
             
             result = re.search(r'(\d+\.?\d*kg)', hinmei) 
@@ -97,9 +97,9 @@ class Packing :
         
 
         
-        #un_AT‚Í3kg,200g(¶Ş×½•r)‚Í0.3kgA1kgˆÈ‰º‚Í0.2kg,
-        #6kgˆÈ‰º‚Í0.5kg, -R-EX‚Í1kg, •i”Ô’†‚É-EX-,ÅŒã‚É-EX ‚Í‚Qkg
-        #‚»‚êˆÈŠO‚Í1kg
+        #un_ATã¯3kg,200g(ï½¶ï¾ï¾—ï½½ç“¶)ã¯0.3kgã€1kgä»¥ä¸‹ã¯0.2kg,
+        #6kgä»¥ä¸‹ã¯0.5kg, -R-EXã¯1kg, å“ç•ªä¸­ã«-EX-,æœ€å¾Œã«-EX ã¯ï¼’kg
+        #ãã‚Œä»¥å¤–ã¯1kg
         def get_can_weight (row):
             ireme = row['ireme']
             hinban = row['hinban']
@@ -120,59 +120,59 @@ class Packing :
             return can_weight
 
         
-        #‘åãŒÚ‹q‚Ííœ‚·‚é
-        moto_h = self.untin_moto.loc[self.untin_moto['“¾ˆÓæƒR[ƒh'] 
+        #å¤§é˜ªé¡§å®¢ã¯å‰Šé™¤ã™ã‚‹
+        moto_h = self.untin_moto.loc[self.untin_moto['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰'] 
                 <= 'T6000',:] 
         if moto_h.shape[0] == 0 :
-            print('–{ĞE“y‹Co‰×‚ª‚ ‚è‚Ü‚¹‚ñBI—¹‚µ‚Ü‚·B')
+            print('æœ¬ç¤¾ãƒ»åœŸæ°—å‡ºè·ãŒã‚ã‚Šã¾ã›ã‚“ã€‚çµ‚äº†ã—ã¾ã™ã€‚')
             sys.exit()
 
 
         moto_honsya = moto_h.copy()
-        #’PˆÊKG‚Ìê‡A-1- ¨- , -1(ÅŒã)¨Á‚·
-        moto_honsya.loc[moto_honsya['ó’’PˆÊ']=='KG','hinban'] = \
-                moto_honsya['•i”Ô'].map(change_hinban)
-        moto_honsya.loc[moto_honsya['ó’’PˆÊ']=='CN','hinban'] = \
-                moto_honsya['•i”Ô'].map(change_hinban_mukesaki)
+        #å˜ä½KGã®å ´åˆã€-1- â†’- , -1(æœ€å¾Œ)â†’æ¶ˆã™
+        moto_honsya.loc[moto_honsya['å—æ³¨å˜ä½']=='KG','hinban'] = \
+                moto_honsya['å“ç•ª'].map(change_hinban)
+        moto_honsya.loc[moto_honsya['å—æ³¨å˜ä½']=='CN','hinban'] = \
+                moto_honsya['å“ç•ª'].map(change_hinban_mukesaki)
         
         moto_honsya.loc[:,'ireme']= moto_honsya['hinban'].map(get_ireme)
         
-        #999998‚È‚Ç“ü‚ê–Ú‚ª0‚Ìê‡‚ÍA•i–¼‚©‚ç“ü‚ê–Ú‚ğ‹‚ß‚é
+        #999998ãªã©å…¥ã‚Œç›®ãŒ0ã®å ´åˆã¯ã€å“åã‹ã‚‰å…¥ã‚Œç›®ã‚’æ±‚ã‚ã‚‹
         moto_honsya.loc[moto_honsya['ireme']==0, 'ireme'] \
-            = moto_honsya['•i–¼'].map(get_ireme2)
+            = moto_honsya['å“å'].map(get_ireme2)
 
 
 
-        moto_honsya.loc[moto_honsya['ó’’PˆÊ']== 'KG','cans'] \
-                = moto_honsya['ó’”—Ê']/ moto_honsya['ireme']
-        moto_honsya.loc[moto_honsya['ó’’PˆÊ']== 'CN','cans'] \
-                = moto_honsya['ó’”—Ê']
-        #apply‚Ådatafram‚²‚ÆŠÖ”‚É“n‚·BŠÖ”‚Ì’†‚Å•¡”—ñ‚ğ•]‰¿‚·‚éB
+        moto_honsya.loc[moto_honsya['å—æ³¨å˜ä½']== 'KG','cans'] \
+                = moto_honsya['å—æ³¨æ•°é‡']/ moto_honsya['ireme']
+        moto_honsya.loc[moto_honsya['å—æ³¨å˜ä½']== 'CN','cans'] \
+                = moto_honsya['å—æ³¨æ•°é‡']
+        #applyã§dataframã”ã¨é–¢æ•°ã«æ¸¡ã™ã€‚é–¢æ•°ã®ä¸­ã§è¤‡æ•°åˆ—ã‚’è©•ä¾¡ã™ã‚‹ã€‚
         moto_honsya['can_weight'] = moto_honsya.apply(get_can_weight,axis=1)
         
-        #d—Ê‚ğ‹‚ß‚é
+        #é‡é‡ã‚’æ±‚ã‚ã‚‹
         moto_honsya['weight'] = (moto_honsya['ireme'] \
                 + moto_honsya['can_weight']) * moto_honsya['cans']
         
-        #”õl‚©‚çA”[Šú8/3@‚Ì•”•ª‚¾‚¯‚ğ”²‚«o‚·
-        #moto_honsya['”[Šú'] = moto_honsya.loc[:,'”õl'].str.extract \
+        #å‚™è€ƒã‹ã‚‰ã€ç´æœŸ8/3ã€€ã®éƒ¨åˆ†ã ã‘ã‚’æŠœãå‡ºã™
+        #moto_honsya['ç´æœŸ'] = moto_honsya.loc[:,'å‚™è€ƒ'].str.extract \
                 #(r'([1-9][0-2]?/[1-9][0-9]?)')
 
-        #”õl‚©‚ç“y‹Co‰×A–{Ğo‰×A‘åã’¼‘—@‚ğ”²‚«o‚·
-        moto_honsya['o‰×'] = moto_honsya.loc[:,'”õl'].str.extract \
-                (r'(“y‹Co‰×|–{Ğo‰×|‘åã’¼‘—|‰c‹ÆQ)')
+        #å‚™è€ƒã‹ã‚‰åœŸæ°—å‡ºè·ã€æœ¬ç¤¾å‡ºè·ã€å¤§é˜ªç›´é€ã€€ã‚’æŠœãå‡ºã™
+        moto_honsya['å‡ºè·'] = moto_honsya.loc[:,'å‚™è€ƒ'].str.extract \
+                (r'(åœŸæ°—å‡ºè·|æœ¬ç¤¾å‡ºè·|å¤§é˜ªç›´é€|å–¶æ¥­æŒå‚)')
 
-        #‘åã’¼‘—A‰c‹ÆQ‚Ìê‡‚Í‰^’ÀŒvZ‚µ‚È‚¢‚æ‚¤‚Éu”[“üæ–¼Ì‚Pv‚ğ
-        #unoCalcv‚É•ÏX‚µ‚Ä‚¨‚­
-        moto_honsya.loc[(moto_honsya['o‰×']=='‘åã’¼‘—')|(moto_honsya['o‰×']
-            =='‰c‹ÆQ'),'”[“üæ–¼Ì‚P'] = 'noCalc'
+        #å¤§é˜ªç›´é€ã€å–¶æ¥­æŒå‚ã®å ´åˆã¯é‹è³ƒè¨ˆç®—ã—ãªã„ã‚ˆã†ã«ã€Œç´å…¥å…ˆåç§°ï¼‘ã€ã‚’
+        #ã€ŒnoCalcã€ã«å¤‰æ›´ã—ã¦ãŠã
+        moto_honsya.loc[(moto_honsya['å‡ºè·']=='å¤§é˜ªç›´é€')|(moto_honsya['å‡ºè·']
+            =='å–¶æ¥­æŒå‚'),'ç´å…¥å…ˆåç§°ï¼‘'] = 'noCalc'
         
-        moto_honsya= moto_honsya.rename(columns= {'”õl.1':'ó’‰^’ÀnŠÊ'})
+        moto_honsya= moto_honsya.rename(columns= {'å‚™è€ƒ.1':'å—æ³¨æ™‚é‹è³ƒnç¼¶'})
 
-        # o‰×—\’è‘qŒÉ‚Ì—ñ‚ğ[]‚É‚·‚éB‚±‚Ì‚â‚è•û‚Å‚È‚¢‚Æ‚¤‚Ü‚­‚¢‚©‚È‚©‚Á‚½B
-        moto_honsya['o‰×—\’è‘qŒÉ'] = moto_honsya.apply(lambda x: [], axis=1) 
+        # å‡ºè·äºˆå®šå€‰åº«ã®åˆ—ã‚’[]ã«ã™ã‚‹ã€‚ã“ã®ã‚„ã‚Šæ–¹ã§ãªã„ã¨ã†ã¾ãã„ã‹ãªã‹ã£ãŸã€‚
+        moto_honsya['å‡ºè·äºˆå®šå€‰åº«'] = moto_honsya.apply(lambda x: [], axis=1) 
         
-        #“Œ—m‰^’À‚ğŒvZ’Ç‰Á‚·‚é
+        #æ±æ´‹é‹è³ƒã‚’è¨ˆç®—è¿½åŠ ã™ã‚‹
         toyo_untin = Toyo_untin(moto_honsya)
         moto_honsya = toyo_untin.get_toyoUntin()
         del toyo_untin
@@ -180,21 +180,21 @@ class Packing :
         
 
         self.moto_honsya = moto_honsya.copy()
-        #moto_honsya‚Í‘åãŒÚ‹q‚ğœ‚¢‚½–{ĞA“y‹Co‰×•ª‚ÌŒ³ƒf[ƒ^
+        #moto_honsyaã¯å¤§é˜ªé¡§å®¢ã‚’é™¤ã„ãŸæœ¬ç¤¾ã€åœŸæ°—å‡ºè·åˆ†ã®å…ƒãƒ‡ãƒ¼ã‚¿
 
 
 
 
     def get_honsya_moto(self):
-        honsya_moto = self.moto_honsya[self.moto_honsya['”õl'].str.match \
-                (r'^.*–{Ğo‰×.*$',na=True)]
+        honsya_moto = self.moto_honsya[self.moto_honsya['å‚™è€ƒ'].str.match \
+                (r'^.*æœ¬ç¤¾å‡ºè·.*$',na=True)]
         return honsya_moto
 
     def get_toke_moto(self):
-        toke_moto = self.moto_honsya[self.moto_honsya['”õl'].str.match\
-                (r'^(?!.*–{Ğo‰×).*$', na=True)]
-        toke_moto = toke_moto.fillna({'o‰×':''})
-        toke_moto['o‰×'] = toke_moto['o‰×'].map(lambda x : '“y‹Co‰×' 
+        toke_moto = self.moto_honsya[self.moto_honsya['å‚™è€ƒ'].str.match\
+                (r'^(?!.*æœ¬ç¤¾å‡ºè·).*$', na=True)]
+        toke_moto = toke_moto.fillna({'å‡ºè·':''})
+        toke_moto['å‡ºè·'] = toke_moto['å‡ºè·'].map(lambda x : 'åœŸæ°—å‡ºè·' 
                                                       if x == ''  else x ) 
         return toke_moto
 
@@ -205,16 +205,16 @@ class Packing :
         if toke_moto.shape[0] == 0: 
             pass
         else:
-            tokeMoto = toke_moto.groupby('”[“üæ–¼Ì‚P',as_index=False) \
+            tokeMoto = toke_moto.groupby('ç´å…¥å…ˆåç§°ï¼‘',as_index=False) \
                     [['weight','cans']].sum()
 
-            #toke_moto‚ª‚Á‚Ä‚¢‚éu“¾ˆÓæƒR[ƒhvAu”[“üæƒR[ƒhv‚ğ‚­‚Á‚Â‚¯‚é
-            toke_moto_code = toke_moto[['”[“üæ–¼Ì‚P','“¾ˆÓæƒR[ƒh',
-                                        '”[“üæƒR[ƒh']]
-            #ƒ_ƒu‚è‚ğ–³‚­‚µ‚Ä‚¨‚­•K{
-            toke_moto_code = toke_moto_code.drop_duplicates(['”[“üæ–¼Ì‚P']) 
+            #toke_motoãŒæŒã£ã¦ã„ã‚‹ã€Œå¾—æ„å…ˆã‚³ãƒ¼ãƒ‰ã€ã€ã€Œç´å…¥å…ˆã‚³ãƒ¼ãƒ‰ã€ã‚’ãã£ã¤ã‘ã‚‹
+            toke_moto_code = toke_moto[['ç´å…¥å…ˆåç§°ï¼‘','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰',
+                                        'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰']]
+            #ãƒ€ãƒ–ã‚Šã‚’ç„¡ãã—ã¦ãŠãå¿…é ˆ
+            toke_moto_code = toke_moto_code.drop_duplicates(['ç´å…¥å…ˆåç§°ï¼‘']) 
             tokeMoto = pd.merge(tokeMoto, toke_moto_code, how='left', 
-                                on='”[“üæ–¼Ì‚P')
+                                on='ç´å…¥å…ˆåç§°ï¼‘')
             
             unsoutaiou_toke = Unsoutaiou_toke()
             tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto)
@@ -224,9 +224,9 @@ class Packing :
             del unsoutaiou_toke
 
             untin_toke = Untin_toke()
-            #apply‚Ådf‚²‚Æw’è‚·‚ê‚ÎAŠes‚²‚ÆŠÖ”‚É“n‚¹‚éB•¡”‚Ì–ß‚è’l‚ÍA
-            #Series‚É‚µ‚Ä•Ô‚·BŠÖ”‚ÍUnsou_toke¸×½‚Ìget_untinÒ¿¯ÄŞB
-            tokeMoto_add_unsoutaiou[['Ä°Ù','VŠƒ','¹²Ëİ','ÄÅĞ·Šz']] =  \
+            #applyã§dfã”ã¨æŒ‡å®šã™ã‚Œã°ã€å„è¡Œã”ã¨é–¢æ•°ã«æ¸¡ã›ã‚‹ã€‚è¤‡æ•°ã®æˆ»ã‚Šå€¤ã¯ã€
+            #Seriesã«ã—ã¦è¿”ã™ã€‚é–¢æ•°ã¯Unsou_tokeï½¸ï¾—ï½½ã®get_untinï¾’ï½¿ï½¯ï¾„ï¾ã€‚
+            tokeMoto_add_unsoutaiou[['ï¾„ï½°ï¾™','æ–°æ½Ÿ','ï½¹ï½²ï¾‹ï¾','ï¾„ï¾…ï¾å·®é¡']] =  \
                     tokeMoto_add_unsoutaiou.apply(untin_toke.get_untin, axis=1)
 
             del untin_toke
@@ -241,16 +241,16 @@ class Packing :
         if honsya_moto.shape[0] == 0:
             pass
         else:
-            honsyaMoto = honsya_moto.groupby('”[“üæ–¼Ì‚P',as_index=False) \
+            honsyaMoto = honsya_moto.groupby('ç´å…¥å…ˆåç§°ï¼‘',as_index=False) \
                     [['weight','cans']].sum()
             
-            #honsya_moto‚ª‚Á‚Ä‚¢‚éu“¾ˆÓæƒR[ƒhvAu”[“üæƒR[ƒhv‚ğ‚­‚Á‚Â‚¯‚é
-            honsya_moto_code = honsya_moto[['”[“üæ–¼Ì‚P','“¾ˆÓæƒR[ƒh',
-                                            '”[“üæƒR[ƒh']]
-            #ƒ_ƒu‚è‚ğ–³‚­‚µ‚Ä‚¨‚­•K{
-            honsya_moto_code = honsya_moto_code.drop_duplicates(['”[“üæ–¼Ì‚P']) 
+            #honsya_motoãŒæŒã£ã¦ã„ã‚‹ã€Œå¾—æ„å…ˆã‚³ãƒ¼ãƒ‰ã€ã€ã€Œç´å…¥å…ˆã‚³ãƒ¼ãƒ‰ã€ã‚’ãã£ã¤ã‘ã‚‹
+            honsya_moto_code = honsya_moto[['ç´å…¥å…ˆåç§°ï¼‘','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰',
+                                            'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰']]
+            #ãƒ€ãƒ–ã‚Šã‚’ç„¡ãã—ã¦ãŠãå¿…é ˆ
+            honsya_moto_code = honsya_moto_code.drop_duplicates(['ç´å…¥å…ˆåç§°ï¼‘']) 
             honsyaMoto = pd.merge(honsyaMoto, honsya_moto_code, how='left', 
-                                  on='”[“üæ–¼Ì‚P')
+                                  on='ç´å…¥å…ˆåç§°ï¼‘')
             
             unsoutaiou_honsya = Unsoutaiou_honsya()
             honsyaMoto_add_unsoutaiou = unsoutaiou_honsya.add_unsoutaiou(honsyaMoto)
@@ -258,9 +258,9 @@ class Packing :
             del unsoutaiou_honsya
 
             untin_honsya = Untin_honsya()
-            #apply‚Ådf‚²‚Æw’è‚·‚ê‚ÎAŠes‚²‚ÆŠÖ”‚É“n‚¹‚éB•¡”‚Ì–ß‚è’l‚ÍA
-            #Series‚É‚µ‚Ä•Ô‚·BŠÖ”‚ÍUnsou_toke¸×½‚Ìget_untinÒ¿¯ÄŞB
-            honsyaMoto_add_unsoutaiou[['Ä°Ù','VŠƒ','¹²Ëİ','‹v—¯•Ä','ÄÅĞ·Šz']] \
+            #applyã§dfã”ã¨æŒ‡å®šã™ã‚Œã°ã€å„è¡Œã”ã¨é–¢æ•°ã«æ¸¡ã›ã‚‹ã€‚è¤‡æ•°ã®æˆ»ã‚Šå€¤ã¯ã€
+            #Seriesã«ã—ã¦è¿”ã™ã€‚é–¢æ•°ã¯Unsou_tokeï½¸ï¾—ï½½ã®get_untinï¾’ï½¿ï½¯ï¾„ï¾ã€‚
+            honsyaMoto_add_unsoutaiou[['ï¾„ï½°ï¾™','æ–°æ½Ÿ','ï½¹ï½²ï¾‹ï¾','ä¹…ç•™ç±³','ï¾„ï¾…ï¾å·®é¡']] \
                     = honsyaMoto_add_unsoutaiou.apply(untin_honsya.get_untin, axis=1)
 
             del untin_honsya

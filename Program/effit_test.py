@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 
@@ -24,7 +24,7 @@ del eigyoubi
 
 
 dt_now = datetime.now().strftime('%Y%m%d_%H%M%S')
-myfolder = r'//192.168.1.247/‹¤—L/‰c‹Æ‰ÛÌ«ÙÀŞ/01o‰×OutPut/' + dt_now
+myfolder = r'//192.168.1.247/å…±æœ‰/å–¶æ¥­èª²ï¾Œï½«ï¾™ï¾€ï¾/01å‡ºè·OutPut/' + dt_now
 os.makedirs(myfolder)
 
 
@@ -51,7 +51,7 @@ del toke
 del honsya
 
 
-# kenpin,o‰×ÀÑÆ‰ïì¬
+# kenpin,å‡ºè·å®Ÿç¸¾ç…§ä¼šä½œæˆ
 if not untinForUriage_toke.empty:
     kenpin_toke = Kenpin('toke', packingHinban_toke, untinForUriage_toke, myfolder)
     kenpin_toke.create_kenpin()
@@ -65,12 +65,12 @@ if not untinForUriage_honsya.empty:
     del kenpin_honsya
 
 
-txt = '\n *********”„ã“ü—Í‚Ì‹L˜^********** \n'
+txt = '\n *********å£²ä¸Šå…¥åŠ›ã®è¨˜éŒ²********** \n'
 recorder.out_log( txt)
 recorder.out_file(txt)
 
 
-# ”„ã“ü—ÍÀ{
+# å£²ä¸Šå…¥åŠ›å®Ÿæ–½
 if not untinForUriage_toke.empty:
     effita.launch_uriage_nyuuryoku('toke')
     effita.uriage_nyuuryoku(untinForUriage_toke)
@@ -83,7 +83,7 @@ if not untinForUriage_honsya.empty:
 
 effita.close_effitA()    
 
-txt = '”„ã“ü—ÍI—¹‚µ‚Ü‚µ‚½'
+txt = 'å£²ä¸Šå…¥åŠ›çµ‚äº†ã—ã¾ã—ãŸ'
 recorder.out_log(txt, '\n')
 recorder.out_file(txt, '\n')
 

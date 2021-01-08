@@ -1,11 +1,11 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import glob
 import shutil
 
-directory = r'//192.168.1.247/‹¤—L/‰c‹Æ‰ÛÌ«ÙÀŞ/testreport/ŸN“c/'
-path = directory + '*20102951T*ˆ®^‹ó*.pdf'
+directory = r'//192.168.1.247/å…±æœ‰/å–¶æ¥­èª²ï¾Œï½«ï¾™ï¾€ï¾/testreport/æ«»ç”°/'
+path = directory + '*20102951T*æ—­çœŸç©º*.pdf'
 files = glob.glob(path)
 
 for file in files:

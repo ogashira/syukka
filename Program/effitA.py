@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 import pyautogui 
@@ -23,12 +23,12 @@ class EffitA(object):
 
     def launch_effitA(self):
         '''
-        effitA‚ÌƒƒCƒ“‰æ–Ê‚É‚È‚Á‚½‚Í•K‚¸Auó’o‰×ˆ—v‚ª‰Ÿ‚³‚ê‚Ä
-        “_Â‚Ìó‘Ô‚É‚È‚Á‚Ä‚¢‚é‚æ‚¤‚É‚·‚éB
+        effitAã®ãƒ¡ã‚¤ãƒ³ç”»é¢ã«ãªã£ãŸæ™‚ã¯å¿…ãšã€ã€Œå—æ³¨å‡ºè·å‡¦ç†ã€ãŒæŠ¼ã•ã‚Œã¦
+        ç‚¹é’ã®çŠ¶æ…‹ã«ãªã£ã¦ã„ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
         '''
         pyautogui.PAUSE = 1
         subprocess.Popen(r'//192.168.1.245/effit_A/Menu/EMN300I.exe toyo_user' \
-                         r',¶YC10,1,admin,“Œ—mH‹Æ“h—¿')
+                         r',ç”Ÿç”£C10,1,admin,æ±æ´‹å·¥æ¥­å¡—æ–™')
         time.sleep(10)
         
         pyautogui.typewrite('honsya')
@@ -53,19 +53,19 @@ class EffitA(object):
         
         time.sleep(3)
         
-        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/ó’o‰×ˆ—_“_Â.png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/å—æ³¨å‡ºè·å‡¦ç†_ç‚¹é’.png')
         time.sleep(3)
         if myclc != None:
             clc_cent = pyautogui.center(myclc)
             pyautogui.click(clc_cent)
         else:
-            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/ó’o‰×ˆ—_Â.png')
+            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/å—æ³¨å‡ºè·å‡¦ç†_é’.png')
             time.sleep(3)
             if myclc2 != None:
                 clc_cent2 = pyautogui.center(myclc2)
                 pyautogui.click(clc_cent2)
             else:
-                myclc3 = pyautogui.locateOnScreen(r'../png_file/effita_png/ó’o‰×ˆ—.png')
+                myclc3 = pyautogui.locateOnScreen(r'../png_file/effita_png/å—æ³¨å‡ºè·å‡¦ç†.png')
                 time.sleep(3)
                 if myclc3 != None:
                     clc_cent3 = pyautogui.center(myclc3)
@@ -103,13 +103,13 @@ class EffitA(object):
         pyautogui.click(clc_cent)
         time.sleep(1)
         
-        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/ó’o‰×ˆ—.png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/å—æ³¨å‡ºè·å‡¦ç†.png')
         time.sleep(3)
         if myclc != None:
             clc_cent = pyautogui.center(myclc)
             pyautogui.click(clc_cent)
         else:
-            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/ó’o‰×ˆ—_Â.png')
+            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/å—æ³¨å‡ºè·å‡¦ç†_é’.png')
             time.sleep(3)
             clc_cent2 = pyautogui.center(myclc2)
             pyautogui.click(clc_cent2)
@@ -119,21 +119,21 @@ class EffitA(object):
 
     def dl_DBmanager2(self, file_name, *args):
         '''
-        csv‚Ìƒ_ƒEƒ“ƒ[ƒh‚©‚çfile•Û‘¶‚Ü‚Ås‚¤
-        *args: yokujitu ‚Ü‚½‚ÍAsengetu, honjitu ‚È‚Ç‚ÌDBmanager2‚É“n‚·“ú•t•¶š—ñ
-        fils_name: ‰^’ÀŒvZ¼°Ä_‰ü‚È‚Ç‚ÌfilenameB‚±‚Ìˆø”‚©‚ç•Û‘¶‚·‚éfile–¼‚Æ
-        pyautogui‚Ìpngƒf[ƒ^‚Ìfile–¼‚ğw’è‚·‚éB
+        csvã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã‹ã‚‰fileä¿å­˜ã¾ã§è¡Œã†
+        *args: yokujitu ã¾ãŸã¯ã€sengetu, honjitu ãªã©ã®DBmanager2ã«æ¸¡ã™æ—¥ä»˜æ–‡å­—åˆ—
+        fils_name: é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹ãªã©ã®filenameã€‚ã“ã®å¼•æ•°ã‹ã‚‰ä¿å­˜ã™ã‚‹fileåã¨
+        pyautoguiã®pngãƒ‡ãƒ¼ã‚¿ã®fileåã‚’æŒ‡å®šã™ã‚‹ã€‚
         '''
 
         def pattern_untinKeisanSheet(file_name, yokujitu):
-            # ‰^’ÀŒvZ¼°Ä_‰ü‚Ìê‡‚Ì’ŠoğŒ
+            # é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹ã®å ´åˆã®æŠ½å‡ºæ¡ä»¶
             pyautogui.typewrite(['tab','tab','delete'])
             pyautogui.typewrite(yokujitu)
             time.sleep(3)
 
 
         def pattern_jutyuuDT(file_name, sengetu, honjitu):
-            # ó’DT‚Ìê‡‚Ì’ŠoğŒ
+            # å—æ³¨DTã®å ´åˆã®æŠ½å‡ºæ¡ä»¶
             pyautogui.typewrite(['tab','tab','delete'])
             pyautogui.typewrite(sengetu) 
             pyautogui.typewrite(['tab','tab','tab','tab','tab','tab','delete'])
@@ -180,10 +180,10 @@ class EffitA(object):
         time.sleep(20)
         
         
-        # dbmanager2‚Ì’ŠoğŒ‚ğfile–¼‚É‚æ‚Á‚Ä•ªŠò‚·‚éB
-        if file_name == '‰^’ÀŒvZ¼°Ä_‰ü':
+        # dbmanager2ã®æŠ½å‡ºæ¡ä»¶ã‚’fileåã«ã‚ˆã£ã¦åˆ†å²ã™ã‚‹ã€‚
+        if file_name == 'é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹':
             pattern_untinKeisanSheet(file_name, args[0])
-        elif file_name == 'ó’DT':
+        elif file_name == 'å—æ³¨DT':
             pattern_jutyuuDT(file_name, args[0], args[1])
 
 
@@ -220,13 +220,13 @@ class EffitA(object):
 
 
 
-        myclc = pyautogui.locateOnScreen(r'../png_file/dbmanager2_png/–ß‚é.png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/dbmanager2_png/æˆ»ã‚‹.png')
         time.sleep(3)
         clc_cent = pyautogui.center(myclc)
         pyautogui.click(clc_cent)
         time.sleep(1)
 
-        myclc = pyautogui.locateOnScreen(r'../png_file/dbmanager2_png/–ß‚é(‘¾š).png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/dbmanager2_png/æˆ»ã‚‹(å¤ªå­—).png')
         time.sleep(3)
         clc_cent = pyautogui.center(myclc)
         pyautogui.click(clc_cent)
@@ -235,9 +235,9 @@ class EffitA(object):
 
 
     def dl_zaiko(self):
-        # effitA ƒgƒbƒv‰æ–Ê‚Ìó‘Ô‚©‚ç
+        # effitA ãƒˆãƒƒãƒ—ç”»é¢ã®çŠ¶æ…‹ã‹ã‚‰
 
-        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/Œ»İŒÉ.png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/ç¾åœ¨åº«.png')
         time.sleep(3)
         clc_cent = pyautogui.center(myclc)
         pyautogui.click(clc_cent)
@@ -259,13 +259,13 @@ class EffitA(object):
         time.sleep(2)
         pyautogui.typewrite(['tab','tab','tab','tab','tab','tab','tab','enter'])
 
-        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/ó’o‰×ˆ—.png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/å—æ³¨å‡ºè·å‡¦ç†.png')
         time.sleep(3)
         if myclc != None:
             clc_cent = pyautogui.center(myclc)
             pyautogui.click(clc_cent)
         else:
-            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/ó’o‰×ˆ—_Â.png')
+            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/å—æ³¨å‡ºè·å‡¦ç†_é’.png')
             time.sleep(3)
             clc_cent2 = pyautogui.center(myclc2)
             pyautogui.click(clc_cent2)
@@ -273,14 +273,14 @@ class EffitA(object):
 
 
     def launch_uriage_nyuuryoku(self, factory):
-        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/”„ã“ü—Í.png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/effita_png/å£²ä¸Šå…¥åŠ›.png')
         time.sleep(3)
         if myclc != None:
             clc_cent = pyautogui.center(myclc)
             pyautogui.click(clc_cent)
             time.sleep(10)
         else:
-            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/”„ã“ü—Í_•“_.png')
+            myclc2 = pyautogui.locateOnScreen(r'../png_file/effita_png/å£²ä¸Šå…¥åŠ›_é»’ç‚¹.png')
             time.sleep(3)
             clc_cent2 = pyautogui.center(myclc2)
             pyautogui.click(clc_cent2)
@@ -297,7 +297,7 @@ class EffitA(object):
 
 
     def close_uriage_nyuuryoku(self):
-        myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/I—¹.png')
+        myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/çµ‚äº†.png')
         time.sleep(3)
         clc_cent = pyautogui.center(myclc)
         pyautogui.click(clc_cent)
@@ -310,103 +310,103 @@ class EffitA(object):
     def uriage_nyuuryoku(self, untinForUriage):
         pyautogui.PAUSE = 1
         recorder = Recorder(self.myfolder)
-        unsou_dic = {'Ä°Ù':'U0001', 'VŠƒ':'U0009', '–¼“S':'U0002', 
-                     '¼”Z':'U0003', 'ÄÅĞ':'U0004', '•ŸR':'U0006', 
-                     '”z’B':'U0008', '²ì':'U0010', '¹²Ëİ':'U0007', 
-                     '‹v—¯•Ä':'U0005'}
+        unsou_dic = {'ï¾„ï½°ï¾™':'U0001', 'æ–°æ½Ÿ':'U0009', 'åé‰„':'U0002', 
+                     'è¥¿æ¿ƒ':'U0003', 'ï¾„ï¾…ï¾':'U0004', 'ç¦å±±':'U0006', 
+                     'é…é”':'U0008', 'ä½å·':'U0010', 'ï½¹ï½²ï¾‹ï¾':'U0007', 
+                     'ä¹…ç•™ç±³':'U0005'}
         
-        haisou_kubun = {'’Êí': 1, '“y—j”z’B': 2, '‰c‹ÆŠ': 3, '—j“úˆá‚¢': 4, 'j“ú”z’B': 5}
+        haisou_kubun = {'é€šå¸¸': 1, 'åœŸæ›œé…é”': 2, 'å–¶æ¥­æ‰€': 3, 'æ›œæ—¥é•ã„': 4, 'ç¥æ—¥é…é”': 5}
 
-        souko_dic = {'“y‹Co‰×': 'S0021', '–{Ğo‰×': 'S0001'}
+        souko_dic = {'åœŸæ°—å‡ºè·': 'S0021', 'æœ¬ç¤¾å‡ºè·': 'S0001'}
         
-        # close_date‚ğ•ÏX‚µ‚È‚¢ƒŠƒXƒgiƒXƒ^ƒ“ƒŒ[“¾ˆÓæƒR[ƒhj
+        # close_dateã‚’å¤‰æ›´ã—ãªã„ãƒªã‚¹ãƒˆï¼ˆã‚¹ã‚¿ãƒ³ãƒ¬ãƒ¼å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰ï¼‰
         nonChange_list = ['T1031', 'T1032', 'T1034', 'T1035', 'T1037', 'T1039']
 
 
         for i in range(untinForUriage.shape[0]): 
-            uriagebi = untinForUriage.loc[i, 'o‰×—\’è“ú']
-            tokuisaki_code = untinForUriage.loc[i, '“¾ˆÓæƒR[ƒh']
-            nounyuu_code = untinForUriage.loc[i, '”[“üæƒR[ƒh']
-            iraisaki = untinForUriage.loc[i, 'ˆË—Šæ']
-            bikou = untinForUriage.loc[i, '”õl']
-            syukka_yotei_souko = untinForUriage.loc[i, 'o‰×—\’è‘qŒÉ']
-            jutyuu_no = untinForUriage.loc[i, 'ó’‚m‚n']
-            jutyuugyou_no = str(untinForUriage.loc[i, 'ó’s‚m‚n'])
-            tokuisaki_no = untinForUriage.loc[i, '“¾ˆÓæ’•¶‚m‚n']
-            jutyuu_hinban = untinForUriage.loc[i, '•i”Ô']
+            uriagebi = untinForUriage.loc[i, 'å‡ºè·äºˆå®šæ—¥']
+            tokuisaki_code = untinForUriage.loc[i, 'å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰']
+            nounyuu_code = untinForUriage.loc[i, 'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰']
+            iraisaki = untinForUriage.loc[i, 'ä¾é ¼å…ˆ']
+            bikou = untinForUriage.loc[i, 'å‚™è€ƒ']
+            syukka_yotei_souko = untinForUriage.loc[i, 'å‡ºè·äºˆå®šå€‰åº«']
+            jutyuu_no = untinForUriage.loc[i, 'å—æ³¨ï¼®ï¼¯']
+            jutyuugyou_no = str(untinForUriage.loc[i, 'å—æ³¨è¡Œï¼®ï¼¯'])
+            tokuisaki_no = untinForUriage.loc[i, 'å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯']
+            jutyuu_hinban = untinForUriage.loc[i, 'å“ç•ª']
             real_hinban = untinForUriage.loc[i, 'hinban']
-            nouki = untinForUriage.loc[i, '”[Šú']
-            yusyutu = untinForUriage.loc[i, '—AoŒüæ']
-            syukka_souko = untinForUriage.loc[i, 'o‰×']
-            week = untinForUriage.loc[i, '—j“ú']
+            nouki = untinForUriage.loc[i, 'ç´æœŸ']
+            yusyutu = untinForUriage.loc[i, 'è¼¸å‡ºå‘å…ˆ']
+            syukka_souko = untinForUriage.loc[i, 'å‡ºè·']
+            week = untinForUriage.loc[i, 'æ›œæ—¥']
             close_date = untinForUriage.loc[i, 'closeDate']
             hikiate = untinForUriage.loc[i, 'lot']
 
-            # npNan : ‰^‘—‘Î‰•\‚É”[“üæ–¼Ì‚ªÚ‚Á‚Ä‚¢‚È‚¢
+            # npNan : é‹é€å¯¾å¿œè¡¨ã«ç´å…¥å…ˆåç§°ãŒè¼‰ã£ã¦ã„ãªã„
             if iraisaki == 'NoCalc' or iraisaki == 'npNan' or iraisaki == 'NoData' or hikiate == {} \
                     or 'short' in hikiate.keys():
-                txt = 'ó’No:{}, •i”Ô:{} ‚Ì”„ã“ü—Í•s‰Â‚Å‚·B' \
+                txt = 'å—æ³¨No:{}, å“ç•ª:{} ã®å£²ä¸Šå…¥åŠ›ä¸å¯ã§ã™ã€‚' \
                         .format(jutyuu_no, jutyuu_hinban)
                 recorder.out_log(txt)
                 recorder.out_file(txt)
                 continue
 
-            # “o˜^ƒ{ƒ^ƒ“‰Ÿ‚· 
-            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/“o˜^.png')
+            # ç™»éŒ²ãƒœã‚¿ãƒ³æŠ¼ã™ 
+            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ç™»éŒ².png')
             time.sleep(5)
             if myclc != None:
                 clc_cent = pyautogui.center(myclc)
                 pyautogui.click(clc_cent)
                 time.sleep(1)
             else:
-                myclc2 = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/“o˜^_Â.png')
+                myclc2 = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ç™»éŒ²_é’.png')
                 time.sleep(3)
                 clc_cent2 = pyautogui.center(myclc2)
                 pyautogui.click(clc_cent2)
                 time.sleep(1)
 
-            # ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ(0, 0)‚É“¦‚ª‚µ‚Ä‚¨‚­
+            # ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’(0, 0)ã«é€ƒãŒã—ã¦ãŠã
             pyautogui.moveRel(0, 20)
 
 
-            # ”„ã“ú
+            # å£²ä¸Šæ—¥
             pyautogui.typewrite(['delete'])
             pyautogui.typewrite(uriagebi)
             pyautogui.typewrite(['enter'])
-            # æˆø‹æ•ª  
+            # å–å¼•åŒºåˆ†  
             pyautogui.typewrite(['delete'])
             pyautogui.typewrite('01')
             #pyperclip.copy('01')
             #pyautogui.hotkey('ctrl', 'v')
             time.sleep(1)
             pyautogui.typewrite(['enter'])
-            # “¾ˆÓæ  
+            # å¾—æ„å…ˆ  
             pyautogui.typewrite(['delete'])
             pyautogui.typewrite(tokuisaki_code)
             pyautogui.typewrite(['enter'])
-            # ”[“üæ  
+            # ç´å…¥å…ˆ  
             if pd.isnull(nounyuu_code):
                 pyautogui.typewrite(['enter'])
             else:
                 pyautogui.typewrite(['delete'])
                 pyautogui.typewrite(nounyuu_code)
                 pyautogui.typewrite(['enter'])
-            # ‰^‘—‹ÆÒ  
+            # é‹é€æ¥­è€…  
             pyautogui.typewrite(['delete'])
             pyautogui.typewrite(unsou_dic[iraisaki])
             pyautogui.typewrite(['enter'])
-            # ”z‘—‹æ•ª  
-            if '‰c‹ÆŠ' in syukka_yotei_souko: 
+            # é…é€åŒºåˆ†  
+            if 'å–¶æ¥­æ‰€' in syukka_yotei_souko: 
                 pyautogui.typewrite(['delete'])
                 pyautogui.typewrite('3')
                 pyautogui.typewrite(['enter'])
                 pyautogui.hotkey('shift', 'tab')
-            elif '“y—j”z’B' in syukka_yotei_souko:
+            elif 'åœŸæ›œé…é”' in syukka_yotei_souko:
                 pyautogui.typewrite(['delete'])
                 pyautogui.typewrite('2')
                 pyautogui.typewrite(['enter'])
                 pyautogui.hotkey('shift', 'tab')
-            elif '—j“ú' in syukka_yotei_souko:
+            elif 'æ›œæ—¥' in syukka_yotei_souko:
                 pyautogui.typewrite(['delete'])
                 pyautogui.typewrite('4')
                 pyautogui.typewrite(['enter'])
@@ -417,8 +417,8 @@ class EffitA(object):
                 pyautogui.typewrite(['enter'])
                 pyautogui.hotkey('shift', 'tab')
 
-            # ¿‹—\’è“ú  
-            # “¾ˆÓæ‚ªƒXƒ^ƒ“ƒŒ[‚Ìê‡‚Íclose_date‚Í•ÏX‚µ‚È‚¢
+            # è«‹æ±‚äºˆå®šæ—¥  
+            # å¾—æ„å…ˆãŒã‚¹ã‚¿ãƒ³ãƒ¬ãƒ¼ã®å ´åˆã¯close_dateã¯å¤‰æ›´ã—ãªã„
             if tokuisaki_code in nonChange_list:
                 pyautogui.typewrite(['enter'])
             else:
@@ -427,38 +427,38 @@ class EffitA(object):
                 pyautogui.typewrite(['enter'])
 
 
-            # o‰×‘qŒÉ  
+            # å‡ºè·å€‰åº«  
             pyautogui.typewrite(['delete'])
             pyautogui.typewrite(souko_dic[syukka_souko])
             pyautogui.typewrite(['enter'])
             
             
             
-            # ó’No  
+            # å—æ³¨No  
             pyautogui.typewrite(['delete'])
             pyautogui.typewrite(jutyuu_no)
             pyautogui.typewrite(['enter'])
 
-            # ó’sNo  
+            # å—æ³¨è¡ŒNo  
             pyautogui.typewrite(['delete'])
             pyautogui.typewrite(jutyuugyou_no)
             pyautogui.typewrite(['enter']) 
              
-            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/Š®”[Ï.png')
+            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/å®Œç´æ¸ˆ.png')
             time.sleep(8)
             if myclc != None:
                 pyautogui.typewrite(['enter'])
-                txt = '{}:{}‚ÍŠ®”[Ï‚Å‚·'.format(jutyuu_no, jutyuu_hinban)
+                txt = '{}:{}ã¯å®Œç´æ¸ˆã§ã™'.format(jutyuu_no, jutyuu_hinban)
                 recorder.out_log(txt)
                 recorder.out_file(txt)
                 time.sleep(3)
                 continue 
 
-            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/“o˜^‚È‚µ.png')
+            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ç™»éŒ²ãªã—.png')
             time.sleep(5)
             if myclc != None:
                 pyautogui.typewrite(['enter'])
-                txt = '{}:{}‚Í“o˜^‚È‚µ‚Å‚·'.format(jutyuu_no, jutyuu_hinban)
+                txt = '{}:{}ã¯ç™»éŒ²ãªã—ã§ã™'.format(jutyuu_no, jutyuu_hinban)
                 recorder.out_log(txt)
                 recorder.out_file(txt)
                 time.sleep(3)
@@ -476,7 +476,7 @@ class EffitA(object):
                 pyautogui.typewrite(['enter'])
                 time.sleep(3)
                 
-            # ok test’†‚Í·¬İ¾Ù
+            # ok testä¸­ã¯ï½·ï½¬ï¾ï½¾ï¾™
             myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ok.png')
             time.sleep(3)
             clc_cent = pyautogui.center(myclc)

@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import pandas as pd
@@ -7,18 +7,18 @@ import pandas as pd
 
 class UntinKeisanSheet(object):
     '''
-    packing‚©‚çuntin_moto‚ğó‚¯‚ÄA‰^’ÀŒvZ¼°Ä‚Éadd‰ñ”‚ğ•\¦‚·‚éB
-    •\¦‚µ‚½‚çAó’no‚Æadd‚ğŠ’è‚ÌÌ«ÙÀŞ‚É•Û‘¶‚·‚éBcreate_folder
-    Š’è‚ÌÌ«ÙÀŞ‚Ì’†‚ÉAsumi.csv‚ª‘¶İ‚µ‚È‚¯‚ê‚Î cnt = 1
-    sumi.csv‚ª‘¶İ‚·‚ê‚ÎAcnt ‚Ísumi.csv‚Ìadd—ñ‚Ìmax‚Æ‚·‚é
+    packingã‹ã‚‰untin_motoã‚’å—ã‘ã¦ã€é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„ã«addå›æ•°ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
+    è¡¨ç¤ºã—ãŸã‚‰ã€å—æ³¨noã¨addã‚’æ‰€å®šã®ï¾Œï½«ï¾™ï¾€ï¾ã«ä¿å­˜ã™ã‚‹ã€‚create_folder
+    æ‰€å®šã®ï¾Œï½«ï¾™ï¾€ï¾ã®ä¸­ã«ã€sumi.csvãŒå­˜åœ¨ã—ãªã‘ã‚Œã° cnt = 1
+    sumi.csvãŒå­˜åœ¨ã™ã‚Œã°ã€cnt ã¯sumi.csvã®addåˆ—ã®maxã¨ã™ã‚‹
     '''
 
     def __init__(self, untin_moto):
         
         self.untin_moto = untin_moto
-        self.uriage_day = str(untin_moto.loc[0, 'o‰×—\’è“ú'])
+        self.uriage_day = str(untin_moto.loc[0, 'å‡ºè·äºˆå®šæ—¥'])
         folder_name = self.uriage_day
-        # Ì«ÙÀŞ‚ª‘¶İ‚µ‚È‚¯‚ê‚Îì‚éio‰×—\’è“ú‚ÌÌ«ÙÀŞ–¼j
+        # ï¾Œï½«ï¾™ï¾€ï¾ãŒå­˜åœ¨ã—ãªã‘ã‚Œã°ä½œã‚‹ï¼ˆå‡ºè·äºˆå®šæ—¥ã®ï¾Œï½«ï¾™ï¾€ï¾åï¼‰
         if os.path.exists(r'../tmp/{}'.format(folder_name)):
             pass
         else:
@@ -33,14 +33,14 @@ class UntinKeisanSheet(object):
                                                                encoding='cp932')
             cnt = add_cnt['add'].max()
             moto_add = pd.merge(self.untin_moto, add_cnt, 
-                                  on = ['ó’‚m‚n', 'ó’s‚m‚n'], how = 'left')
+                                  on = ['å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯'], how = 'left')
             moto_add = moto_add.fillna({'add': cnt+1})
         else:
             cnt = 1
             moto_add = self.untin_moto.copy()
             moto_add['add'] = cnt
 
-        moto_add_after = moto_add[['ó’‚m‚n', 'ó’s‚m‚n', 'add']]
+        moto_add_after = moto_add[['å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯', 'add']]
         moto_add_after.to_csv(r'../tmp/{}/add_cnt.csv'.format(folder_name), 
                                                             encoding = 'cp932')
 

@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import pandas as pd
 import numpy as np
@@ -22,22 +22,22 @@ class Ajust_toke:
     def get_allHauler(self, moto, untin):
 
         def best_hauler(row):
-            nounyuusaki = row['”[“üæ–¼Ì‚P']
-            sitei = row['ŒÚ‹qw’è‰^‘—‰®']
-            address = row['ZŠ‚P']
-            torr = row['Ä°Ù']
-            niigata = row['VŠƒ']
-            keihin = row['¹²Ëİ']
+            nounyuusaki = row['ç´å…¥å…ˆåç§°ï¼‘']
+            sitei = row['é¡§å®¢æŒ‡å®šé‹é€å±‹']
+            address = row['ä½æ‰€ï¼‘']
+            torr = row['ï¾„ï½°ï¾™']
+            niigata = row['æ–°æ½Ÿ']
+            keihin = row['ï½¹ï½²ï¾‹ï¾']
 
-            dic = {'Ä°Ù':float(torr), 'VŠƒ':float(niigata), '¹²Ëİ':float(keihin)}
+            dic = {'ï¾„ï½°ï¾™':float(torr), 'æ–°æ½Ÿ':float(niigata), 'ï½¹ï½²ï¾‹ï¾':float(keihin)}
             
-            #ŒÚ‹qw’è‰^‘—‰®‚ª‚ ‚éê‡‚Íƒ\ƒŒA–³‚¢ê‡‚ÍÅˆÀ’l‚Ì‰^‘—‰®‚ğ‘I‚Ô
-            #ÅˆÀ’l‚ª‚Q‚ÂˆÈã‚ ‚éê‡‚ğl—¶‚µ‚ÄAƒŠƒXƒg“à•ï•\‹L‚Å‹‚ß‚éB
+            #é¡§å®¢æŒ‡å®šé‹é€å±‹ãŒã‚ã‚‹å ´åˆã¯ã‚½ãƒ¬ã€ç„¡ã„å ´åˆã¯æœ€å®‰å€¤ã®é‹é€å±‹ã‚’é¸ã¶
+            #æœ€å®‰å€¤ãŒï¼’ã¤ä»¥ä¸Šã‚ã‚‹å ´åˆã‚’è€ƒæ…®ã—ã¦ã€ãƒªã‚¹ãƒˆå†…åŒ…è¡¨è¨˜ã§æ±‚ã‚ã‚‹ã€‚
             if address == 'NoCalc':
-                best_hauler = ['”z’B']
+                best_hauler = ['é…é”']
             elif address is np.nan:
                 best_hauler = ['npNan']
-            elif sitei != '–³‚µ' and sitei != '–³':
+            elif sitei != 'ç„¡ã—' and sitei != 'ç„¡':
                 best_hauler = [sitei]
             else:
                 best_hauler = [kv[0] for kv in dic.items() if kv[1] == 
@@ -48,98 +48,98 @@ class Ajust_toke:
 
         syukkabi = moto.iloc[0,5]
 
-        untin['ˆË—Šæ'] = untin.apply(best_hauler, axis=1) 
-        untin['o‰×—\’è“ú'] = syukkabi
+        untin['ä¾é ¼å…ˆ'] = untin.apply(best_hauler, axis=1) 
+        untin['å‡ºè·äºˆå®šæ—¥'] = syukkabi
 
-        allHauler = untin[['o‰×—\’è“ú','ZŠ‚P','”[“üæ–¼Ì‚P','“¾ˆÓæƒR[ƒh',
-                           '”[“üæƒR[ƒh','weight','cans','Ä°Ù','VŠƒ','¹²Ëİ',
-                           'ÄÅĞ·Šz','ˆË—Šæ','—AoŒüæ']]
+        allHauler = untin[['å‡ºè·äºˆå®šæ—¥','ä½æ‰€ï¼‘','ç´å…¥å…ˆåç§°ï¼‘','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰',
+                           'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰','weight','cans','ï¾„ï½°ï¾™','æ–°æ½Ÿ','ï½¹ï½²ï¾‹ï¾',
+                           'ï¾„ï¾…ï¾å·®é¡','ä¾é ¼å…ˆ','è¼¸å‡ºå‘å…ˆ']]
 
 
 
-        # ˆË—Šæ‚Ìlist‚ğƒŠƒeƒ‰ƒ‹‚É‚µ‚Ä‚¨‚­
+        # ä¾é ¼å…ˆã®listã‚’ãƒªãƒ†ãƒ©ãƒ«ã«ã—ã¦ãŠã
         allHauler2 = allHauler.copy()
-        allHauler2.loc[:,'ˆË—Šæ'] = allHauler2['ˆË—Šæ'].map(lambda x : x[0])
-        allHauler_sort = allHauler2.sort_values('ˆË—Šæ')
+        allHauler2.loc[:,'ä¾é ¼å…ˆ'] = allHauler2['ä¾é ¼å…ˆ'].map(lambda x : x[0])
+        allHauler_sort = allHauler2.sort_values('ä¾é ¼å…ˆ')
 
         return allHauler_sort
 
 
     def get_packingHinban(self, moto, allHauler):
         
-        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
-        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
-        packingHinban = moto_addHinban[['o‰×—\’è“ú','ˆË—Šæ','cans','weight',
-                                        '“¾ˆÓæƒR[ƒh','”[“üæƒR[ƒh',
-                                        '”[“üæ–¼Ì‚P', 'hinban', '•i–¼','ó’”—Ê',
-                                        'ó’’PˆÊ','“¾ˆÓæ’•¶‚m‚n','”õl','o‰×',
-                                        'o‰×—\’è‘qŒÉ','—AoŒüæ','”[Šú', 'ó’‚m‚n',
-                                        'ó’s‚m‚n','add']]
+        allHauler = allHauler[['ä½æ‰€ï¼‘','ä¾é ¼å…ˆ','è¼¸å‡ºå‘å…ˆ']]
+        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='ä½æ‰€ï¼‘')
+        packingHinban = moto_addHinban[['å‡ºè·äºˆå®šæ—¥','ä¾é ¼å…ˆ','cans','weight',
+                                        'å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰','ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰',
+                                        'ç´å…¥å…ˆåç§°ï¼‘', 'hinban', 'å“å','å—æ³¨æ•°é‡',
+                                        'å—æ³¨å˜ä½','å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯','å‚™è€ƒ','å‡ºè·',
+                                        'å‡ºè·äºˆå®šå€‰åº«','è¼¸å‡ºå‘å…ˆ','ç´æœŸ', 'å—æ³¨ï¼®ï¼¯',
+                                        'å—æ³¨è¡Œï¼®ï¼¯','add']]
         
-        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # é‹é€å±‹ï¼ˆä¾é ¼å…ˆï¼‰ãŒNaNã®å ´åˆã¯No dataã«ã™ã‚‹>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        packingHinban = packingHinban.fillna({'ˆË—Šæ':'NoData'})
+        packingHinban = packingHinban.fillna({'ä¾é ¼å…ˆ':'NoData'})
 
         
 
-        # Ÿ‰ñ¿‹‚ğ‹‚ß‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # æ¬¡å›è«‹æ±‚ã‚’æ±‚ã‚ã‚‹>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         closeDate = CloseDate()
 
         packingHinban2 = packingHinban.copy() 
-        packingHinban2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+        packingHinban2[['å‡ºè·äºˆå®šæ—¥','ç´æœŸ','æ›œæ—¥','closeDate']] = \
         packingHinban2.apply(closeDate.get_closeDate, axis=1)
 
         packingHinban3 = packingHinban2.copy()
-        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
             closeDate.get_jikai, axis = 1)
 
 
-        # ¬Aw‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # æˆã€æŒ‡ã‚’æ±‚ã‚ã‚‹<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         add_data = AddData()
         
-        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                   add_data.get_coa, axis = 1)
 
         
         del add_data
-        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # æ›œæ—¥é•ã„ã‚’æ±‚ã‚ã‚‹<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         lead_time = LeadTime()
 
-        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                 lead_time.get_youbi, axis = 1)
 
         del lead_time
-        #  “y—j”z’B‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        #  åœŸæ›œé…é”ã‚’åˆ¤å®š<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         def get_dohai(df_row):
-            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
-            week = df_row['—j“ú']
+            syukka_souko = df_row['å‡ºè·äºˆå®šå€‰åº«']
+            week = df_row['æ›œæ—¥']
 
-            if week == '“y':
-                syukka_souko.append('“y—j”z’B')
+            if week == 'åœŸ':
+                syukka_souko.append('åœŸæ›œé…é”')
             return syukka_souko
 
 
-        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:, 'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                 get_dohai, axis = 1)
         
 
 
-        #  ‰c‹ÆŠ~‚ß‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        #  å–¶æ¥­æ‰€æ­¢ã‚ã‚’åˆ¤å®š<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         def get_siten_tome(df_row):
-            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
-            bikou = df_row['”õl']
+            syukka_souko = df_row['å‡ºè·äºˆå®šå€‰åº«']
+            bikou = df_row['å‚™è€ƒ']
 
-            if bikou.find('x“X~‚ß') >= 0 or bikou.find('x“X‚Ç‚ß') >= 0 or \
-                bikou.find('‰c‹ÆŠ~‚ß') >= 0 or bikou.find('‰c‹ÆŠ‚Ç‚ß') >= 0 :
-                syukka_souko.append('‰c‹ÆŠ')
+            if bikou.find('æ”¯åº—æ­¢ã‚') >= 0 or bikou.find('æ”¯åº—ã©ã‚') >= 0 or \
+                bikou.find('å–¶æ¥­æ‰€æ­¢ã‚') >= 0 or bikou.find('å–¶æ¥­æ‰€ã©ã‚') >= 0 :
+                syukka_souko.append('å–¶æ¥­æ‰€')
             return syukka_souko
 
 
-        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:, 'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                 get_siten_tome, axis = 1)
 
 
@@ -148,33 +148,33 @@ class Ajust_toke:
 
         
     def get_untinForUriage(self, moto, allHauler):
-        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
-        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
-        untinForUriage = moto_addHauler[['o‰×—\’è“ú','“¾ˆÓæƒR[ƒh','”[“üæƒR[ƒh',
-                                         'ˆË—Šæ','”õl','o‰×—\’è‘qŒÉ','ó’‚m‚n',
-                                         'ó’s‚m‚n','“¾ˆÓæ’•¶‚m‚n','•i”Ô','hinban',
-                                         'cans','”[Šú', 'toyo_untin','—AoŒüæ','o‰×','add']]
+        allHauler = allHauler[['ä½æ‰€ï¼‘','ä¾é ¼å…ˆ','è¼¸å‡ºå‘å…ˆ']]
+        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='ä½æ‰€ï¼‘')
+        untinForUriage = moto_addHauler[['å‡ºè·äºˆå®šæ—¥','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰','ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰',
+                                         'ä¾é ¼å…ˆ','å‚™è€ƒ','å‡ºè·äºˆå®šå€‰åº«','å—æ³¨ï¼®ï¼¯',
+                                         'å—æ³¨è¡Œï¼®ï¼¯','å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯','å“ç•ª','hinban',
+                                         'cans','ç´æœŸ', 'toyo_untin','è¼¸å‡ºå‘å…ˆ','å‡ºè·','add']]
 
 
-        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # é‹é€å±‹ï¼ˆä¾é ¼å…ˆï¼‰ãŒNaNã®å ´åˆã¯No dataã«ã™ã‚‹>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        untinForUriage = untinForUriage.fillna({'ˆË—Šæ':'NoData'})
+        untinForUriage = untinForUriage.fillna({'ä¾é ¼å…ˆ':'NoData'})
 
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         closeDate = CloseDate()
 
         untinForUriage2 = untinForUriage.copy() 
-        untinForUriage2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+        untinForUriage2[['å‡ºè·äºˆå®šæ—¥','ç´æœŸ','æ›œæ—¥','closeDate']] = \
         untinForUriage2.apply(closeDate.get_closeDate, axis=1)
 
         del closeDate
 
-        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # æ›œæ—¥é•ã„ã‚’æ±‚ã‚ã‚‹<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         lead_time = LeadTime()
 
-        untinForUriage2.loc[:,'o‰×—\’è‘qŒÉ'] = untinForUriage2.apply(
+        untinForUriage2.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = untinForUriage2.apply(
                 lead_time.get_youbi, axis = 1)
 
         del lead_time
@@ -183,7 +183,7 @@ class Ajust_toke:
         zaiko = Zaiko(self.myfolder)
         recorder = Recorder(self.myfolder)
         
-        txt ='”„ãˆ—“ü—Í—pÃŞ°Ài“y‹Cj' 
+        txt ='å£²ä¸Šå‡¦ç†å…¥åŠ›ç”¨ï¾ƒï¾ï½°ï¾€ï¼ˆåœŸæ°—ï¼‰' 
         recorder.out_log(txt, '\n')
         recorder.out_file(txt, '\n')
 
@@ -203,13 +203,13 @@ class Ajust_toke:
 
 
     def get_packingCoa(self, packingHinban, untinForUriage):
-        lot_data = untinForUriage[['ó’‚m‚n', 'ó’s‚m‚n', 'lot']]
-        packingCoa = pd.merge(packingHinban, lot_data, on =['ó’‚m‚n', 'ó’s‚m‚n'] 
+        lot_data = untinForUriage[['å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯', 'lot']]
+        packingCoa = pd.merge(packingHinban, lot_data, on =['å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯'] 
                 , how = 'left')
 
         packingCoa = packingCoa[[
-            'o‰×—\’è“ú', '“¾ˆÓæƒR[ƒh', '”[“üæƒR[ƒh', '”[“üæ–¼Ì‚P', 
-            'hinban', 'o‰×', 'ó’‚m‚n', 'ó’s‚m‚n', 'lot'
+            'å‡ºè·äºˆå®šæ—¥', 'å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰', 'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰', 'ç´å…¥å…ˆåç§°ï¼‘', 
+            'hinban', 'å‡ºè·', 'å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯', 'lot'
         ]]
 
         return packingCoa
@@ -228,24 +228,24 @@ class Ajust_honsya:
     def get_allHauler(self, moto, untin):
 
         def best_hauler(row):
-            nounyuusaki = row['”[“üæ–¼Ì‚P']
-            sitei = row['ŒÚ‹qw’è‰^‘—‰®']
-            address = row['ZŠ‚P']
-            torr = row['Ä°Ù']
-            niigata = row['VŠƒ']
-            keihin = row['¹²Ëİ']
-            kurume = row['‹v—¯•Ä']
+            nounyuusaki = row['ç´å…¥å…ˆåç§°ï¼‘']
+            sitei = row['é¡§å®¢æŒ‡å®šé‹é€å±‹']
+            address = row['ä½æ‰€ï¼‘']
+            torr = row['ï¾„ï½°ï¾™']
+            niigata = row['æ–°æ½Ÿ']
+            keihin = row['ï½¹ï½²ï¾‹ï¾']
+            kurume = row['ä¹…ç•™ç±³']
 
 
-            dic = {'Ä°Ù':float(torr), 'VŠƒ':float(niigata), '¹²Ëİ':float(keihin), '‹v—¯•Ä':float(kurume)}
+            dic = {'ï¾„ï½°ï¾™':float(torr), 'æ–°æ½Ÿ':float(niigata), 'ï½¹ï½²ï¾‹ï¾':float(keihin), 'ä¹…ç•™ç±³':float(kurume)}
             
-            #ŒÚ‹qw’è‰^‘—‰®‚ª‚ ‚éê‡‚Íƒ\ƒŒA–³‚¢ê‡‚ÍÅˆÀ’l‚Ì‰^‘—‰®‚ğ‘I‚Ô
-            #ÅˆÀ’l‚ª‚Q‚ÂˆÈã‚ ‚éê‡‚ğl—¶‚µ‚ÄAƒŠƒXƒg“à•ï•\‹L‚Å‹‚ß‚éB
+            #é¡§å®¢æŒ‡å®šé‹é€å±‹ãŒã‚ã‚‹å ´åˆã¯ã‚½ãƒ¬ã€ç„¡ã„å ´åˆã¯æœ€å®‰å€¤ã®é‹é€å±‹ã‚’é¸ã¶
+            #æœ€å®‰å€¤ãŒï¼’ã¤ä»¥ä¸Šã‚ã‚‹å ´åˆã‚’è€ƒæ…®ã—ã¦ã€ãƒªã‚¹ãƒˆå†…åŒ…è¡¨è¨˜ã§æ±‚ã‚ã‚‹ã€‚
             if address == 'NoCalc':
                 best_hauler = ['NoCalc']
             elif address is np.nan:
                 best_hauler = ['npNan']
-            elif sitei != '–³‚µ':
+            elif sitei != 'ç„¡ã—':
                 best_hauler = [sitei]
             else:
                 best_hauler = [kv[0] for kv in dic.items() if kv[1] 
@@ -256,17 +256,17 @@ class Ajust_honsya:
 
         syukkabi = moto.iloc[0,5]
 
-        untin['ˆË—Šæ'] = untin.apply(best_hauler, axis=1) 
-        untin['o‰×—\’è“ú'] = syukkabi
+        untin['ä¾é ¼å…ˆ'] = untin.apply(best_hauler, axis=1) 
+        untin['å‡ºè·äºˆå®šæ—¥'] = syukkabi
 
-        allHauler = untin[['o‰×—\’è“ú','ZŠ‚P','”[“üæ–¼Ì‚P','“¾ˆÓæƒR[ƒh',
-                           '”[“üæƒR[ƒh','weight','cans','Ä°Ù','VŠƒ','¹²Ëİ',
-                           '‹v—¯•Ä','ÄÅĞ·Šz','ˆË—Šæ','—AoŒüæ']]
+        allHauler = untin[['å‡ºè·äºˆå®šæ—¥','ä½æ‰€ï¼‘','ç´å…¥å…ˆåç§°ï¼‘','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰',
+                           'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰','weight','cans','ï¾„ï½°ï¾™','æ–°æ½Ÿ','ï½¹ï½²ï¾‹ï¾',
+                           'ä¹…ç•™ç±³','ï¾„ï¾…ï¾å·®é¡','ä¾é ¼å…ˆ','è¼¸å‡ºå‘å…ˆ']]
 
-        # ˆË—Šæ‚Ìlist‚ğƒŠƒeƒ‰ƒ‹‚É‚µ‚Ä‚¨‚­
+        # ä¾é ¼å…ˆã®listã‚’ãƒªãƒ†ãƒ©ãƒ«ã«ã—ã¦ãŠã
         allHauler2 = allHauler.copy()
-        allHauler2.loc[:,'ˆË—Šæ'] = allHauler2['ˆË—Šæ'].map(lambda x : x[0])
-        allHauler_sort = allHauler2.sort_values('ˆË—Šæ')
+        allHauler2.loc[:,'ä¾é ¼å…ˆ'] = allHauler2['ä¾é ¼å…ˆ'].map(lambda x : x[0])
+        allHauler_sort = allHauler2.sort_values('ä¾é ¼å…ˆ')
 
 
         return allHauler_sort
@@ -276,77 +276,77 @@ class Ajust_honsya:
 
     def get_packingHinban(self, moto, allHauler):
         
-        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
-        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
-        packingHinban = moto_addHinban[['o‰×—\’è“ú', 'ˆË—Šæ','cans','weight','“¾ˆÓæƒR[ƒh',
-                                        '”[“üæƒR[ƒh','”[“üæ–¼Ì‚P', 'hinban', '•i–¼',
-                                        'ó’”—Ê','ó’’PˆÊ','“¾ˆÓæ’•¶‚m‚n',
-                                        '”õl','o‰×','o‰×—\’è‘qŒÉ','—AoŒüæ',
-                                        '”[Šú', 'ó’‚m‚n', 'ó’s‚m‚n','add']]
+        allHauler = allHauler[['ä½æ‰€ï¼‘','ä¾é ¼å…ˆ','è¼¸å‡ºå‘å…ˆ']]
+        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='ä½æ‰€ï¼‘')
+        packingHinban = moto_addHinban[['å‡ºè·äºˆå®šæ—¥', 'ä¾é ¼å…ˆ','cans','weight','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰',
+                                        'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰','ç´å…¥å…ˆåç§°ï¼‘', 'hinban', 'å“å',
+                                        'å—æ³¨æ•°é‡','å—æ³¨å˜ä½','å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯',
+                                        'å‚™è€ƒ','å‡ºè·','å‡ºè·äºˆå®šå€‰åº«','è¼¸å‡ºå‘å…ˆ',
+                                        'ç´æœŸ', 'å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯','add']]
 
 
-        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # é‹é€å±‹ï¼ˆä¾é ¼å…ˆï¼‰ãŒNaNã®å ´åˆã¯No dataã«ã™ã‚‹>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        packingHinban = packingHinban.fillna({'ˆË—Šæ':'NoData'})
+        packingHinban = packingHinban.fillna({'ä¾é ¼å…ˆ':'NoData'})
 
 
-        # Ÿ‰ñ¿‹‚ğ‹‚ß‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # æ¬¡å›è«‹æ±‚ã‚’æ±‚ã‚ã‚‹>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         closeDate = CloseDate()
 
         packingHinban2 = packingHinban.copy() 
-        packingHinban2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+        packingHinban2[['å‡ºè·äºˆå®šæ—¥','ç´æœŸ','æ›œæ—¥','closeDate']] = \
         packingHinban2.apply(closeDate.get_closeDate, axis=1)
 
         packingHinban3 = packingHinban2.copy()
-        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
             closeDate.get_jikai, axis = 1)
 
-        # ¬Aw‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # æˆã€æŒ‡ã‚’æ±‚ã‚ã‚‹<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         add_data = AddData()
         
-        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                   add_data.get_coa, axis = 1)
 
         
         del add_data
         #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # æ›œæ—¥é•ã„ã‚’æ±‚ã‚ã‚‹<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         lead_time = LeadTime()
 
-        packingHinban3.loc[:,'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                 lead_time.get_youbi, axis = 1)
 
         del lead_time
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        #  “y—j”z’B‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        #  åœŸæ›œé…é”ã‚’åˆ¤å®š<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         def get_dohai(df_row):
-            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
-            week = df_row['—j“ú']
+            syukka_souko = df_row['å‡ºè·äºˆå®šå€‰åº«']
+            week = df_row['æ›œæ—¥']
 
-            if week == '“y':
-                syukka_souko.append('“y—j”z’B')
+            if week == 'åœŸ':
+                syukka_souko.append('åœŸæ›œé…é”')
             return syukka_souko
 
-        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:, 'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                 get_dohai, axis = 1)
 
         
-        #  ‰c‹ÆŠ~‚ß‚ğ”»’è<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        #  å–¶æ¥­æ‰€æ­¢ã‚ã‚’åˆ¤å®š<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         def get_siten_tome(df_row):
-            syukka_souko = df_row['o‰×—\’è‘qŒÉ']
-            bikou = df_row['”õl']
+            syukka_souko = df_row['å‡ºè·äºˆå®šå€‰åº«']
+            bikou = df_row['å‚™è€ƒ']
 
-            if bikou.find('x“X~‚ß') >= 0 or bikou.find('x“X‚Ç‚ß') >= 0 or \
-                bikou.find('‰c‹ÆŠ~‚ß') >= 0 or bikou.find('‰c‹ÆŠ‚Ç‚ß') >= 0 :
-                syukka_souko.append('‰c‹ÆŠ')
+            if bikou.find('æ”¯åº—æ­¢ã‚') >= 0 or bikou.find('æ”¯åº—ã©ã‚') >= 0 or \
+                bikou.find('å–¶æ¥­æ‰€æ­¢ã‚') >= 0 or bikou.find('å–¶æ¥­æ‰€ã©ã‚') >= 0 :
+                syukka_souko.append('å–¶æ¥­æ‰€')
             return syukka_souko
 
 
-        packingHinban3.loc[:, 'o‰×—\’è‘qŒÉ'] = packingHinban3.apply(
+        packingHinban3.loc[:, 'å‡ºè·äºˆå®šå€‰åº«'] = packingHinban3.apply(
                 get_siten_tome, axis = 1)
         
 
@@ -357,17 +357,17 @@ class Ajust_honsya:
 
 
     def get_untinForUriage(self,moto, allHauler):
-        allHauler = allHauler[['ZŠ‚P','ˆË—Šæ','—AoŒüæ']]
-        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='ZŠ‚P')
-        untinForUriage = moto_addHauler[['o‰×—\’è“ú','“¾ˆÓæƒR[ƒh',
-                                         '”[“üæƒR[ƒh','ˆË—Šæ','”õl',
-                                         'o‰×—\’è‘qŒÉ','ó’‚m‚n','ó’s‚m‚n',
-                                         '“¾ˆÓæ’•¶‚m‚n','•i”Ô','hinban',
-                                         'cans','”[Šú', 'toyo_untin', '—AoŒüæ','o‰×','add']]
+        allHauler = allHauler[['ä½æ‰€ï¼‘','ä¾é ¼å…ˆ','è¼¸å‡ºå‘å…ˆ']]
+        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='ä½æ‰€ï¼‘')
+        untinForUriage = moto_addHauler[['å‡ºè·äºˆå®šæ—¥','å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰',
+                                         'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰','ä¾é ¼å…ˆ','å‚™è€ƒ',
+                                         'å‡ºè·äºˆå®šå€‰åº«','å—æ³¨ï¼®ï¼¯','å—æ³¨è¡Œï¼®ï¼¯',
+                                         'å¾—æ„å…ˆæ³¨æ–‡ï¼®ï¼¯','å“ç•ª','hinban',
+                                         'cans','ç´æœŸ', 'toyo_untin', 'è¼¸å‡ºå‘å…ˆ','å‡ºè·','add']]
 
-        # ‰^‘—‰®iˆË—Šæj‚ªNaN‚Ìê‡‚ÍNo data‚É‚·‚é>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # é‹é€å±‹ï¼ˆä¾é ¼å…ˆï¼‰ãŒNaNã®å ´åˆã¯No dataã«ã™ã‚‹>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        untinForUriage = untinForUriage.fillna({'ˆË—Šæ':'NoData'})
+        untinForUriage = untinForUriage.fillna({'ä¾é ¼å…ˆ':'NoData'})
 
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -375,16 +375,16 @@ class Ajust_honsya:
         closeDate = CloseDate()
 
         untinForUriage2 = untinForUriage.copy() 
-        untinForUriage2[['o‰×—\’è“ú','”[Šú','—j“ú','closeDate']] = \
+        untinForUriage2[['å‡ºè·äºˆå®šæ—¥','ç´æœŸ','æ›œæ—¥','closeDate']] = \
                 untinForUriage2.apply(closeDate.get_closeDate, axis=1)
 
         del closeDate
 
-        # —j“úˆá‚¢‚ğ‹‚ß‚é<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # æ›œæ—¥é•ã„ã‚’æ±‚ã‚ã‚‹<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         lead_time = LeadTime()
 
-        untinForUriage2.loc[:,'o‰×—\’è‘qŒÉ'] = untinForUriage2.apply(
+        untinForUriage2.loc[:,'å‡ºè·äºˆå®šå€‰åº«'] = untinForUriage2.apply(
                 lead_time.get_youbi, axis = 1)
 
         del lead_time
@@ -393,7 +393,7 @@ class Ajust_honsya:
         zaiko = Zaiko(self.myfolder)
         recorder = Recorder(self.myfolder)
 
-        txt ='”„ãˆ—“ü—Í—pÃŞ°Ài–{Ğj' 
+        txt ='å£²ä¸Šå‡¦ç†å…¥åŠ›ç”¨ï¾ƒï¾ï½°ï¾€ï¼ˆæœ¬ç¤¾ï¼‰' 
         recorder.out_log(txt, '\n')
         recorder.out_file(txt, '\n')
 
@@ -413,13 +413,13 @@ class Ajust_honsya:
 
 
     def get_packingCoa(self, packingHinban, untinForUriage):
-        lot_data = untinForUriage[['ó’‚m‚n', 'ó’s‚m‚n', 'lot']]
-        packingCoa = pd.merge(packingHinban, lot_data, on =['ó’‚m‚n', 'ó’s‚m‚n'] 
+        lot_data = untinForUriage[['å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯', 'lot']]
+        packingCoa = pd.merge(packingHinban, lot_data, on =['å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯'] 
                 , how = 'left')
 
         packingCoa = packingCoa[[
-            'o‰×—\’è“ú', '“¾ˆÓæƒR[ƒh', '”[“üæƒR[ƒh', '”[“üæ–¼Ì‚P', 
-            'hinban', 'o‰×', 'ó’‚m‚n', 'ó’s‚m‚n', 'lot'
+            'å‡ºè·äºˆå®šæ—¥', 'å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰', 'ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰', 'ç´å…¥å…ˆåç§°ï¼‘', 
+            'hinban', 'å‡ºè·', 'å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯', 'lot'
         ]]
 
         return packingCoa

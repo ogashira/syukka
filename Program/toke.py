@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 from packing import *
@@ -37,35 +37,35 @@ class Toke:
             self.untinForUriage = ajust_toke.get_untinForUriage(self.toke_moto,
                     self.allHauler)
 
-            # untinForUriage‚ÉpackingHinban‚Ì'o‰×—\’è‘qŒÉ'‚ğæ‚è“ü‚ê‚é>>>>>>>>>
-            # ‚±‚Ì“_‚ÅuntinForUriage‚©‚ço‰×—\’è‘qŒÉ‚ğíœ‚µ‚ÄApackingHinban‚Ì
-            # o‰×—\’è‘qŒÉ‚ğŒ‹‡‚·‚é‚Ì‚ÅArobot_log‚Å•\¦‚³‚ê‚éo‰×—\’è‘qŒÉ‚Í
-            # “ü‚ê‘Ö‚¦‘O‚Ì‚à‚Ì‚Æ‚È‚éB
-            merge_data = self.packingHinban[['ó’‚m‚n', 'ó’s‚m‚n', 
-                                                             'o‰×—\’è‘qŒÉ']]
-            UU = self.untinForUriage.drop(columns = 'o‰×—\’è‘qŒÉ')
+            # untinForUriageã«packingHinbanã®'å‡ºè·äºˆå®šå€‰åº«'ã‚’å–ã‚Šå…¥ã‚Œã‚‹>>>>>>>>>
+            # ã“ã®æ™‚ç‚¹ã§untinForUriageã‹ã‚‰å‡ºè·äºˆå®šå€‰åº«ã‚’å‰Šé™¤ã—ã¦ã€packingHinbanã®
+            # å‡ºè·äºˆå®šå€‰åº«ã‚’çµåˆã™ã‚‹ã®ã§ã€robot_logã§è¡¨ç¤ºã•ã‚Œã‚‹å‡ºè·äºˆå®šå€‰åº«ã¯
+            # å…¥ã‚Œæ›¿ãˆå‰ã®ã‚‚ã®ã¨ãªã‚‹ã€‚
+            merge_data = self.packingHinban[['å—æ³¨ï¼®ï¼¯', 'å—æ³¨è¡Œï¼®ï¼¯', 
+                                                             'å‡ºè·äºˆå®šå€‰åº«']]
+            UU = self.untinForUriage.drop(columns = 'å‡ºè·äºˆå®šå€‰åº«')
             
-            self.untinForUriage = pd.merge(UU, merge_data, on= ['ó’‚m‚n', 
-                                                    'ó’s‚m‚n'], how = 'left')
+            self.untinForUriage = pd.merge(UU, merge_data, on= ['å—æ³¨ï¼®ï¼¯', 
+                                                    'å—æ³¨è¡Œï¼®ï¼¯'], how = 'left')
 
 
 
             
-            #untinForUriage‚ğ‚¢‚Á‚½‚ñ•Û‘¶
-            filePath_eigyou = '{}/{}‰c‹Æ_uriage.xlsx'.format(self.myfolder, '“y‹C')
+            #untinForUriageã‚’ã„ã£ãŸã‚“ä¿å­˜
+            filePath_eigyou = '{}/{}å–¶æ¥­_uriage.xlsx'.format(self.myfolder, 'åœŸæ°—')
             self.untinForUriage.to_excel(filePath_eigyou)
 
             
 
             gyoumu = Gyoumu(self.myfolder)
 
-            # sorting‚ğì‚Á‚ÄAƒGƒNƒZƒ‹‚Å•Û‘¶
-            self.sorting = gyoumu.get_sorting(self.packingHinban, self.myfolder, '“y‹C')
-            filePath_gyoumu = '{}/{}‹Æ–±_packing.xlsx'.format(self.myfolder, '“y‹C')
+            # sortingã‚’ä½œã£ã¦ã€ã‚¨ã‚¯ã‚»ãƒ«ã§ä¿å­˜
+            self.sorting = gyoumu.get_sorting(self.packingHinban, self.myfolder, 'åœŸæ°—')
+            filePath_gyoumu = '{}/{}æ¥­å‹™_packing.xlsx'.format(self.myfolder, 'åœŸæ°—')
             
-            # sorting‚ÌƒXƒ^ƒCƒ‹’²®‚µ‚ÄÄ•Û‘¶
+            # sortingã®ã‚¹ã‚¿ã‚¤ãƒ«èª¿æ•´ã—ã¦å†ä¿å­˜
             gyoumu.get_excel_style(filePath_gyoumu)
-            # untinForUriage‚ÌƒXƒ^ƒCƒ‹’²®‚µ‚ÄÄ•Û‘¶
+            # untinForUriageã®ã‚¹ã‚¿ã‚¤ãƒ«èª¿æ•´ã—ã¦å†ä¿å­˜
             gyoumu.get_excel_style(filePath_eigyou)
 
 
@@ -86,32 +86,32 @@ class Toke:
 
 
 
-    #Œ³ƒf[ƒ^(toke)‚ğæ“¾‚·‚é
+    #å…ƒãƒ‡ãƒ¼ã‚¿(toke)ã‚’å–å¾—ã™ã‚‹
     def get_toke_moto(self):
         return self.toke_moto
 
-    #‰^’Àƒf[ƒ^(toke)‚ğæ“¾‚·‚é
+    #é‹è³ƒãƒ‡ãƒ¼ã‚¿(toke)ã‚’å–å¾—ã™ã‚‹
     def get_toke_untin(self):
         return self.toke_untin
 
-    #‘S‰^’À•\‚ğæ“¾‚·‚é
+    #å…¨é‹è³ƒè¡¨ã‚’å–å¾—ã™ã‚‹
     def get_allHauler(self):
         return self.allHauler
 
-    #d•ª‚¯•\‚ÌŒ³‚ğæ“¾‚·‚é
+    #ä»•åˆ†ã‘è¡¨ã®å…ƒã‚’å–å¾—ã™ã‚‹
     def get_packingHinban(self):
         return self.packingHinban
 
-    # d•ª‚¯•\‚ğæ“¾‚·‚é
+    # ä»•åˆ†ã‘è¡¨ã‚’å–å¾—ã™ã‚‹
     def get_sorting(self):
         return self.sorting
     
 
-    #”„ã“ü—Í—pÃŞ°À‚ğæ“¾‚·‚é
+    #å£²ä¸Šå…¥åŠ›ç”¨ï¾ƒï¾ï½°ï¾€ã‚’å–å¾—ã™ã‚‹
     def get_untinForUriage(self):
         return self.untinForUriage
 
-    # ¬Ñ•\—pd•ª‚¯•\‚ğæ“¾‚·‚é
+    # æˆç¸¾è¡¨ç”¨ä»•åˆ†ã‘è¡¨ã‚’å–å¾—ã™ã‚‹
     def get_packingCoa(self):
         return self.packingCoa
 

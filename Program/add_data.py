@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import openpyxl
 import pandas as pd
@@ -9,19 +9,19 @@ class AddData(object):
 
     def __init__(self):
 
-    #—Ao“h—¿˜A—•\‚Ìæ“¾
+    #è¼¸å‡ºå¡—æ–™é€£çµ¡è¡¨ã®å–å¾—
         if os.name == 'nt':
             wb = openpyxl.load_workbook(
-                r'//192.168.1.247/‹¤—L/‰c‹Æ‰ÛÌ«ÙÀŞ/ŸN“c/™™™/”„ãˆ—(…–ì‰Û’·—p)/' \
-                r'o‰×“Y•tƒŠƒXƒg(20200731“_ÅV”Å).xlsx', data_only=True
+                r'//192.168.1.247/å…±æœ‰/å–¶æ¥­èª²ï¾Œï½«ï¾™ï¾€ï¾/æ«»ç”°/â˜†â˜†â˜†/å£²ä¸Šå‡¦ç†(æ°´é‡èª²é•·ç”¨)/' \
+                r'å‡ºè·æ™‚æ·»ä»˜ãƒªã‚¹ãƒˆ(20200731æ™‚ç‚¹æœ€æ–°ç‰ˆ).xlsx', data_only=True
             )
         else:
             wb = openpyxl.load_workbook(
-               r'../master/o‰×“Y•tƒŠƒXƒg(20200731“_ÅV”Å).xlsx', data_only=True
+               r'../master/å‡ºè·æ™‚æ·»ä»˜ãƒªã‚¹ãƒˆ(20200731æ™‚ç‚¹æœ€æ–°ç‰ˆ).xlsx', data_only=True
             )
-        ws = wb['¬Ñ•\']
+        ws = wb['æˆç¸¾è¡¨']
         
-        #“ñŸŒ³Ø½Ä‚É‚·‚é
+        #äºŒæ¬¡å…ƒï¾˜ï½½ï¾„ã«ã™ã‚‹
         self.coa_list = []
         for row in ws.rows:
             rows = []
@@ -30,9 +30,9 @@ class AddData(object):
             self.coa_list.append(rows)
 
 
-        ws = wb['w’è“`•[']
+        ws = wb['æŒ‡å®šä¼ç¥¨']
         
-        #“ñŸŒ³Ø½Ä‚É‚·‚é
+        #äºŒæ¬¡å…ƒï¾˜ï½½ï¾„ã«ã™ã‚‹
         self.sitei_denpyou = []
         for row in ws.rows:
             rows = []
@@ -42,24 +42,24 @@ class AddData(object):
 
 
     def get_coa(self, df_row):
-        tokui_code = df_row['“¾ˆÓæƒR[ƒh']
-        nounyuu_code = df_row['”[“üæƒR[ƒh']
+        tokui_code = df_row['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰']
+        nounyuu_code = df_row['ç´å…¥å…ˆã‚³ãƒ¼ãƒ‰']
         hinban =  df_row['hinban']
 
         if pd.isnull(nounyuu_code):
             nounyuu_code = None
 
-        yoteisouko_list = df_row['o‰×—\’è‘qŒÉ']
+        yoteisouko_list = df_row['å‡ºè·äºˆå®šå€‰åº«']
 
         for line in self.coa_list:
             if tokui_code == line[0] and nounyuu_code == line[1] and hinban == line[3]:
-                yoteisouko_list.append('¬')
+                yoteisouko_list.append('æˆ')
                 break
 
 
         for line in self.sitei_denpyou:
             if tokui_code == line[0] and nounyuu_code == line[1]:
-                yoteisouko_list.append('w')
+                yoteisouko_list.append('æŒ‡')
                 break
 
 

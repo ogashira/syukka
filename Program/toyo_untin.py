@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import csv
 import pandas as pd
@@ -35,8 +35,8 @@ class Toyo_untin:
     def get_toyoUntin(self):
         
         def calc_ncan(code,name):
-            ncan = self.moto.loc[(self.moto['“¾ˆÓæƒR[ƒh']== code) 
-                    & (self.moto['”[“üæ–¼Ì‚P']==name),'cans'].sum()
+            ncan = self.moto.loc[(self.moto['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰']== code) 
+                    & (self.moto['ç´å…¥å…ˆåç§°ï¼‘']==name),'cans'].sum()
 
 
             return ncan
@@ -46,9 +46,9 @@ class Toyo_untin:
 
 
         def get_untin(df_row):
-            code = df_row['“¾ˆÓæƒR[ƒh']
-            name = df_row['”[“üæ–¼Ì‚P']
-            ncan_jutyuu = df_row['ó’‰^’ÀnŠÊ']
+            code = df_row['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰']
+            name = df_row['ç´å…¥å…ˆåç§°ï¼‘']
+            ncan_jutyuu = df_row['å—æ³¨æ™‚é‹è³ƒnç¼¶']
             cans = df_row['cans']
             ireme = df_row['ireme']
             key_tpl = (code, name)
@@ -91,6 +91,6 @@ class Toyo_untin:
 
         
         c_moto = self.moto.copy()
-        c_moto[['’Ç‰ÁŒã‰^’ÀnŠÊ','toyo_untin']] = c_moto.apply(get_untin, axis=1)
+        c_moto[['è¿½åŠ å¾Œé‹è³ƒnç¼¶','toyo_untin']] = c_moto.apply(get_untin, axis=1)
 
         return c_moto

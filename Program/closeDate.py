@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
@@ -29,59 +29,59 @@ class CloseDate:
 
     def get_closeDate(self, df_row):
         
-        tokuisakiCode = df_row['“¾ˆÓæƒR[ƒh']
-        syukkabi = str(df_row['o‰×—\’è“ú'])
-        nouki = str(df_row['”[Šú'])
+        tokuisakiCode = df_row['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰']
+        syukkabi = str(df_row['å‡ºè·äºˆå®šæ—¥'])
+        nouki = str(df_row['ç´æœŸ'])
 
 
-        syukkabi_Y = syukkabi[0:4] #o‰×“ú‚Ì”N string
-        syukkabi_M = syukkabi[4:6] #o‰×“ú‚ÌŒ string
-        syukkabi_D = syukkabi[6:]  #o‰×“ú‚Ì“ú string
+        syukkabi_Y = syukkabi[0:4] #å‡ºè·æ—¥ã®å¹´ string
+        syukkabi_M = syukkabi[4:6] #å‡ºè·æ—¥ã®æœˆ string
+        syukkabi_D = syukkabi[6:]  #å‡ºè·æ—¥ã®æ—¥ string
 
-        # nouki_M = nouki.split('/')[0]  #”[Šú‚ÌŒ string
-        # nouki_D = nouki.split('/')[1]  #”[Šú‚Ì“ú string
+        # nouki_M = nouki.split('/')[0]  #ç´æœŸã®æœˆ string
+        # nouki_D = nouki.split('/')[1]  #ç´æœŸã®æ—¥ string
         nouki_M = nouki[4:6]
         nouki_D = nouki[6:]
         nouki_Y = nouki[:4]
 
         '''
-        #nouki_Y‚ğ‹‚ß‚é
+        #nouki_Yã‚’æ±‚ã‚ã‚‹
         if int(syukkabi_M) == 12 and int(nouki_M) == 1:
             nouki_Y = str(int(syukkabi_Y) + 1)
         else:
             nouki_Y = syukkabi_Y
         '''
 
-        # o‰×“ú‚Æ”[Šú‚Ì”NŒ“ú‚ğ‹‚ß‚é 
+        # å‡ºè·æ—¥ã¨ç´æœŸã®å¹´æœˆæ—¥ã‚’æ±‚ã‚ã‚‹ 
         syukkabi_YMD = syukkabi_Y + '/' + syukkabi_M + '/' + syukkabi_D
         nouki_YMD = nouki_Y + '/' + nouki_M + '/' + nouki_D
         nouki = datetime.strptime(nouki_YMD, '%Y/%m/%d')
-        nouki_YMD = nouki.strftime('%Y/%m/%d')  # nouki_YMD‚ğ@**/**/** ‚É‚·‚é
+        nouki_YMD = nouki.strftime('%Y/%m/%d')  # nouki_YMDã‚’ã€€**/**/** ã«ã™ã‚‹
 
 
-        close_D = self.closeDate[tokuisakiCode]  #’÷‚ß‚Ì“ú
+        close_D = self.closeDate[tokuisakiCode]  #ç· ã‚ã®æ—¥
 
 
-        # nouki ‚Í@datetaime 
-        if close_D == '31':  #’÷‚ß‚ª31‚È‚ç”[Šú‚ÌŒ‚Ì––”ö
+        # nouki ã¯ã€€datetaime 
+        if close_D == '31':  #ç· ã‚ãŒ31ãªã‚‰ç´æœŸã®æœˆã®æœ«å°¾
             close = (nouki + relativedelta(months=1)).replace(day=1)  \
             - timedelta(days=1)
-        elif close_D == '1':  #’÷‚ß‚ª1“ú‚È‚çA
+        elif close_D == '1':  #ç· ã‚ãŒ1æ—¥ãªã‚‰ã€
             if nouki_D =='1':
-                close = nouki  #”[Šú‚ª1“ú‚È‚çA”[Šú‚Æ“¯‚¶“úA
-            else:                   #‚»‚êˆÈŠO‚ÍA”[Šú‚Ì—‚Œ‚Ì1“ú
+                close = nouki  #ç´æœŸãŒ1æ—¥ãªã‚‰ã€ç´æœŸã¨åŒã˜æ—¥ã€
+            else:                   #ãã‚Œä»¥å¤–ã¯ã€ç´æœŸã®ç¿Œæœˆã®1æ—¥
                 close = (nouki + relativedelta(months=1)).replace(day=1) 
         else: 
-            #’÷‚ß‚ª1“ú‚Å‚à31“ú‚Å‚à‚È‚¢ê‡‚ÍA
-            #’÷‚ß“ú‚ª”[Šú“úˆÈã‚¾‚Á‚½‚çA”[Šú‚ÌŒ‚Ì’÷‚ß“úA
+            #ç· ã‚ãŒ1æ—¥ã§ã‚‚31æ—¥ã§ã‚‚ãªã„å ´åˆã¯ã€
+            #ç· ã‚æ—¥ãŒç´æœŸæ—¥ä»¥ä¸Šã ã£ãŸã‚‰ã€ç´æœŸã®æœˆã®ç· ã‚æ—¥ã€
             if int(close_D) - int(nouki_D) >= 0 :  
                 close = nouki.replace(day= int(close_D))
             else:
-                #’÷‚ß“ú‚Ì•û‚ª¬‚³‚©‚Á‚½‚çA”[Šú‚Ì—‚Œ‚Ì’÷‚ß“úB                                   
+                #ç· ã‚æ—¥ã®æ–¹ãŒå°ã•ã‹ã£ãŸã‚‰ã€ç´æœŸã®ç¿Œæœˆã®ç· ã‚æ—¥ã€‚                                   
                 close = (nouki + relativedelta(months=1)).replace(day= int(close_D))
                 
         week = datetime.strptime(nouki_YMD, '%Y/%m/%d').weekday()
-        w_list = ['Œ','‰Î','…','–Ø','‹à','“y','“ú']
+        w_list = ['æœˆ','ç«','æ°´','æœ¨','é‡‘','åœŸ','æ—¥']
         weekDay = w_list[week]
         close = close.strftime('%Y/%m/%d')
 
@@ -91,42 +91,42 @@ class CloseDate:
 
     def get_jikai(self, df_row):
         
-        tokuisakiCode = df_row['“¾ˆÓæƒR[ƒh']
-        syukkabi_YMD = str(df_row['o‰×—\’è“ú'])
+        tokuisakiCode = df_row['å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰']
+        syukkabi_YMD = str(df_row['å‡ºè·äºˆå®šæ—¥'])
         closeDate_YMD = df_row['closeDate']
         syukkaYoteiSouko = []
 
 
-        syukkabi_Y = syukkabi_YMD.split('/')[0] #o‰×“ú‚Ì”N string
-        syukkabi_M = syukkabi_YMD.split('/')[1] #o‰×“ú‚ÌŒ string
-        syukkabi_D = syukkabi_YMD.split('/')[2]   #o‰×“ú‚Ì“ú string
+        syukkabi_Y = syukkabi_YMD.split('/')[0] #å‡ºè·æ—¥ã®å¹´ string
+        syukkabi_M = syukkabi_YMD.split('/')[1] #å‡ºè·æ—¥ã®æœˆ string
+        syukkabi_D = syukkabi_YMD.split('/')[2]   #å‡ºè·æ—¥ã®æ—¥ string
 
 
-        close_D = self.closeDate[tokuisakiCode]  #’÷‚ß‚Ì“ú
+        close_D = self.closeDate[tokuisakiCode]  #ç· ã‚ã®æ—¥
 
 
         
         closeDate = datetime.strptime(closeDate_YMD, '%Y/%m/%d')
         syukkabi = datetime.strptime(syukkabi_YMD, '%Y/%m/%d')
-        if close_D == '31':  #’÷‚ß‚ª31‚È‚ço‰×“ú‚ÌŒ‚Ì––”ö
+        if close_D == '31':  #ç· ã‚ãŒ31ãªã‚‰å‡ºè·æ—¥ã®æœˆã®æœ«å°¾
             effit_close = (syukkabi + relativedelta(months=1)).replace(day=1)  \
             - timedelta(days=1)
-        elif close_D == '1':  #’÷‚ß‚ª1“ú‚È‚çA
+        elif close_D == '1':  #ç· ã‚ãŒ1æ—¥ãªã‚‰ã€
             if syukkabi_D =='1':
-                effit_close = syukkabi  #o‰×“ú‚ª1“ú‚È‚çAo‰×“ú‚Æ“¯‚¶“úA
-            else:                   #‚»‚êˆÈŠO‚ÍAo‰×“ú‚Ì—‚Œ‚Ì1“ú
+                effit_close = syukkabi  #å‡ºè·æ—¥ãŒ1æ—¥ãªã‚‰ã€å‡ºè·æ—¥ã¨åŒã˜æ—¥ã€
+            else:                   #ãã‚Œä»¥å¤–ã¯ã€å‡ºè·æ—¥ã®ç¿Œæœˆã®1æ—¥
                 effit_close = (syukkabi + relativedelta(months=1)).replace(day=1) 
         else: 
-            #’÷‚ß‚ª1“ú‚Å‚à31“ú‚Å‚à‚È‚¢ê‡‚ÍA
-            #’÷‚ß“ú‚ªo‰×“úˆÈã‚¾‚Á‚½‚çA o‰×“ú‚ÌŒ‚Ì’÷‚ß“úA
+            #ç· ã‚ãŒ1æ—¥ã§ã‚‚31æ—¥ã§ã‚‚ãªã„å ´åˆã¯ã€
+            #ç· ã‚æ—¥ãŒå‡ºè·æ—¥ä»¥ä¸Šã ã£ãŸã‚‰ã€ å‡ºè·æ—¥ã®æœˆã®ç· ã‚æ—¥ã€
             if int(close_D) - int(syukkabi_D) >= 0 :  
                 effit_close = syukkabi.replace(day= int(close_D))
             else:
-                #’÷‚ß“ú‚Ì•û‚ª¬‚³‚©‚Á‚½‚çAo‰×“ú‚Ì—‚Œ‚Ì’÷‚ß“úB                                   
+                #ç· ã‚æ—¥ã®æ–¹ãŒå°ã•ã‹ã£ãŸã‚‰ã€å‡ºè·æ—¥ã®ç¿Œæœˆã®ç· ã‚æ—¥ã€‚                                   
                 effit_close = (syukkabi + relativedelta(months=1)).replace(day= int(close_D))
                 
         if closeDate != effit_close:
-            syukkaYoteiSouko.append('Ÿ')
+            syukkaYoteiSouko.append('æ¬¡')
 
         return syukkaYoteiSouko
 

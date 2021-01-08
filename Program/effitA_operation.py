@@ -1,5 +1,5 @@
 #! python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 from effitA import EffitA
@@ -24,7 +24,7 @@ del eigyoubi
 
 
 dt_now = datetime.now().strftime('%Y%m%d_%H%M%S')
-myfolder = r'//192.168.1.247/‹¤—L/‰c‹Æ‰ÛÌ«ÙÀŞ/01o‰×OutPut/' + dt_now
+myfolder = r'//192.168.1.247/å…±æœ‰/å–¶æ¥­èª²ï¾Œï½«ï¾™ï¾€ï¾/01å‡ºè·OutPut/' + dt_now
 os.makedirs(myfolder)
 
 
@@ -38,13 +38,13 @@ def start():
     effita = EffitA(myfolder)
     effita.launch_effitA()
     effita.launch_DBmanager2()
-    effita.dl_DBmanager2('‰^’ÀŒvZ¼°Ä_‰ü', yokujitu)
-    recorder.out_log('‰^’ÀŒvZ¼°Ä_‰ü‚ğƒ_ƒEƒ“ƒ[ƒhA•Û‘¶‚µ‚Ü‚µ‚½', '\n')
-    effita.dl_DBmanager2('ó’DT', sengetu, honjitu)
-    recorder.out_log('ó’DT‚ğƒ_ƒEƒ“ƒ[ƒhA•Û‘¶‚µ‚Ü‚µ‚½','\n')
+    effita.dl_DBmanager2('é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹', yokujitu)
+    recorder.out_log('é‹è³ƒè¨ˆç®—ï½¼ï½°ï¾„_æ”¹ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã€ä¿å­˜ã—ã¾ã—ãŸ', '\n')
+    effita.dl_DBmanager2('å—æ³¨DT', sengetu, honjitu)
+    recorder.out_log('å—æ³¨DTã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã€ä¿å­˜ã—ã¾ã—ãŸ','\n')
     effita.close_DBmanager2()
     effita.dl_zaiko()
-    recorder.out_log('Œ»İŒÉ‚ğƒ_ƒEƒ“ƒ[ƒhA•Û‘¶‚µ‚Ü‚µ‚½','\n')
+    recorder.out_log('ç¾åœ¨åº«ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã€ä¿å­˜ã—ã¾ã—ãŸ','\n')
 
     toke = Toke(myfolder)
     packingHinban_toke = toke.get_packingHinban()
@@ -61,7 +61,7 @@ def start():
     del honsya
 
 
-    # kenpin,o‰×ÀÑÆ‰ïì¬
+    # kenpin,å‡ºè·å®Ÿç¸¾ç…§ä¼šä½œæˆ
     if not untinForUriage_toke.empty:
         kenpin_toke = Kenpin('toke', packingHinban_toke, untinForUriage_toke, myfolder)
         kenpin_toke.create_kenpin()
@@ -74,13 +74,13 @@ def start():
         kenpin_honsya.get_syukka_jisseki_syoukai()
         del kenpin_honsya
     
-    txt = '\n *********”„ã“ü—Í‚Ì‹L˜^********** \n'
+    txt = '\n *********å£²ä¸Šå…¥åŠ›ã®è¨˜éŒ²********** \n'
     recorder.out_log( txt)
     recorder.out_file(txt)
 
 
     
-    # ”„ã“ü—ÍÀ{
+    # å£²ä¸Šå…¥åŠ›å®Ÿæ–½
     if not untinForUriage_toke.empty:
         effita.launch_uriage_nyuuryoku('toke')
         effita.uriage_nyuuryoku(untinForUriage_toke)
@@ -94,7 +94,7 @@ def start():
         
     effita.close_effitA()    
     
-    txt = '”„ã“ü—ÍI—¹‚µ‚Ü‚µ‚½'
+    txt = 'å£²ä¸Šå…¥åŠ›çµ‚äº†ã—ã¾ã—ãŸ'
     recorder.out_log(txt, '\n')
     recorder.out_file(txt, '\n')
     
