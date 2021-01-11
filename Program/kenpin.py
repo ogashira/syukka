@@ -6,6 +6,7 @@ import numpy as np
 import re
 import csv
 import barcode
+import platform
 from barcode.writer import ImageWriter
 import openpyxl
 from openpyxl.styles.borders import Border, Side
@@ -21,7 +22,8 @@ class Kenpin(object):
     def __init__(self, factory, packingHinban, untinForUriage, myfolder):
         
         if factory == 'toke':
-            self.kenpin_folder = r'\\192.168.3.204\effitA_HT\送信データ\kenpin.csv' 
+            self.kenpin_folder = (r'\\192.168.3.204\effitA_HT\送信データ'
+                                    r'\kenpin.csv')
             self.syukka_koujou = '出荷工場：@0002 土気工場'
             self.factory = '土気'
         elif factory == 'honsya':
@@ -70,7 +72,9 @@ class Kenpin(object):
             cans = int(cans)
             syukkabi = syukkabi.replace('/', '')
             
-            return pd.Series([unsou, unsou_code, kubun, kubun_no, cans, syukkabi])
+            return pd.Series([unsou, unsou_code, kubun, kubun_no, cans,
+                            syukkabi]
+                            )
 
 
 
@@ -150,15 +154,20 @@ class Kenpin(object):
     def create_kenpin(self):
 
         df_kara2 = self.get_kenpin()
-        df_kara2 = df_kara2.loc[(df_kara2['輸出向先'] != 'y') & (df_kara2['hinban'] != '999998'), :]
-        df_kara2 = df_kara2[['unsou_code','unsou','kubun_no','kubun','出荷予定日','hinban','品名','lot','cans','受注数量']]
+        df_kara2 = df_kara2.loc[(df_kara2['輸出向先'] != 'y') & 
+                                (df_kara2['hinban'] != '999998'), :]
+        df_kara2 = df_kara2[['unsou_code','unsou','kubun_no','kubun',
+                            '出荷予定日','hinban','品名','lot','cans','受注数量']]
         
         try:
-            df_kara2.to_csv(self.kenpin_folder, index=False, header = False , encoding='cp932')
+            df_kara2.to_csv(self.kenpin_folder, index=False, header = False , 
+                            encoding='cp932')
         except Exception as ex:
             print('************kenpin.csv作成エラー****************')
-            print('Folderが見つからないので、{}のkenpin.csvをmyfolderに放り込みます'.format(self.factory))
-            df_kara2.to_csv(self.myfolder + '/kenpin_' + self.factory + '.csv', index=False, header = False , encoding='cp932')
+            print('Folderが見つからないので、{}のkenpin.csvをmyfolderに放り込みます'
+                .format(self.factory))
+            df_kara2.to_csv(self.myfolder + '/kenpin_' + self.factory + '.csv', 
+                index=False, header = False , encoding='cp932')
 
 
 
@@ -168,14 +177,23 @@ class Kenpin(object):
         
 
         # 相手先略称ﾃﾞｰﾀの取得
-        # nounyuusaki = pd.read_csv(r'//192.168.1.247/共有/受注check/master/order_nounyuusaki.csv', encoding = 'cp932')
-        nounyuusaki = pd.read_csv(r'../master/selfMade/order_nounyuusaki.csv', encoding = 'cp932')
+        pf = platform.system()
+        
+        if pf == 'Windows':
+            mypath = r'//192.168.1.247/共有/受注check/master/order_nounyuusaki.csv'
+        elif pf == 'Linux':
+            mypath = r'/mnt/public/受注check/master/order_nounyuusaki.csv'
+        else:
+            mypath = r'../master/selfMade/order_nounyuusaki.csv'
+            
+        nounyuusaki = pd.read_csv(mypath, encoding = 'cp932')
 
         #merge用データに加工する
         merge_data = nounyuusaki[['相手先コード１','相手先コード２','相手先略称']]
         merge_data = merge_data.rename(
-        columns = {'相手先コード１':'得意先コード', '相手先コード２':'納入先コード', '相手先略称':'納入先名'}
-        )
+            columns = {'相手先コード１':'得意先コード', '相手先コード２':'納入先コード',
+                       '相手先略称':'納入先名'}
+                    )
 
         # merge_dataのNaNを空文字にしておく。こうしないとmergeができない。
         merge_data = merge_data.fillna('')
@@ -183,9 +201,10 @@ class Kenpin(object):
         kenpin_moto = self.get_kenpin()
         kenpin_moto = kenpin_moto.fillna('')
         
-        kenpin_merge = pd.merge(kenpin_moto, merge_data, on = ['得意先コード', '納入先コード'], how = 'left')
+        kenpin_merge = pd.merge(kenpin_moto, merge_data, 
+                                on = ['得意先コード', '納入先コード'], how = 'left')
 
-        # unsou_codeとkubun_noのタプルをsetに入れて重複をなくす。>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # unsou_codeとkubun_noのタプルをsetに入れて重複をなくす。>>>>>>>>>>>>>
         # {(U0009, 1), (U0009, 4), (U0005, 1)......}
         unsou_set = set()
         for i in range(len(kenpin_merge)):
@@ -194,17 +213,19 @@ class Kenpin(object):
 
             t = (unsou_code, kubun_no)
             unsou_set.add(t)
-        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         i = 0
         wb = openpyxl.Workbook()
         for unsou_code, kubun_no in unsou_set:
 
-            kenpin_split = kenpin_merge.loc[(kenpin_merge['unsou_code']== unsou_code) & (kenpin_merge['kubun_no'] == kubun_no),:]
+            kenpin_split = kenpin_merge.loc[(kenpin_merge['unsou_code']== unsou_code) & 
+                                                (kenpin_merge['kubun_no'] == kubun_no),:]
             unsou = kenpin_split.iloc[0,3]
             kubun = kenpin_split.iloc[0,5]
 
-            unsou_gyousya = '運送業者：{} {}     配送区分：{} {}'.format(unsou_code, unsou, kubun_no, kubun)
+            unsou_gyousya = '運送業者：{} {}     配送区分：{} {}' \
+                .format(unsou_code, unsou, kubun_no, kubun)
 
             sheet_name = '{}_{}'.format(unsou, kubun)
             barcode_str = unsou_code + str(kubun_no)

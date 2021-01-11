@@ -15,7 +15,9 @@ class LeadTime(object):
         # 配達日数ﾃﾞｰﾀの取得
         pf = platform.system()
         if pf == 'Windows':
-            mypath = r'//192.168.1.247/共有/受注check/master/order_nounyuusaki.csv'
+            mypath = (
+                r'//192.168.1.247/共有/受注check/master/order_nounyuusaki.csv'
+            )
         elif pf == 'Linux':
             mypath = r'/mnt/public/受注check/master/order_nounyuusaki.csv'
         else:

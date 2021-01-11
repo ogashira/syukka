@@ -6,7 +6,7 @@ import datetime
 
 
 class UriageSumi(object):
-    
+
     def __init__ (self):
 
         uriage_sumi = pd.read_csv(
@@ -61,11 +61,11 @@ class UriageSumi(object):
 
         uriage_sumi = self.uriage_sumi.copy()
         uriage_sumi['dic_lot'] = uriage_sumi.apply(get_dic_lot, axis=1)
-        
+
         uriage_sumi = uriage_sumi.sort_values(['受注ＮＯ', '受注行ＮＯ'])
         uriage_sumi = uriage_sumi.reset_index()
 
-        
+
         for i in range(len(uriage_sumi)-1):
             JNo = uriage_sumi.loc[i, '受注ＮＯ']
             JGNo = uriage_sumi.loc[i, '受注行ＮＯ']
@@ -76,9 +76,9 @@ class UriageSumi(object):
                 add_dic_lot = uriage_sumi.loc[i+j, 'dic_lot']
                 add_lot = [k for k, v in add_dic_lot.items()][0]
                 add_cans = [v for k, v in add_dic_lot.items()][0]
-                
+
                 dic_lot[add_lot] = add_cans
-                
+
                 # .locではエラーになる。辞書やﾘｽﾄを代入するときは.atを使う
                 # .locでは複数選択の意味があるので単一セルしか選択できない.atを使う
                 uriage_sumi.at[i, 'dic_lot'] = dic_lot
@@ -92,15 +92,21 @@ class UriageSumi(object):
                 j += 1
 
         uriage_sumi2 = uriage_sumi.loc[uriage_sumi['得意先注文ＮＯ'] != 'del', :]
-                
+
         return uriage_sumi2
 
 
-    def uriage_check(self, untinForUriage):
+    def get_UU_sumi(self, untinForUriage):
 
         uriage_sumi = self.get_uriage_sumi()
         UU = untinForUriage
 
-        check_df = pd.merge(UU, uriage_sumi, on =['受注ＮＯ', '受注行ＮＯ'], how = 'left')
+        UU_sumi = pd.merge(UU, uriage_sumi, on =['受注ＮＯ', '受注行ＮＯ'], how = 'left')
 
-        return check_df
+        return UU_sumi
+
+'''
+    def check_sumi(self, UU_sumi):
+        
+        def check(df_row):
+'''
