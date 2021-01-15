@@ -150,10 +150,13 @@ class Ajust_toke:
     def get_untinForUriage(self, moto, allHauler):
         allHauler = allHauler[['住所１','依頼先','輸出向先']]
         moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='住所１')
-        untinForUriage = moto_addHauler[['出荷予定日','得意先コード','納入先コード',
-                                         '依頼先','備考','出荷予定倉庫','受注ＮＯ',
-                                         '受注行ＮＯ','得意先注文ＮＯ','品番','hinban',
-                                         'cans','納期', 'toyo_untin','輸出向先','出荷','add']]
+        untinForUriage = moto_addHauler[['出荷予定日','得意先コード',
+                                         '納入先コード','依頼先','備考',
+                                         '出荷予定倉庫','受注ＮＯ',
+                                         '受注行ＮＯ','得意先注文ＮＯ','品番',
+                                         '受注数量','hinban','cans','納期', 
+                                         'toyo_untin','輸出向先','出荷','add',
+                                         'sumi']]
 
 
         # 運送屋（依頼先）がNaNの場合はNo dataにする>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -362,8 +365,9 @@ class Ajust_honsya:
         untinForUriage = moto_addHauler[['出荷予定日','得意先コード',
                                          '納入先コード','依頼先','備考',
                                          '出荷予定倉庫','受注ＮＯ','受注行ＮＯ',
-                                         '得意先注文ＮＯ','品番','hinban',
-                                         'cans','納期', 'toyo_untin', '輸出向先','出荷','add']]
+                                         '得意先注文ＮＯ','品番','受注数量',
+                                         'hinban','cans','納期', 'toyo_untin', 
+                                         '輸出向先','出荷','add', 'sumi']]
 
         # 運送屋（依頼先）がNaNの場合はNo dataにする>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

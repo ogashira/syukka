@@ -148,12 +148,16 @@ class Packing :
         # UntinKeisanSheetに渡して、sheet_add_cntにする>>>>>>>>>>>>>>>>>>>>>>
         UKS = UntinKeisanSheet(moto_h)
         moto_h = UKS.sheet_add_cnt()
+
+        # 更に、sheet_add_sumi に渡して、入力済を識別する
+        moto_h2 = UKS.sheet_add_sumi(moto_h)
+
         del UKS
         #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 
-        moto_honsya = moto_h.copy()
+        moto_honsya = moto_h2.copy()
         #単位KGの場合、-1- →- , -1(最後)→消す
         moto_honsya.loc[moto_honsya['受注単位']=='KG','hinban'] = \
                 moto_honsya['品番'].map(change_hinban)

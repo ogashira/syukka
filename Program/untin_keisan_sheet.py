@@ -44,9 +44,23 @@ class UntinKeisanSheet(object):
         moto_add_after.to_csv(r'../tmp/{}/add_cnt.csv'.format(folder_name), 
                                                             encoding = 'cp932')
 
-
-
-
         return moto_add
 
-    
+
+    def sheet_add_sumi(self, moto):
+        uriage_mae = pd.read_csv(
+            r'../master/effitA/uriage_mae.csv',
+            skiprows = 1,
+            encoding= 'cp932'
+        )
+        uriage_mae = uriage_mae[['受注ＮＯ', '受注行ＮＯ']]
+        uriage_mae['sumi'] = '済'
+
+        moto_sumi = pd.merge(moto, uriage_mae, on = ['受注ＮＯ', '受注行ＮＯ'],
+                             how = 'left')
+        return moto_sumi
+        
+
+        
+
+

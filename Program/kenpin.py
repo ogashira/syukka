@@ -7,6 +7,7 @@ import re
 import csv
 import barcode
 import platform
+import pickle
 from barcode.writer import ImageWriter
 import openpyxl
 from openpyxl.styles.borders import Border, Side
@@ -46,13 +47,20 @@ class Kenpin(object):
 
     def get_kenpin(self):
         
+        # data.pickleからﾀﾞｳﾝﾛｰﾄﾞ
+        with open(r'./data.pickle', 'rb') as f:
+            data_loaded = pickle.load(f)
+
+        unsou_dic2 = data_loaded['unsou_dic2'] 
+        haisou_kubun = data_loaded['haisou_kubun']
+
         def get_kubun(df_row):
             iraisaki = df_row['依頼先']
             yotei_souko = df_row['出荷予定倉庫_y']
             syukkabi = df_row['出荷予定日']
             cans = df_row['cans']
-            unsou = unsou_dic[iraisaki][0]
-            unsou_code = unsou_dic[iraisaki][1]
+            unsou = unsou_dic2[iraisaki][0]
+            unsou_code = unsou_dic2[iraisaki][1]
             if '営業所' in yotei_souko:
                 kubun = '営業所'
                 kubun_no = 3
@@ -75,21 +83,6 @@ class Kenpin(object):
             return pd.Series([unsou, unsou_code, kubun, kubun_no, cans,
                             syukkabi]
                             )
-
-
-
-        unsou_dic = {'ﾄｰﾙ':['トール','U0001'], '新潟':['新潟運輸','U0009'], 
-                '名鉄':['名鉄','U0002'], '西濃':['西濃','U0003'], 
-                'ﾄﾅﾐ':['トナミ','U0004'], '福山':['福山','U0006'], 
-                '配達':['配達','U0008'], '佐川':['佐川急便','U0010'], 
-                'ｹｲﾋﾝ':['ケイヒン','U0007'], '久留米':['久留米','U0005'],
-                'npNan':['npNan','npNan'], 'NoData':['NoData', 'NoData'],
-                'NoCalc':['NoCalc','NoCalc']}
-        
-        haisou_kubun = {
-        '通常': 1, '土曜配達': 2, '営業所': 3, '曜日違い': 4, '祝日配達': 5
-        }
-
 
 
         merg_data = self.packingHinban[

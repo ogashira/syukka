@@ -9,6 +9,8 @@ from toke import *
 from honsya import *
 from recorder import Recorder
 from kenpin import *
+from uriage_sumi import *
+
 
 
 
@@ -60,11 +62,71 @@ def start():
     packingHinban_honsya = honsya.get_packingHinban()
     untinForUriage_honsya = honsya.get_untinForUriage()
 
-    import line
 
 
     del toke
     del honsya
+
+    
+    # 売上入力実施
+    if not untinForUriage_toke.empty:
+        effita.launch_uriage_nyuuryoku('toke')
+        effita.uriage_nyuuryoku(untinForUriage_toke)
+        effita.close_uriage_nyuuryoku()
+    
+    if not untinForUriage_honsya.empty:
+        effita.launch_uriage_nyuuryoku('honsya')
+        effita.uriage_nyuuryoku(untinForUriage_honsya)
+        effita.close_uriage_nyuuryoku()
+
+        
+    effita.close_effitA()    
+    
+    txt = '売上入力終了しました'
+    recorder.out_log(txt, '\n')
+    recorder.out_file(txt, '\n')
+
+
+    # 売上入力のﾁｪｯｸ
+    us = UriageSumi(myfolder)
+
+    if not untinForUriage_toke.empty:
+        UU_sumi_toke = us.get_UU_sumi(untinForUriage_toke)
+        us.check_sumi(UU_sumi_toke)
+
+    if not untinForUriage_honsya.empty:
+        UU_sumi_honsya = us.get_UU_sumi(untinForUriage_honsya)
+        us.check_sumi(UU_sumi_honsya)
+
+    del us
+
+
+    # 業務用packing(sorting)を作る
+    
+    """
+    2021/1/15 uriage_sumi から修正したpackingHinbanを作る。
+    GyoumuｸﾗｽにpackingHinban,myfolder,factoryを渡して、
+    sortingしてから、excelの体裁整える
+
+   以下は、toke.pyに記述してあったその部分のcode 
+    gyoumu = Gyoumu(self.myfolder)
+
+    sortingを作って、エクセルで保存
+    self.sorting = gyoumu.get_sorting(self.packingHinban, self.myfolder, '土気')
+    filePath_gyoumu = '{}/{}業務_packing.xlsx'.format(self.myfolder, '土気')
+    
+    sortingのスタイル調整して再保存
+    gyoumu.get_excel_style(filePath_gyoumu)
+    untinForUriageのスタイル調整して再保存
+
+
+
+    del gyoumu
+    """
+    
+
+
+
 
 
     # kenpin,出荷実績照会作成
@@ -85,25 +147,4 @@ def start():
     recorder.out_file(txt)
 
 
-    
-    # 売上入力実施
-    if not untinForUriage_toke.empty:
-        effita.launch_uriage_nyuuryoku('toke')
-        effita.uriage_nyuuryoku(untinForUriage_toke)
-        effita.close_uriage_nyuuryoku()
-    
-    if not untinForUriage_honsya.empty:
-        effita.launch_uriage_nyuuryoku('honsya')
-        effita.uriage_nyuuryoku(untinForUriage_honsya)
-        effita.close_uriage_nyuuryoku()
-
-        
-    effita.close_effitA()    
-    
-    txt = '売上入力終了しました'
-    recorder.out_log(txt, '\n')
-    recorder.out_file(txt, '\n')
-    
-
-
-
+    import line

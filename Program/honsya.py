@@ -59,11 +59,11 @@ class Honsya:
             gyoumu = Gyoumu(self.myfolder)
 
             # sortingを作って、エクセルで保存
-            self.sorting = gyoumu.get_sorting(self.packingHinban, self.myfolder, '本社')
-            filePath_gyoumu = '{}/{}業務_packing.xlsx'.format(self.myfolder, '本社')
+            # self.sorting = gyoumu.get_sorting(self.packingHinban, self.myfolder, '本社')
+            # filePath_gyoumu = '{}/{}業務_packing.xlsx'.format(self.myfolder, '本社')
 
             # sortingのスタイル調整して再保存
-            gyoumu.get_excel_style(filePath_gyoumu)
+            # gyoumu.get_excel_style(filePath_gyoumu)
             # untinForUriageのスタイル調整して再保存
             gyoumu.get_excel_style(filePath_eigyou)
 
@@ -100,8 +100,8 @@ class Honsya:
         return self.packingHinban
 
     # 仕分け表を取得する
-    def get_sorting(self):
-        return self.sorting
+    # def get_sorting(self):
+        # return self.sorting
 
     # 売上入力用ﾃﾞｰﾀを取得する
     def get_untinForUriage(self):

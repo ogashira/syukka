@@ -9,6 +9,7 @@ import pyperclip
 import numpy as np
 import pandas as pd
 import platform
+import pickle
 
 from recorder import Recorder
 
@@ -317,17 +318,17 @@ class EffitA(object):
     def uriage_nyuuryoku(self, untinForUriage):
         pyautogui.PAUSE = 1
         recorder = Recorder(self.myfolder)
-        unsou_dic = {'ﾄｰﾙ':'U0001', '新潟':'U0009', '名鉄':'U0002', 
-                     '西濃':'U0003', 'ﾄﾅﾐ':'U0004', '福山':'U0006', 
-                     '配達':'U0008', '佐川':'U0010', 'ｹｲﾋﾝ':'U0007', 
-                     '久留米':'U0005'}
         
-        haisou_kubun = {'通常': 1, '土曜配達': 2, '営業所': 3, '曜日違い': 4, '祝日配達': 5}
+        # data.pickleからﾀﾞｳﾝﾛｰﾄﾞ
+        with open(r'./data.pickle', 'rb') as f:
+            data_loaded = pickle.load(f)
 
-        souko_dic = {'土気出荷': 'S0021', '本社出荷': 'S0001'}
+        unsou_dic = data_loaded['unsou_dic'] 
+        haisou_kubun = data_loaded['haisou_kubun']
+        souko_dic = data_loaded['souko_dic']
         
         # close_dateを変更しないリスト（スタンレー得意先コード）
-        nonChange_list = ['T1031', 'T1032', 'T1034', 'T1035', 'T1037', 'T1039']
+        nonChange_list = data_loaded['nonChange_list'] 
 
 
         for i in range(untinForUriage.shape[0]): 
