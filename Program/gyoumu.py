@@ -17,7 +17,7 @@ class Gyoumu:
 
 
 
-    def get_sorting(self, P_H, myfolder, factory):
+    def get_sorting(self, PH, myfolder, factory):
 
 
         def get_dupli(packingHinban):
@@ -61,7 +61,7 @@ class Gyoumu:
             return PH_con
 
 
-        packingHinban = P_H.sort_values(['得意先コード', '備考'])
+        packingHinban = PH.sort_values(['得意先コード', '備考'])
 
 
         #packingHinbanにdupliを追加(dupliは仕分けの目安、重複の目印)
