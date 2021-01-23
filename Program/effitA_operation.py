@@ -10,6 +10,9 @@ from honsya import *
 from recorder import Recorder
 from kenpin import *
 from uriage_sumi import *
+from modify_output import *
+
+
 
 
 
@@ -55,12 +58,12 @@ def start():
     recorder.out_log('現在庫をダウンロード、保存しました','\n')
 
     toke = Toke(myfolder)
-    packingHinban_toke = toke.get_packingHinban()
-    untinForUriage_toke = toke.get_untinForUriage()
+    PH_toke = toke.get_packingHinban()
+    UU_toke = toke.get_untinForUriage()
 
     honsya = Honsya(myfolder)
-    packingHinban_honsya = honsya.get_packingHinban()
-    untinForUriage_honsya = honsya.get_untinForUriage()
+    PH_honsya = honsya.get_packingHinban()
+    UU_honsya = honsya.get_untinForUriage()
 
 
 
@@ -69,14 +72,14 @@ def start():
 
     
     # 売上入力実施
-    if not untinForUriage_toke.empty:
+    if not UU_toke.empty:
         effita.launch_uriage_nyuuryoku('toke')
-        effita.uriage_nyuuryoku(untinForUriage_toke)
+        effita.uriage_nyuuryoku(UU_toke)
         effita.close_uriage_nyuuryoku()
     
-    if not untinForUriage_honsya.empty:
+    if not UU_honsya.empty:
         effita.launch_uriage_nyuuryoku('honsya')
-        effita.uriage_nyuuryoku(untinForUriage_honsya)
+        effita.uriage_nyuuryoku(UU_honsya)
         effita.close_uriage_nyuuryoku()
 
         
@@ -88,18 +91,37 @@ def start():
 
 
     # 売上入力のﾁｪｯｸ
+    """
+    UU_tokeとUU_honsyaをconcatしてからﾁｪｯｸに渡す。
+    出荷倉庫が変更されている可能性もあるため。
+    ﾁｪｯｸ後に出荷倉庫をuriage_sumiに合わせてから、再び、
+    toke と honsyaに分ける
+    PHの方もﾁｪｯｸはしないがconcat->uriage_sumiをmerge->
+    uriage_sumiに合わせてから->土気と本社に分ける
+    """
     us = UriageSumi(myfolder)
+    uriage_sumi = us.get_uriage_sumi()
 
-    if not untinForUriage_toke.empty:
-        UU_sumi_toke = us.get_UU_sumi(untinForUriage_toke)
-        us.check_sumi(UU_sumi_toke)
+    UU_concat = pd.concat([UU_toke, UU_honsya])
+    PH_concat = pd.concat([PH_toke, PH_honsya])
 
-    if not untinForUriage_honsya.empty:
-        UU_sumi_honsya = us.get_UU_sumi(untinForUriage_honsya)
-        us.check_sumi(UU_sumi_honsya)
+    
+
+    if not UU_concat.empty:
+        UU_concat_sumi= us.get_output_sumi(UU_concat, uriage_sumi)
+        # UU_concatを渡して売上入力のﾁｪｯｸを行う。
+        us.check_sumi(UU_concat_sumi)
+
+    if not PH_concat.empty:
+        PH_concat_sumi = us.get_output_sumi(PH_concat, uriage_sumi)
 
     del us
 
+
+    # PHを修正する。uriage_sumiに合わせる。 
+    modify = ModifyOutput()
+    modified_PH = modify.modify_PH(PH_concat_sumi)
+    
 
     # 業務用packing(sorting)を作る
     
@@ -107,8 +129,11 @@ def start():
     2021/1/15 uriage_sumi から修正したpackingHinbanを作る。
     GyoumuｸﾗｽにpackingHinban,myfolder,factoryを渡して、
     sortingしてから、excelの体裁整える
+    """
+    remake_PH = RemakePackingHinban(packingHinban_toke, uriage_sumi)
 
-   以下は、toke.pyに記述してあったその部分のcode 
+    """
+    以下は、toke.pyに記述してあったその部分のcode 
     gyoumu = Gyoumu(self.myfolder)
 
     sortingを作って、エクセルで保存

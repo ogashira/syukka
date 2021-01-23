@@ -10,6 +10,8 @@ from toke import *
 from honsya import *
 from recorder import Recorder
 from kenpin import *
+from uriage_sumi import *
+from remake_packingHinban import *
 
 
 pd.set_option('display.unicode.east_asian_width', True)
@@ -61,6 +63,39 @@ del toke
 del honsya
 
 
+# 売上入力実施
+if not untinForUriage_toke.empty:
+    effita.launch_uriage_nyuuryoku('toke')
+    effita.uriage_nyuuryoku(untinForUriage_toke)
+    effita.close_uriage_nyuuryoku()
+
+if not untinForUriage_honsya.empty:
+    effita.launch_uriage_nyuuryoku('honsya')
+    effita.uriage_nyuuryoku(untinForUriage_honsya)
+    effita.close_uriage_nyuuryoku()
+
+effita.close_effitA()    
+
+txt = '売上入力終了しました'
+recorder.out_log(txt, '\n')
+recorder.out_file(txt, '\n')
+
+
+# 売上入力のﾁｪｯｸ
+us = UriageSumi(myfolder)
+uriage_sumi = us.get_uriage_sumi()
+
+if not untinForUriage_toke.empty:
+    UU_sumi_toke = us.get_UU_sumi(untinForUriage_toke)
+    us.check_sumi(UU_sumi_toke)
+
+if not untinForUriage_honsya.empty:
+    UU_sumi_honsya = us.get_UU_sumi(untinForUriage_honsya)
+    us.check_sumi(UU_sumi_honsya)
+
+del us
+
+
 # kenpin,出荷実績照会作成
 if not untinForUriage_toke.empty:
     kenpin_toke = Kenpin('toke', packingHinban_toke, untinForUriage_toke, myfolder)
@@ -80,20 +115,4 @@ recorder.out_log( txt)
 recorder.out_file(txt)
 
 
-# 売上入力実施
-if not untinForUriage_toke.empty:
-    effita.launch_uriage_nyuuryoku('toke')
-    effita.uriage_nyuuryoku(untinForUriage_toke)
-    effita.close_uriage_nyuuryoku()
-
-if not untinForUriage_honsya.empty:
-    effita.launch_uriage_nyuuryoku('honsya')
-    effita.uriage_nyuuryoku(untinForUriage_honsya)
-    effita.close_uriage_nyuuryoku()
-
-effita.close_effitA()    
-
-txt = '売上入力終了しました'
-recorder.out_log(txt, '\n')
-recorder.out_file(txt, '\n')
 

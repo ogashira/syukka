@@ -106,14 +106,13 @@ class UriageSumi(object):
         return uriage_sumi2
 
 
-    def get_UU_sumi(self, untinForUriage):
 
-        uriage_sumi = self.get_uriage_sumi()
-        UU = untinForUriage
+    def get_output_sumi(self, output, uriage_sumi):
 
-        UU_sumi = pd.merge(UU, uriage_sumi, on =['受注ＮＯ', '受注行ＮＯ'], how = 'left')
+        output_sumi = pd.merge(output, uriage_sumi, on =['受注ＮＯ', '受注行ＮＯ'], how = 'left')
 
-        return UU_sumi
+        return output_sumi
+
 
 
 
