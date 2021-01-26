@@ -11,6 +11,8 @@ from recorder import Recorder
 from kenpin import *
 from uriage_sumi import *
 from modify_output import *
+from kenpin import *
+
 
 
 
@@ -71,6 +73,11 @@ def start():
     del honsya
 
     
+    txt = '\n *********売上入力の記録********** \n'
+    recorder.out_log( txt)
+    recorder.out_file(txt)
+
+
     # 売上入力実施
     if not UU_toke.empty:
         effita.launch_uriage_nyuuryoku('toke')
@@ -120,56 +127,53 @@ def start():
 
     # PHを修正する。uriage_sumiに合わせる。 
     modify = ModifyOutput()
-    modified_PH = modify.modify_PH(PH_concat_sumi)
+    modified_PH = modify.get_modified_PH(PH_concat_sumi)
+    # UUを修正する。uriage_sumiに合わせる。
+    modified_UU = modify.get_modified_UU(UU_concat_sumi)
+    del modify
+    del PH_concat_sumi
+    del UU_concat_sumi
+
+
+    # PH,UUを土気、本社に分ける
+    modi_PH_toke = modified_PH.loc[modified_PH['出荷'] == '土気出荷', :]
+    modi_PH_honsya = modified_PH.loc[modified_PH['出荷'] == '本社出荷', :]
+    
+    modi_UU_toke = modified_UU.loc[modified_UU['出荷'] == '土気出荷', :]
+    modi_UU_honsya = modified_UU.loc[modified_UU['出荷'] == '本社出荷', :]
     
 
-    # 業務用packing(sorting)を作る
+
+    # sortingを作って、エクセルで保存
     
-    """
-    2021/1/15 uriage_sumi から修正したpackingHinbanを作る。
-    GyoumuｸﾗｽにpackingHinban,myfolder,factoryを渡して、
-    sortingしてから、excelの体裁整える
-    """
-    remake_PH = RemakePackingHinban(packingHinban_toke, uriage_sumi)
+    gyoumu = Gyoumu(myfolder)
+    sorting = gyoumu.get_sorting(modi_PH_toke, myfolder, '土気')
+    sorting = gyoumu.get_sorting(modi_PH_honsya, myfolder, '本社')
+    filePath_gyoumu_toke = '{}/{}業務_packing.xlsx'.format(myfolder, '土気')
+    filePath_gyoumu_honsya = '{}/{}業務_packing.xlsx'.format(myfolder, '本社')
 
-    """
-    以下は、toke.pyに記述してあったその部分のcode 
-    gyoumu = Gyoumu(self.myfolder)
-
-    sortingを作って、エクセルで保存
-    self.sorting = gyoumu.get_sorting(self.packingHinban, self.myfolder, '土気')
-    filePath_gyoumu = '{}/{}業務_packing.xlsx'.format(self.myfolder, '土気')
-    
-    sortingのスタイル調整して再保存
-    gyoumu.get_excel_style(filePath_gyoumu)
-    untinForUriageのスタイル調整して再保存
-
-
+    # sortingのスタイル調整して再保存
+    gyoumu.get_excel_style(filePath_gyoumu_toke)
+    gyoumu.get_excel_style(filePath_gyoumu_honsya)
 
     del gyoumu
-    """
-    
-
-
 
 
 
     # kenpin,出荷実績照会作成
-    if not untinForUriage_toke.empty:
-        kenpin_toke = Kenpin('toke', packingHinban_toke, untinForUriage_toke, myfolder)
+    if not UU_toke.empty:
+        kenpin_toke = Kenpin('toke', modi_PH_toke, modi_UU_toke, myfolder)
         kenpin_toke.create_kenpin()
         kenpin_toke.get_syukka_jisseki_syoukai()
         del kenpin_toke
         
-    if not untinForUriage_honsya.empty:
-        kenpin_honsya = Kenpin('honsya', packingHinban_honsya, untinForUriage_honsya, myfolder)
+    if not UU_honsya.empty:
+        kenpin_honsya = Kenpin('honsya', modi_PH_honsya, modi_UU_honsya,
+                                                                myfolder)
         kenpin_honsya.create_kenpin()
         kenpin_honsya.get_syukka_jisseki_syoukai()
         del kenpin_honsya
     
-    txt = '\n *********売上入力の記録********** \n'
-    recorder.out_log( txt)
-    recorder.out_file(txt)
 
 
     import line
