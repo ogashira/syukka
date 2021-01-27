@@ -16,7 +16,19 @@ from kenpin import *
 
 
 
-
+while True:
+    try:
+        uriagebi = input('売上日を入力してください(例: 20201204) :')
+        if (
+        len(uriagebi) == 8 and
+        2020 <= int(uriagebi[:4]) <= 2100 and
+        1 <= int(uriagebi[4:6]) <= 12 and
+        1 <= int(uriagebi[6:]) <= 31
+        ):
+            break
+    except:
+        pass
+    print('正しい年月日を入力してください(例: 20200930)')
 
 
 pd.set_option('display.unicode.east_asian_width', True)
@@ -51,10 +63,12 @@ def start():
     effita = EffitA(myfolder)
     effita.launch_effitA()
     effita.launch_DBmanager2()
-    effita.dl_DBmanager2('運賃計算ｼｰﾄ_改', yokujitu)
+    effita.dl_DBmanager2('運賃計算ｼｰﾄ_改', uriagebi)
     recorder.out_log('運賃計算ｼｰﾄ_改をダウンロード、保存しました', '\n')
     effita.dl_DBmanager2('受注DT', sengetu, honjitu)
     recorder.out_log('受注DTをダウンロード、保存しました','\n')
+    effita.dl_DBmanager2('uriage_mae', uriagebi)
+    recorder.out_log('売上済をダウンロード、保存しました','\n')
     effita.close_DBmanager2()
     effita.dl_zaiko()
     recorder.out_log('現在庫をダウンロード、保存しました','\n')
@@ -89,12 +103,21 @@ def start():
         effita.uriage_nyuuryoku(UU_honsya)
         effita.close_uriage_nyuuryoku()
 
-        
-    effita.close_effitA()    
     
     txt = '売上入力終了しました'
     recorder.out_log(txt, '\n')
     recorder.out_file(txt, '\n')
+
+    # 売上済(uriage_sumi)ダウンロード
+    effita.launch_DBmanager2()
+    effita.dl_DBmanager2('uriage_sumi', uriagebi)
+    recorder.out_log('売上済をダウンロード、保存しました','\n')
+    effita.close_DBmanager2()
+
+
+    # effitAを閉じる
+    effita.close_effitA()
+
 
 
     # 売上入力のﾁｪｯｸ
@@ -142,7 +165,6 @@ def start():
     modi_UU_toke = modified_UU.loc[modified_UU['出荷'] == '土気出荷', :]
     modi_UU_honsya = modified_UU.loc[modified_UU['出荷'] == '本社出荷', :]
     
-
 
     # sortingを作って、エクセルで保存
     
