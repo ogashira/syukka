@@ -38,17 +38,49 @@ class ModifyOutput(object):
 
 
 
+    def modify_kubun(self, haisou, yotei_souko):
+        if haisou == 1:
+            if '曜日' in yotei_souko:
+                yotei_souko.remove('曜日')
+            if '土曜配達' in yotei_souko:
+                yotei_souko.remove('土曜配達')
+            if '営業所' in yotei_souko:
+                yotei_souko.remove('営業所')
+        if haisou == 4:
+            if '曜日' not in yotei_souko:
+                yotei_souko.append('曜日')
+            if '土曜配達' in yotei_souko:
+                yotei_souko.remove('土曜配達')
+            if '営業所' in yotei_souko:
+                yotei_souko.remove('営業所')
+        if haisou == 2:
+            if '曜日' in yotei_souko:
+                yotei_souko.remove('曜日')
+            if '土曜配達' not in a:
+                yotei_souko.append('土曜配達')
+            if '営業所' in yotei_souko:
+                yotei_souko.remove('営業所')
+        if haisou ==3:
+            if '営業所' not in yotei_souko:
+                yotei_souko.append('営業所')
+            if '土曜配達' in yotei_souko:
+                yotei_souko.remove('土曜配達')
+            if '曜日' in yotei_souko:
+                yotei_souko.remove('曜日')
 
-    def modify_PH(self, PH_concat_sumi):
+        return yotei_souko
 
-        def modify_kubun(row):
+
+
+    def get_modified_PH(self, PH_concat_sumi):
+
+        def modify_PH(row):
             haisou = row['配送区分']
             yotei_souko = row['出荷予定倉庫']
-            cans = row['cans_y']
             cans_x = row['cans_x']
-            hinban = row['品番']
-            hinban_furikae = row['hinban_y']
-            jutyuu_suuryou = row['受注数量_y']
+            cans_y = row['cans_y']
+            hinban_kanji = row['品番']
+            hinban_y = row['hinban_y']
             uriageNo = row['売上ＮＯ']
             irai_x = row['依頼先_x']
             irai_y = row['依頼先_y']
@@ -77,41 +109,14 @@ class ModifyOutput(object):
 
             if not pd.isnull(uriageNo):
 
-                if haisou == 1:
-                    if '曜日' in yotei_souko:
-                        yotei_souko.remove('曜日')
-                    if '土曜配達' in yotei_souko:
-                        yotei_souko.remove('土曜配達')
-                    if '営業所' in yotei_souko:
-                        yotei_souko.remove('営業所')
-                if haisou == 4:
-                    if '曜日' not in yotei_souko:
-                        yotei_souko.append('曜日')
-                    if '土曜配達' in yotei_souko:
-                        yotei_souko.remove('土曜配達')
-                    if '営業所' in yotei_souko:
-                        yotei_souko.remove('営業所')
-                if haisou == 2:
-                    if '曜日' in yotei_souko:
-                        yotei_souko.remove('曜日')
-                    if '土曜配達' not in a:
-                        yotei_souko.append('土曜配達')
-                    if '営業所' in yotei_souko:
-                        yotei_souko.remove('営業所')
-                if haisou ==3:
-                    if '営業所' not in yotei_souko:
-                        yotei_souko.append('営業所')
-                    if '土曜配達' in yotei_souko:
-                        yotei_souko.remove('土曜配達')
-                    if '曜日' in yotei_souko:
-                        yotei_souko.remove('曜日')
+                yotei_souko = self.modify_kubun(haisou, yotei_souko)
 
-                if pd.isnull(hinban_furikae):
-                    hinban_result = hinban
-                    cans_result = jutyuu_suuryou
+                if pd.isnull(hinban_y):
+                    hinban_result = hinban_kanji
+                    cans_result = jutyuu_suuryou_y
                 else:
-                    hinban_result = hinban_furikae
-                    cans_result = cans
+                    hinban_result = hinban_y
+                    cans_result = cans_y
 
                 irai_x = self.dic_unsou[irai_y]
                 cans_x = cans_result
@@ -134,17 +139,10 @@ class ModifyOutput(object):
                 syukka, yotei_souko, nouki_x, closeDate_x])
 
 
-        # 運送屋のmodify
-        # PH_concat_sumi['依頼先_x'] = PH_concat_sumi['依頼先_y'].map(
-                                                                # self.dic_unsou)
-        # 出荷倉庫のmodify
-        # PH_concat_sumi['出荷'] = PH_concat_sumi['出庫元倉庫'].map(
-                                                                # self.dic_souko)
-        # 出荷予定倉庫のmodify(list)
         PH_concat_sumi[['依頼先_x', 'cans_x', '得意先コード_x', 
             '納入先コード_x', 'hinban_x', '受注数量_x', '受注単位_x', 
             '得意先注文ＮＯ_x', '備考_x', '出荷', '出荷予定倉庫', '納期_x', 
-            'closeDate_x']] = PH_concat_sumi.apply(modify_kubun, axis = 1)
+            'closeDate_x']] = PH_concat_sumi.apply(modify_PH, axis = 1)
 
         modified_PH = PH_concat_sumi[['出荷予定日_x', '依頼先_x', 'cans_x', 
             'weight', '得意先コード_x', '納入先コード_x', '納入先名称１', 
@@ -154,7 +152,7 @@ class ModifyOutput(object):
 
         modified_PH = modified_PH.rename(columns={'出荷予定日_x':'出荷予定日', 
             '依頼先_x':'依頼先', 'cans_x':'cans', 
-            '得意先コード_x':'得意先コード', '納入先コード_x':'納入先コード', 
+           '得意先コード_x':'得意先コード', '納入先コード_x':'納入先コード', 
             'hinban_x':'hinban', '受注数量_x':'受注数量', 
             '受注単位_x':'受注単位', '得意先注文ＮＯ_x':'得意先注文ＮＯ', 
             '備考_x':'備考', '納期_x':'納期', 'closeDate_x':'closeDate'})
@@ -162,14 +160,100 @@ class ModifyOutput(object):
 
         return modified_PH
 
+    
+
+    def get_modified_UU(self, UU_concat_sumi):
         
-        """
-        remake_PH = remake_PH.drop(columns = '依頼先_y')
+        def modify_UU(row):
+            tokui_code_x = row['得意先コード_x']
+            tokui_code_y = row['得意先コード_y']
+            nounyuu_code_x = row['納入先コード_x']
+            nounyuu_code_y = row['納入先コード_y']
+            irai_x = row['依頼先_x']
+            irai_y = row['依頼先_y']
+            bikou_x = row['備考_x']
+            bikou_y = row['備考_y']
+            tokui_no_x = row['得意先注文ＮＯ_x']
+            tokui_no_y = row['得意先注文ＮＯ_y']
+            hinban_kanji_x = row['品番_x']
+            hinban_kanji_y = row['品番_y']
+            jutyuu_suuryou_x = row['受注数量_x']
+            jutyuu_suuryou_y = row['受注数量_y']
+            hinban_x = row['hinban_x']
+            hinban_y = row['hinban_y']
+            cans_x = row['cans_x']
+            cans_y = row['cans_y']
+            nouki_x = row['納期_x']
+            nouki_y = row['納期_y']
+            syukka = row['出荷']
+            motosouko = row['出庫元倉庫']
+            closeDate_x = row['closeDate_x']
+            closeDate_y = row['closeDate_y']
+            lot_x = row['lot_x']
+            dic_lot = row['dic_lot']
+            yotei_souko = row['出荷予定倉庫']
+            haisou = row['配送区分']
+            uriageNo = row['売上ＮＯ']
 
-        remake_PH = remake_PH.rename(columns = {'依頼先_x':'依頼先'})
+            hinban_result = None
+            cans_result = None
 
-        return remake_PH
+            if not pd.isnull(uriageNo):
+
+                yotei_souko = self.modify_kubun(haisou, yotei_souko)
+
+                if pd.isnull(hinban_y):
+                    hinban_result = hinban_kanji_y
+                    cans_result = jutyuu_suuryou_y
+                else:
+                    hinban_result = hinban_y
+                    cans_result = cans_y
+
+                tokui_code_x = tokui_code_y
+                nounyuu_code_x = nounyuu_code_y
+                irai_x = self.dic_unsou[irai_y]
+                bikou_x = bikou_y
+                tokui_no_x = tokui_no_y
+                hinban_kanji_x = hinban_kanji_y
+                jutyuu_suuryou_x = jutyuu_suuryou_y
+                hinban_x = hinban_result
+                cans_x = cans_result
+                nouki_x = nouki_y
+                syukka = self.dic_souko[motosouko]
+                closeDate_x = closeDate_y
+                lot_x = dic_lot
+
+            
+            return pd.Series([tokui_code_x, nounyuu_code_x, irai_x, bikou_x,
+                tokui_no_x, hinban_kanji_x, jutyuu_suuryou_x, hinban_x, cans_x,
+                nouki_x, syukka, closeDate_x, lot_x, yotei_souko])
 
 
+        UU_concat_sumi[['得意先コード_x','納入先コード_x','依頼先_x', '備考_x',
+            '得意先注文ＮＯ_x', '品番_x', '受注数量_x', 'hinban_x', 'cans_x',
+            '納期_x', '出荷', 'closeDate_x', 'lot_x', '出荷予定倉庫'
+            ]] = UU_concat_sumi.apply(modify_UU, axis = 1)
 
-        """
+        modified_UU = UU_concat_sumi[['出荷予定日_x', '得意先コード_x',
+            '納入先コード_x','依頼先_x', '備考_x', '受注ＮＯ', '受注行ＮＯ',
+            '得意先注文ＮＯ_x', '品番_x', '受注数量_x', 'hinban_x', 'cans_x',
+            '納期_x', 'toyo_untin', '輸出向先', '出荷', 'add', 'sumi',  '曜日',
+            'closeDate_x', 'lot_x', '出荷予定倉庫'
+            ]]
+
+        modified_UU = modified_UU.rename(
+            columns={
+                '出荷予定日_x':'出荷予定日', '得意先コード_x':'得意先コード', 
+                '納入先コード_x':'納入先コード','依頼先_x':'依頼先', 
+                '備考_x':'備考', '得意先注文ＮＯ_x':'得意先注文ＮＯ', 
+                '品番_x':'品番', '受注数量_x':'受注数量', 'hinban_x':'hinban', 
+                'cans_x':'cans','納期_x':'納期','closeDate_x':'closeDate', 
+                'lot_x':'lot'
+            }
+        )
+
+
+        return modified_UU
+
+        
+

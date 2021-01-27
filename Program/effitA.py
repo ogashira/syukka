@@ -128,15 +128,15 @@ class EffitA(object):
     def dl_DBmanager2(self, file_name, *args):
         '''
         csvのダウンロードからfile保存まで行う
-        *args: yokujitu または、sengetu, honjitu などのDBmanager2に渡す日付文字列
+        *args: uriagebi または、sengetu, honjitu などのDBmanager2に渡す日付文字列
         fils_name: 運賃計算ｼｰﾄ_改などのfilename。この引数から保存するfile名と
         pyautoguiのpngデータのfile名を指定する。
         '''
 
-        def pattern_untinKeisanSheet(file_name, yokujitu):
+        def pattern_untinKeisanSheet(file_name, uriagebi):
             # 運賃計算ｼｰﾄ_改の場合の抽出条件
             pyautogui.typewrite(['tab','tab','delete'])
-            pyautogui.typewrite(yokujitu)
+            pyautogui.typewrite(uriagebi)
             time.sleep(3)
 
 
@@ -147,6 +147,13 @@ class EffitA(object):
             pyautogui.typewrite(['tab','tab','tab','tab','tab','tab','delete'])
             pyautogui.typewrite(honjitu)
             time.sleep(3)
+
+        def pattern_uriage_mae(file_name, uriagebi):
+            # 受注済(uriage_mae)の抽出条件
+            pyautogui.typewrite(['tab','tab','delete'])
+            pyautogui.typewrite(uriagebi)
+            time.sleep(3)
+            
 
 
 
@@ -193,6 +200,8 @@ class EffitA(object):
             pattern_untinKeisanSheet(file_name, args[0])
         elif file_name == '受注DT':
             pattern_jutyuuDT(file_name, args[0], args[1])
+        elif file_name == 'uriage_mae':
+            pattern_uriage_mae(file_name, args[0])
 
 
         
@@ -485,7 +494,7 @@ class EffitA(object):
                 time.sleep(3)
                 
             # ok test中はｷｬﾝｾﾙ
-            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ok.png')
+            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ｷｬﾝｾﾙ.png')
             time.sleep(3)
             clc_cent = pyautogui.center(myclc)
             pyautogui.click(clc_cent)
