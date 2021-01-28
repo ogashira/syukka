@@ -16,8 +16,19 @@ from kenpin import *
 
 
 
-uriagebi = input('売上日を入力してください(例: 20201204) :')
-
+while True:
+    try:
+        uriagebi = input('売上日を入力してください(例: 20201204) :')
+        if (
+        len(uriagebi) == 8 and
+        2020 <= int(uriagebi[:4]) <= 2100 and
+        1 <= int(uriagebi[4:6]) <= 12 and
+        1 <= int(uriagebi[6:]) <= 31
+        ):
+            break
+    except:
+        pass
+    print('正しい年月日を入力してください(例: 20200930)')
 
 
 pd.set_option('display.unicode.east_asian_width', True)
