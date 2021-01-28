@@ -154,6 +154,12 @@ class EffitA(object):
             pyautogui.typewrite(uriagebi)
             time.sleep(3)
             
+        def pattern_uriage_sumi(file_name, uriagebi):
+            # 受注済(uriage_sumi)の抽出条件
+            pyautogui.typewrite(['tab','tab','delete'])
+            pyautogui.typewrite(uriagebi)
+            time.sleep(3)
+            
 
 
 
@@ -202,6 +208,8 @@ class EffitA(object):
             pattern_jutyuuDT(file_name, args[0], args[1])
         elif file_name == 'uriage_mae':
             pattern_uriage_mae(file_name, args[0])
+        elif file_name == 'uriage_sumi':
+            pattern_uriage_sumi(file_name, args[0])
 
 
         
