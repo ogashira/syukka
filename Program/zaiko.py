@@ -198,8 +198,8 @@ class Zaiko:
                 for v in lot.values():
                     total += int(v)
                 if total != int(cans):#元の出荷缶数とtotalを比較している
-                    recorder.out_log('・輸出製品(' + hinban + ')の在庫が合いません。')
-                    recorder.out_file('・輸出製品(' + hinban + ')の在庫が合いません。')
+                    recorder.out_log('・輸出製品(' + str(hinban) + ')の在庫が合いません。')
+                    recorder.out_file('・輸出製品(' + str(hinban) + ')の在庫が合いません。')
                     lot['short'] = 0
 
 
@@ -261,17 +261,17 @@ class Zaiko:
             #                       + hinban + ':' + zaiko_lot + ')')
             
             if lot == {}:
-                recorder.out_log('・受注製品(' + hinban + ')のLOTが引き当てでき' \
+                recorder.out_log('・受注製品(' + str(hinban) + ')のLOTが引き当てでき' \
                                  'ません。')
-                recorder.out_file('・受注製品(' + hinban + ')のLOTが引き当てで' \
+                recorder.out_file('・受注製品(' + str(hinban) + ')のLOTが引き当てで' \
                                   'きません。')
             else:
                 total = 0
                 for v in lot.values():
                     total += int(v)
                 if total < int(syukka_cans):#元の出荷缶数とtotalを比較している
-                    recorder.out_log('・受注製品(' + hinban + ')の在庫が足りません。')
-                    recorder.out_file('・受注製品(' + hinban + ')の在庫が足りません。')
+                    recorder.out_log('・受注製品(' + str(hinban) + ')の在庫が足りません。')
+                    recorder.out_file('・受注製品(' + str(hinban) + ')の在庫が足りません。')
                     lot['short'] = 0
 
             return lot
@@ -326,15 +326,15 @@ class Zaiko:
                     break
         
             if lot == {}:
-                recorder.out_log('・見込み製品(' + hinban + ')のLOTが引き当てできません。')
-                recorder.out_file('・見込み製品(' + hinban + ')のLOTが引き当てできません。')
+                recorder.out_log('・見込み製品(' + str(hinban) + ')のLOTが引き当てできません。')
+                recorder.out_file('・見込み製品(' + str(hinban) + ')のLOTが引き当てできません。')
             else:
                 total = 0
                 for v in lot.values():
                     total += int(v)
                 if total < int(syukka_cans):#元の出荷缶数とtotalを比較している
-                    recorder.out_log('・見込み製品(' + hinban + ')の在庫が足りません。')
-                    recorder.out_file('・見込み製品(' + hinban + ')の在庫が足りません。')
+                    recorder.out_log('・見込み製品(' + str(hinban) + ')の在庫が足りません。')
+                    recorder.out_file('・見込み製品(' + str(hinban) + ')の在庫が足りません。')
                     lot['short'] =0
 
 
@@ -363,8 +363,8 @@ class Zaiko:
             elif pattern == 'M':
                 lot = pattern_M(hinban,cans, syukka_souko, lot)
             else:
-                recorder.out_log('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + hinban + ')')
-                recorder.out_file('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + hinban + ')' )
+                recorder.out_log('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + str(hinban) + ')')
+                recorder.out_file('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + str(hinban) + ')' )
                 
         return lot
 

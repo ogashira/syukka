@@ -126,9 +126,9 @@ class Packing :
                 can_weight = 0.2
             elif 1.0 < ireme < 6:
                 can_weight = 0.5
-            elif re.search('-R-EX', hinban):
+            elif re.search('-R-EX', str(hinban)):
                 can_weight = 1
-            elif re.search('-EX$|-EX-', hinban):
+            elif re.search('-EX$|-EX-', str(hinban)):
                 can_weight = 2
             else: can_weight = 1
             

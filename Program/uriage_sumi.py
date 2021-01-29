@@ -228,15 +228,16 @@ class UriageSumi(object):
         ]]
 
 
-        UU_sumi2['総合判定'] = UU_sumi2.apply(final_hantei, axis=1)
+        UU_sumi3 = UU_sumi2.copy()
+        UU_sumi3.loc[:,'総合判定'] = UU_sumi3.apply(final_hantei, axis=1)
         
 
 
         recorder = Recorder(self.myfolder)
         txt = '売上入力後のﾁｪｯｸ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
         recorder.out_log(txt, '\n')
-        recorder.out_log(UU_sumi2, '\n')
+        recorder.out_log(UU_sumi3, '\n')
         recorder.out_file(txt, '\n')
-        recorder.out_file(UU_sumi2, '\n')
+        recorder.out_file(UU_sumi3, '\n')
 
 

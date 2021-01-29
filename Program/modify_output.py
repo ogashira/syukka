@@ -118,7 +118,11 @@ class ModifyOutput(object):
                     hinban_result = hinban_y
                     cans_result = cans_y
 
-                irai_x = self.dic_unsou[irai_y]
+                #  営業持参などで売上入力がnanの場合を考慮する
+                if pd.isnull(irai_y):
+                    irai_x = 'NoData'
+                else:
+                    irai_x = self.dic_unsou[irai_y]
                 cans_x = cans_result
                 tokui_code_x = tokui_code_y
                 nounyuu_code_x = nounyuu_code_y
@@ -211,7 +215,13 @@ class ModifyOutput(object):
 
                 tokui_code_x = tokui_code_y
                 nounyuu_code_x = nounyuu_code_y
-                irai_x = self.dic_unsou[irai_y]
+
+                #  営業持参などで売上入力がnanの場合を考慮する
+                if pd.isnull(irai_y):
+                    irai_x = 'NoData'
+                else:
+                    irai_x = self.dic_unsou[irai_y]
+
                 bikou_x = bikou_y
                 tokui_no_x = tokui_no_y
                 hinban_kanji_x = hinban_kanji_y

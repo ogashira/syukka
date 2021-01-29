@@ -34,6 +34,8 @@ PH_concat_sumi = us.get_output_sumi(PH_concat, uriage_sumi)
 
 UU_concat_sumi = us.get_output_sumi(UU_concat, uriage_sumi)
 
+# 売上入力のチェック
+us.check_sumi(UU_concat_sumi)
 
 modify = ModifyOutput()
 

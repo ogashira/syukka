@@ -154,6 +154,12 @@ class EffitA(object):
             pyautogui.typewrite(uriagebi)
             time.sleep(3)
             
+        def pattern_uriage_sumi(file_name, uriagebi):
+            # 受注済(uriage_sumi)の抽出条件
+            pyautogui.typewrite(['tab','tab','delete'])
+            pyautogui.typewrite(uriagebi)
+            time.sleep(3)
+            
 
 
 
@@ -202,6 +208,8 @@ class EffitA(object):
             pattern_jutyuuDT(file_name, args[0], args[1])
         elif file_name == 'uriage_mae':
             pattern_uriage_mae(file_name, args[0])
+        elif file_name == 'uriage_sumi':
+            pattern_uriage_sumi(file_name, args[0])
 
 
         
@@ -358,6 +366,12 @@ class EffitA(object):
             week = untinForUriage.loc[i, '曜日']
             close_date = untinForUriage.loc[i, 'closeDate']
             hikiate = untinForUriage.loc[i, 'lot']
+            sumi = untinForUriage.loc[i, 'sumi']
+
+            # 既に登録済み
+            if sumi == '済':
+                continue
+
 
             # npNan : 運送対応表に納入先名称が載っていない
             if iraisaki == 'NoCalc' or iraisaki == 'npNan' or iraisaki == 'NoData' or hikiate == {} \

@@ -21,14 +21,21 @@ import unicodedata
 class Kenpin(object):
 
     def __init__(self, factory, packingHinban, untinForUriage, myfolder):
-        
+        # ﾃｽﾄ用にmyfolderが'./'だったらｶﾚﾝﾄﾃﾞｨﾚｸﾄﾘに入れる
         if factory == 'toke':
-            self.kenpin_folder = (r'\\192.168.3.204\effitA_HT\送信データ'
-                                    r'\kenpin.csv')
+            if myfolder == './':
+                self.kenpin_folder = r'./kenpin_toke.csv'
+            else:
+                self.kenpin_folder = (r'\\192.168.3.204\effitA_HT\送信データ'
+                                                                 r'\kenpin.csv')
             self.syukka_koujou = '出荷工場：@0002 土気工場'
             self.factory = '土気'
         elif factory == 'honsya':
-            self.kenpin_folder = r'C:\effitA_HT\送信データ\kenpin.csv'
+            if myfolder == './':
+                self.kenpin_folder = r'./kenpin_honsya.csv'
+            else:
+                self.kenpin_folder = r'C:\effitA_HT\送信データ\kenpin.csv'
+
             self.syukka_koujou = '出荷工場：@0001 本社工場'
             self.factory = '本社'
         else:
