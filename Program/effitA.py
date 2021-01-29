@@ -366,6 +366,12 @@ class EffitA(object):
             week = untinForUriage.loc[i, '曜日']
             close_date = untinForUriage.loc[i, 'closeDate']
             hikiate = untinForUriage.loc[i, 'lot']
+            sumi = untinForUriage.loc[i, 'sumi']
+
+            # 既に登録済み
+            if sumi == '済':
+                continue
+
 
             # npNan : 運送対応表に納入先名称が載っていない
             if iraisaki == 'NoCalc' or iraisaki == 'npNan' or iraisaki == 'NoData' or hikiate == {} \

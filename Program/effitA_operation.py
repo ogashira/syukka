@@ -92,13 +92,17 @@ def start():
     recorder.out_file(txt)
 
 
-    # 売上入力実施
-    if not UU_toke.empty:
+    # sumi列の値をリストにする
+    sumi_toke = list(UU_toke.loc[:, 'sumi'])
+    sumi_honsya = list(UU_honsya.loc[:, 'sumi'])
+
+    # 売上入力実施 UU_tokeが空ではなく、sumiが全部'済 'でなかったら実行
+    if not UU_toke.empty and len(sumi_toke) > sumi_toke.count('済'):
         effita.launch_uriage_nyuuryoku('toke')
         effita.uriage_nyuuryoku(UU_toke)
         effita.close_uriage_nyuuryoku()
     
-    if not UU_honsya.empty:
+    if not UU_honsya.empty and len(sumi_honsya) > sumi_honsya.count('済'):
         effita.launch_uriage_nyuuryoku('honsya')
         effita.uriage_nyuuryoku(UU_honsya)
         effita.close_uriage_nyuuryoku()
