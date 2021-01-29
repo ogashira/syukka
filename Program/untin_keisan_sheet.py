@@ -41,6 +41,7 @@ class UntinKeisanSheet(object):
             moto_add['add'] = cnt
 
         moto_add_after = moto_add[['受注ＮＯ', '受注行ＮＯ', 'add']]
+        moto_add_after = moto_add_after.drop_duplicates(['受注ＮＯ', '受注行ＮＯ'])
         moto_add_after.to_csv(r'../tmp/{}/add_cnt.csv'.format(folder_name), 
                                                             encoding = 'cp932')
 
@@ -53,6 +54,7 @@ class UntinKeisanSheet(object):
             skiprows = 1,
             encoding= 'cp932'
         )
+        uriage_mae = uriage_mae.drop_duplicates(['売上ＮＯ', '売上行ＮＯ'])
         uriage_mae = uriage_mae[['受注ＮＯ', '受注行ＮＯ']]
         uriage_mae['sumi'] = '済'
 
