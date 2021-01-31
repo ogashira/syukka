@@ -42,8 +42,11 @@ class Unsoutaiou_toke :
     def add_address(self, df):
         unsoutaiou = self.unsoutaiou[[
             '得意先コード','納入先コード','納入先名称１','住所１']]    
+
+        dup_unsoutaiou = unsoutaiou.drop_duplicates(['得意先コード',
+                                                '納入先コード','納入先名称１'])
         add_address = pd.merge(
-                df, unsoutaiou, 
+                df, dup_unsoutaiou, 
                 on=['得意先コード','納入先コード','納入先名称１'],
                 how = 'left'
         )
@@ -93,8 +96,10 @@ class Unsoutaiou_honsya :
     def add_address(self, df):
         unsoutaiou = self.unsoutaiou[[
             '得意先コード','納入先コード','納入先名称１','住所１']]    
+        dup_unsoutaiou = unsoutaiou.drop_duplicates(['得意先コード',
+                                                '納入先コード','納入先名称１'])
         add_address = pd.merge(
-                df, unsoutaiou, 
+                df, dup_unsoutaiou, 
                 on=['得意先コード','納入先コード','納入先名称１'],
                 how = 'left'
         )
