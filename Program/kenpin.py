@@ -190,6 +190,7 @@ class Kenpin(object):
 
         #merge用データに加工する
         merge_data = nounyuusaki[['相手先コード１','相手先コード２','相手先略称']]
+        merge_data = merge_data.drop_duplicates(['相手先コード１','相手先コード２'])
         merge_data = merge_data.rename(
             columns = {'相手先コード１':'得意先コード', '相手先コード２':'納入先コード',
                        '相手先略称':'納入先名'}
