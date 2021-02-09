@@ -115,7 +115,8 @@ class Gyoumu:
 
 
 
-        df_col = df_list3[0].columns
+        # df_col = df_list3[0].columns
+        df_col = packingHinban.columns
 
         df_kara = pd.DataFrame(index=[], columns=df_col)
         df_kara.loc['a'] = '<' * 5

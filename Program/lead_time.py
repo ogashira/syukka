@@ -100,7 +100,7 @@ class LeadTime(object):
                 
 
         while nissuu > 0 :
-            if self.unsou_eigyoubi[nouki_idx][2] == '休':
+            if self.unsou_eigyoubi[nouki_idx - 1][2] == '休':
                 nouki_idx -= 1
             else:
                 nouki_idx -= 1

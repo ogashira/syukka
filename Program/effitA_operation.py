@@ -136,8 +136,19 @@ def start():
     us = UriageSumi(myfolder)
     uriage_sumi = us.get_uriage_sumi()
 
-    UU_concat = pd.concat([UU_toke, UU_honsya])
-    PH_concat = pd.concat([PH_toke, PH_honsya])
+    if len(PH_toke.index)!= 0 and len(PH_honsya.index)!= 0 :
+        PH_concat = pd.concat([PH_toke, PH_honsya])
+    elif len(PH_toke.index) != 0 and len(PH_honsya.index) == 0:
+        PH_concat = PH_toke
+    elif len(PH_toke.index) == 0 and len(PH_honsya.index) != 0:
+        PH_concat = PH_honsya
+
+    if len(UU_toke.index)!= 0 and len(UU_honsya.index)!= 0 :
+        UU_concat = pd.concat([UU_toke, UU_honsya])
+    elif len(UU_toke.index) != 0 and len(UU_honsya.index) == 0:
+        UU_concat = UU_toke
+    elif len(UU_toke.index) == 0 and len(UU_honsya.index) != 0:
+        UU_concat = UU_honsya
 
     
 
@@ -173,14 +184,18 @@ def start():
     # sortingを作って、エクセルで保存
     
     gyoumu = Gyoumu(myfolder)
-    sorting = gyoumu.get_sorting(modi_PH_toke, myfolder, '土気')
-    sorting = gyoumu.get_sorting(modi_PH_honsya, myfolder, '本社')
-    filePath_gyoumu_toke = '{}/{}業務_packing.xlsx'.format(myfolder, '土気')
-    filePath_gyoumu_honsya = '{}/{}業務_packing.xlsx'.format(myfolder, '本社')
+    if len(modi_PH_toke.index) != 0:
+        sorting = gyoumu.get_sorting(modi_PH_toke, myfolder, '土気')
+        filePath_gyoumu_toke = '{}/{}業務_packing.xlsx'.format(myfolder, '土気')
+    if len(modi_PH_honsya.index) != 0:
+        sorting = gyoumu.get_sorting(modi_PH_honsya, myfolder, '本社')
+        filePath_gyoumu_honsya = '{}/{}業務_packing.xlsx'.format(myfolder, '本社')
 
     # sortingのスタイル調整して再保存
-    gyoumu.get_excel_style(filePath_gyoumu_toke)
-    gyoumu.get_excel_style(filePath_gyoumu_honsya)
+    if len(modi_PH_toke.index) != 0:
+        gyoumu.get_excel_style(filePath_gyoumu_toke)
+    if len(modi_PH_honsya.index) != 0:
+        gyoumu.get_excel_style(filePath_gyoumu_honsya)
 
     del gyoumu
 
