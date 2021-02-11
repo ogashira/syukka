@@ -254,6 +254,17 @@ class Ajust_honsya:
         self.myfolder = myfolder
 
 
+    def get_siteiUnsou(self, row):
+        unsou = ''
+        sitei = row['顧客指定運送屋']
+        iraisaki = row['依頼先']
+        if sitei == '無し' and sitei == '無':
+            unsou = sitei
+        else:
+            unsou = iraisaki
+        return unsou
+
+
     def get_allHauler(self, moto, untin):
 
         def best_hauler(row):
