@@ -8,7 +8,7 @@ from zaiko import *
 from add_data import *
 from recorder import *
 from lead_time import *
-
+from modify_unsou import *
 
 pd.set_option('display.max_columns', None)
 
@@ -18,6 +18,17 @@ class Ajust_toke:
 
     def __init__ (self, myfolder):
         self.myfolder = myfolder
+
+    def get_siteiUnsou(self, row):
+        unsou = ''
+        sitei = row['顧客指定運送屋']
+        iraisaki = row['依頼先']
+        if sitei == '無し' and sitei == '無':
+            unsou = sitei
+        else:
+            unsou = iraisaki
+        return unsou
+            
 
     def get_allHauler(self, moto, untin):
 
@@ -37,8 +48,6 @@ class Ajust_toke:
                 best_hauler = ['配達']
             elif address is np.nan:
                 best_hauler = ['npNan']
-            elif sitei != '無し' and sitei != '無':
-                best_hauler = [sitei]
             else:
                 best_hauler = [kv[0] for kv in dic.items() if kv[1] == 
                                min(dic.values())]
@@ -53,14 +62,31 @@ class Ajust_toke:
 
         allHauler = untin[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
-                           'ﾄﾅﾐ差額','依頼先','輸出向先']]
+                           'ﾄﾅﾐ差額','依頼先','輸出向先','顧客指定運送屋']]
 
 
 
         # 依頼先のlistをリテラルにしておく
         allHauler2 = allHauler.copy()
         allHauler2.loc[:,'依頼先'] = allHauler2['依頼先'].map(lambda x : x[0])
-        allHauler_sort = allHauler2.sort_values('依頼先')
+
+        # modify_unsouを呼び出して、運送屋の調整をする
+        # 新潟とﾄｰﾙが１缶の時は、新潟にする。
+        modi_unsou = ModifyUnsou()
+        allHauler3 = modi_unsou.get_modified_AH(allHauler2)
+        del modi_unsou
+
+        # 顧客指定運送屋がある場合は修正する
+            
+        allHauler3['依頼先'] = allHauler3.apply(self.get_siteiUnsou, axis = 1)
+
+        allHauler4 = allHauler3[['出荷予定日','住所１','納入先名称１','得意先コード',
+                           '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
+                           'ﾄﾅﾐ差額','依頼先','輸出向先']]
+
+
+
+        allHauler_sort = allHauler4.sort_values('依頼先')
 
         return allHauler_sort
 
@@ -248,8 +274,6 @@ class Ajust_honsya:
                 best_hauler = ['NoCalc']
             elif address is np.nan:
                 best_hauler = ['npNan']
-            elif sitei != '無し':
-                best_hauler = [sitei]
             else:
                 best_hauler = [kv[0] for kv in dic.items() if kv[1] 
                                == min(dic.values())]
@@ -264,16 +288,32 @@ class Ajust_honsya:
 
         allHauler = untin[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
-                           '久留米','ﾄﾅﾐ差額','依頼先','輸出向先']]
+                           '久留米','ﾄﾅﾐ差額','依頼先','輸出向先','顧客指定運送屋']]
+
+
 
         # 依頼先のlistをリテラルにしておく
         allHauler2 = allHauler.copy()
         allHauler2.loc[:,'依頼先'] = allHauler2['依頼先'].map(lambda x : x[0])
-        allHauler_sort = allHauler2.sort_values('依頼先')
+
+
+        # modify_unsouを呼び出して、運送屋の調整をする
+        # 新潟とﾄｰﾙが１缶の時は、新潟にする。
+        modi_unsou = ModifyUnsou()
+        allHauler3 = modi_unsou.get_modified_AH(allHauler2)
+        del modi_unsou
+
+
+        # 顧客指定運送屋がある場合は修正する
+        allHauler3['依頼先'] = allHauler3.apply(self.get_siteiUnsou, axis = 1)
+
+        allHauler4 = allHauler3[['出荷予定日','住所１','納入先名称１','得意先コード',
+                           '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
+                           'ﾄﾅﾐ差額','依頼先','輸出向先']]
+        allHauler_sort = allHauler4.sort_values('依頼先')
 
 
         return allHauler_sort
-
 
 
 

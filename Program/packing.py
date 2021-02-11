@@ -52,6 +52,7 @@ class Packing :
 
 
 
+        self.untin_moto = self.untin_moto.fillna({'備考':'noData'})
         self.untin_moto = self.untin_moto.sort_values(by=['得意先コード', 
                                                           '納入先名称１'])
         

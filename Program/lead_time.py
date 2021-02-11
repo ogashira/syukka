@@ -105,7 +105,7 @@ class LeadTime(object):
             else:
                 nouki_idx -= 1
                 nissuu -= 1
-        while self.unsou_eigyoubi[nouki_idx][1] == '休':
+        while self.unsou_eigyoubi[nouki_idx][1] == '休' or self.unsou_eigyoubi[nouki_idx][2] == '休':
                 nouki_idx -= 1
 
         calc_syukka_idx = nouki_idx               #納期から計算した出荷すべき日のidx
