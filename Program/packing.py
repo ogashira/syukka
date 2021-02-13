@@ -52,6 +52,7 @@ class Packing :
 
 
 
+        self.untin_moto = self.untin_moto.fillna({'備考':'noData'})
         self.untin_moto = self.untin_moto.sort_values(by=['得意先コード', 
                                                           '納入先名称１'])
         
@@ -142,8 +143,14 @@ class Packing :
             print('本社・土気出荷がありません。終了します。')
             sys.exit()
 
+        # 東新油脂は削除する
+        moto_h01 = self.moto_h.loc[self.moto_h['得意先コード'] != 'T0011', :]
+        moto_h01 =  moto_h01.reset_index(drop=True)
+        if moto_h01.shape[0] == 0 :
+            print('本社・土気出荷がありません。終了します。')
+            sys.exit()
         
-        moto_h = self.moto_h.copy()
+        moto_h = moto_h01.copy()
 
         # UntinKeisanSheetに渡して、sheet_add_cntにする>>>>>>>>>>>>>>>>>>>>>>
         UKS = UntinKeisanSheet(moto_h)

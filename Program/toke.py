@@ -59,6 +59,12 @@ class Toke:
 
             gyoumu = Gyoumu(self.myfolder)
 
+            '''
+            UUはここでgyoumu.pyに渡してexcelの体裁を整えるが、PHは売上入力の後、
+            uriage_sumiをダウンロードして、modify_outputに渡してデータを
+            uriage_sumiに合わせてから、gyoumu.pyに渡す。
+            effitA_operation.pyで行う
+            '''
             # sortingを作って、エクセルで保存
             # self.sorting = gyoumu.get_sorting(self.packingHinban, self.myfolder, '土気')
             # filePath_gyoumu = '{}/{}業務_packing.xlsx'.format(self.myfolder, '土気')

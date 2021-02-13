@@ -108,7 +108,15 @@ class Zaiko:
         '''
 
     # 受注見込み製品ﾃﾞｰﾀの取得
-        JM_file = open('../master/selfMade/受注見込みﾘｽﾄ.csv',encoding='cp932')
+        if pf == 'Windows':
+            mypath = r'//192.168.1.247/共有/受注check/master/受注見込みﾘｽﾄ.csv'
+        elif pf == 'Linux':
+            mypath = r'/mnt/public/受注check/master/受注見込みﾘｽﾄ.csv'
+        else:
+            mypath = r'../master/selfMade/受注見込みﾘｽﾄ.csv'
+
+
+        JM_file = open(mypath, encoding='cp932')
         file_reader = csv.reader(JM_file)
         JM = list(file_reader)
         JM_file.close()

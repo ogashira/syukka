@@ -5,12 +5,22 @@ from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 import csv
 import pandas as pd
+import platform
+
 
 
 class CloseDate:
 
     def __init__(self):
         
+        pf = platform.system()
+        if pf == 'Windows':
+            mypath = r'//192.168.1.247/共有/受注check/master/tokuisaki.csv'
+        elif pf == 'Linux':
+            mypath = r'/mnt/public/受注check/master/tokuisaki.csv'
+        else:
+            mypath = r'../master/effitA/tokuisaki.csv'
+
         tokuisaki_file = open('../master/effitA/tokuisaki.csv',encoding='cp932')
         file_reader = csv.reader(tokuisaki_file)
         tokuisaki = list(file_reader)

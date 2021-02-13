@@ -26,9 +26,20 @@ us = UriageSumi('./')
 
 uriage_sumi = us.get_uriage_sumi()
 
-UU_concat = pd.concat([UU_toke, UU_honsya])
+if len(PH_toke.index)!= 0 and len(PH_honsya.index)!= 0 :
+    PH_concat = pd.concat([PH_toke, PH_honsya])
+elif len(PH_toke.index) != 0 and len(PH_honsya.index) == 0:
+    PH_concat = PH_toke
+elif len(PH_toke.index) == 0 and len(PH_honsya.index) != 0:
+    PH_concat = PH_honsya
 
-PH_concat = pd.concat([PH_toke, PH_honsya])
+if len(UU_toke.index)!= 0 and len(UU_honsya.index)!= 0 :
+    UU_concat = pd.concat([UU_toke, UU_honsya])
+elif len(UU_toke.index) != 0 and len(UU_honsya.index) == 0:
+    UU_concat = UU_toke
+elif len(UU_toke.index) == 0 and len(UU_honsya.index) != 0:
+    UU_concat = UU_honsya
+
 
 PH_concat_sumi = us.get_output_sumi(PH_concat, uriage_sumi)
 
@@ -54,14 +65,19 @@ modi_UU_honsya = modified_UU.loc[modified_UU['出荷'] == '本社出荷', :]
 gyoumu = Gyoumu('./')
 
 # sortingを作って、エクセルで保存
-sorting = gyoumu.get_sorting(modi_PH_toke, './', '土気')
-sorting = gyoumu.get_sorting(modi_PH_honsya, './', '本社')
-filePath_gyoumu_toke = '{}/{}業務_packing.xlsx'.format('./', '土気')
-filePath_gyoumu_honsya = '{}/{}業務_packing.xlsx'.format('./', '本社')
+if len(modi_PH_toke.index) != 0 :
+    sorting = gyoumu.get_sorting(modi_PH_toke, './', '土気')
+    filePath_gyoumu_toke = '{}/{}業務_packing.xlsx'.format('./', '土気')
+
+if len(modi_PH_honsya) != 0:
+    sorting = gyoumu.get_sorting(modi_PH_honsya, './', '本社')
+    filePath_gyoumu_honsya = '{}/{}業務_packing.xlsx'.format('./', '本社')
 
 # sortingのスタイル調整して再保存
-gyoumu.get_excel_style(filePath_gyoumu_toke)
-gyoumu.get_excel_style(filePath_gyoumu_honsya)
+if len(modi_PH_toke.index) != 0:
+    gyoumu.get_excel_style(filePath_gyoumu_toke)
+if len(modi_PH_honsya.index) != 0:
+    gyoumu.get_excel_style(filePath_gyoumu_honsya)
 
 # kenpin,出荷実績照会作成
 if not UU_toke.empty:

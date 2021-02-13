@@ -32,6 +32,8 @@ class UriageSumi(object):
                     'ロットＮＯ':'lot',
                 }
         )
+        # uriage_sumiの備考のNaNを処理する。2021/2/11 
+        uriage_sumi = uriage_sumi.fillna({'備考':'noData'})
 
         uriage_sumi['出荷予定日'] = uriage_sumi['出荷予定日'].map(
                 lambda x : '{}/{}/{}'.format(str(x)[:4],str(x)[4:6],str(x)[6:])

@@ -508,7 +508,7 @@ class EffitA(object):
                 time.sleep(3)
                 
             # ok test中はｷｬﾝｾﾙ
-            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ｷｬﾝｾﾙ.png')
+            myclc = pyautogui.locateOnScreen(r'../png_file/uriage_nyuuryoku/ok.png')
             time.sleep(3)
             clc_cent = pyautogui.center(myclc)
             pyautogui.click(clc_cent)
