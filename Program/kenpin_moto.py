@@ -205,37 +205,30 @@ class Kenpin(object):
         kenpin_merge = pd.merge(kenpin_moto, merge_data, 
                                 on = ['得意先コード', '納入先コード'], how = 'left')
 
-        # unsou_codeとkubun_noと輸出向先のタプルをsetに入れて重複をなくす。>>>>>>>>>>>>>
-        # {(U0009, 1, ''), (U0009, 1, 'y'), (U0005, 1, '')......}
+        # unsou_codeとkubun_noのタプルをsetに入れて重複をなくす。>>>>>>>>>>>>>
+        # {(U0009, 1), (U0009, 4), (U0005, 1)......}
         unsou_set = set()
         for i in range(len(kenpin_merge)):
             unsou_code = kenpin_merge.iloc[i, 2]
             kubun_no = kenpin_merge.iloc[i, 4]
-            yusyutu = kenpin_merge.iloc[i, 14]
 
-            t = (unsou_code, kubun_no, yusyutu)
+            t = (unsou_code, kubun_no)
             unsou_set.add(t)
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         i = 0
         wb = openpyxl.Workbook()
-        for unsou_code, kubun_no, yusyutu in unsou_set:
+        for unsou_code, kubun_no in unsou_set:
 
-            kenpin_split = kenpin_merge.loc[
-                                     (kenpin_merge['unsou_code']== unsou_code) &
-                                     (kenpin_merge['kubun_no'] == kubun_no) &
-                                     (kenpin_merge['輸出向先'] == yusyutu), :]
+            kenpin_split = kenpin_merge.loc[(kenpin_merge['unsou_code']== unsou_code) & 
+                                                (kenpin_merge['kubun_no'] == kubun_no),:]
             unsou = kenpin_split.iloc[0,3]
             kubun = kenpin_split.iloc[0,5]
-            if kenpin_split.iloc[0, 14] == '':
-                yusyutu = 'N'
-            else:
-                yusyutu = 'Y'
 
-            unsou_gyousya = '運送業者：{} {}   配送区分：{} {}  輸出：{}' \
-                .format(unsou_code, unsou, kubun_no, kubun, yusyutu)
+            unsou_gyousya = '運送業者：{} {}     配送区分：{} {}' \
+                .format(unsou_code, unsou, kubun_no, kubun)
 
-            sheet_name = '{}_{}_輸出{}'.format(unsou, kubun, yusyutu)
+            sheet_name = '{}_{}'.format(unsou, kubun)
             barcode_str = unsou_code + str(kubun_no)
 
             # 一旦バーコードをpngで保存 
@@ -323,7 +316,7 @@ class Kenpin(object):
                     if count > max_length:
                         max_length = count
             
-                adjusted_width = (max_length + 0.5) * 1.1
+                adjusted_width = (max_length + 0) * 1.1
                 ws.column_dimensions[get_column_letter(column)].width = adjusted_width
                 # ws.column_dimensions[column].width = adjusted_width
 

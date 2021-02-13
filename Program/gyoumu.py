@@ -123,8 +123,8 @@ class Gyoumu:
 
         result = df_kara.copy()
         for line in df_list3:
-            result = pd.concat([result, line])
-            result = pd.concat([result, df_kara])
+            result = pd.concat([result, line], sort = True)
+            result = pd.concat([result, df_kara], sort = True)
 
 
 
