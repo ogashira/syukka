@@ -215,6 +215,4 @@ def start():
         kenpin_honsya.get_syukka_jisseki_syoukai()
         del kenpin_honsya
     
-
-
     import line
