@@ -215,12 +215,4 @@ def start():
         kenpin_honsya.get_syukka_jisseki_syoukai()
         del kenpin_honsya
     
-<<<<<<< HEAD
-    txt = '\n ************************売上入力の記録************************* \n'
-    recorder.out_log( txt)
-    recorder.out_file(txt)
-=======
->>>>>>> 1fb8eb82d5c5395384b82cd2c11fc49e0d6e8689
-
-
     import line
