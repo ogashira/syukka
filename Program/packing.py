@@ -51,6 +51,11 @@ class Packing :
             sys.exit()
 
 
+        # 2021/2/16納入先コードが全てNANになるとなぜかエラーになる
+        # unsoutaiou.add_addressでエラーになる？　理由はわからないが
+        # fillna で対策した。unsoutaiou_toke,honsyaでも同様にfillnaした
+        self.untin_moto = self.untin_moto.fillna({'納入先コード': 'noData'})
+
 
         self.untin_moto = self.untin_moto.fillna({'備考':'noData'})
         self.untin_moto = self.untin_moto.sort_values(by=['得意先コード', 
@@ -194,14 +199,21 @@ class Packing :
         #moto_honsya['納期'] = moto_honsya.loc[:,'備考'].str.extract \
                 #(r'([1-9][0-2]?/[1-9][0-9]?)')
 
+
+
         #備考から土気出荷、本社出荷、大阪直送、営業持参　を抜き出す
         # 先に土気出荷、本社出荷を入力次に直送、持参を上書きする
         moto_honsya['出荷'] = moto_honsya.loc[:,'備考'].str.extract \
-                (r'(土気出荷|本社出荷)')
+                (r'(土気出荷|本社出荷|大阪直送|営業持参)')
 
-        moto_honsya['出荷'] = moto_honsya.loc[:,'備考'].str.extract \
-                (r'(大阪直送|営業持参)')
+        # moto_honsya['出荷'] = moto_honsya.loc[:,'備考'].str.extract \
+                # (r'(大阪直送|営業持参)')
         
+        moto_honsya = moto_honsya.fillna({'出荷':''})
+        # この時点で出荷の列に入っているデータは、土気出荷、本社出荷、
+        # 大阪直送、営業持参、空白文字
+
+
 
         moto_honsya= moto_honsya.rename(columns= {'備考.1':'受注時運賃n缶'})
 
@@ -213,7 +225,12 @@ class Packing :
         moto_honsya = toyo_untin.get_toyoUntin()
         del toyo_untin
 
-        
+        # 土気出荷、空白はtoke_motoに　本社出荷、大阪直送はhonsya_motoに分ける 
+        self.toke_moto = moto_honsya[(moto_honsya['出荷'] == '土気出荷')
+                                                  | (moto_honsya['出荷'] == '')]
+        self.honsya_moto = moto_honsya[(moto_honsya['出荷'] == '本社出荷')
+                                          | (moto_honsya['出荷'] == '大阪直送')]
+
 
         self.moto_honsya = moto_honsya.copy()
         #moto_honsyaは大阪顧客を除いた本社、土気出荷分の元データ
@@ -222,11 +239,13 @@ class Packing :
 
 
     def get_honsya_moto(self):
+        """
         honsya_moto = self.moto_honsya[self.moto_honsya['備考'].str.match \
-                (r'^.*本社出荷.*$',na=True)]
+                (r'^.*(本社出荷|大阪直送).*$',na=True)]
         honsya_moto = honsya_moto.fillna({'出荷':''})
-        honsya_moto['出荷'] = honsya_moto['出荷'].map(lambda x : '本社出荷' 
-                                                      if x == ''  else x ) 
+        """
+        honsya_moto = self.honsya_moto.copy() 
+        honsya_moto['出荷'] = '本社出荷' # 全て本社出荷にする
 
         unsoutaiou_honsya = Unsoutaiou_honsya()
         honsyaMoto = unsoutaiou_honsya.add_address(honsya_moto)
@@ -234,27 +253,31 @@ class Packing :
 
         #大阪直送、営業持参の場合は運賃計算しないように「住所１」を
         #「NoCalc」に変更しておく
-        honsyaMoto.loc[(honsyaMoto['出荷']=='大阪直送')|(honsyaMoto['出荷']
-            =='営業持参'),'住所１'] = 'NoCalc'
+        honsyaMoto.loc[honsyaMoto['出荷'] =='営業持参','住所１'] = 'NoCalc'
 
         return honsyaMoto
 
 
     def get_toke_moto(self):
+        """
         toke_moto = self.moto_honsya[self.moto_honsya['備考'].str.match\
                 (r'^(?!.*本社出荷).*$', na=True)]
         toke_moto = toke_moto.fillna({'出荷':''})
         toke_moto['出荷'] = toke_moto['出荷'].map(lambda x : '土気出荷' 
                                                       if x == ''  else x ) 
+        """
         
+        toke_moto = self.toke_moto.copy() 
+        toke_moto['出荷'] = '土気出荷' # 全て土気出荷にする。
+
+
         unsoutaiou_toke = Unsoutaiou_toke()
         tokeMoto = unsoutaiou_toke.add_address(toke_moto)
         del unsoutaiou_toke
         
         #大阪直送、営業持参の場合は運賃計算しないように「住所１」を
         #「NoCalc」に変更しておく
-        tokeMoto.loc[(tokeMoto['出荷']=='大阪直送')|(tokeMoto['出荷']
-            =='営業持参'),'住所１'] = 'NoCalc'
+        tokeMoto.loc[tokeMoto['出荷'] =='営業持参','住所１'] = 'NoCalc'
 
         return tokeMoto
 

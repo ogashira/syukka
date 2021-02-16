@@ -29,6 +29,9 @@ class Unsoutaiou_toke :
                 columns={'相手先名称１':'納入先名称１','ｹｲﾋﾝ':'ｹｲﾋﾝ向'}
         )
 
+        # 2021/2/16 納入先コードが全てNaNだとエラーになる？だからfillnaした
+        self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': 'noData'})
+
     def add_unsoutaiou(self, df):
         dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１'])
         
@@ -82,6 +85,9 @@ class Unsoutaiou_honsya :
         self.unsoutaiou = dl_df.rename(
                 columns={'相手先名称１':'納入先名称１','ｹｲﾋﾝ':'ｹｲﾋﾝ向'}
         )
+
+        # 2021/2/16 納入先コードが全てNaNだとエラーになる？だからfillnaした
+        self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': 'noData'})
 
     def add_unsoutaiou(self, df):
         dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１'])

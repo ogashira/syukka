@@ -23,10 +23,10 @@ class Ajust_toke:
         unsou = ''
         sitei = row['顧客指定運送屋']
         iraisaki = row['依頼先']
-        if sitei == '無し' and sitei == '無':
-            unsou = sitei
-        else:
+        if sitei == '無し' or sitei == '無':
             unsou = iraisaki
+        else:
+            unsou = sitei
         return unsou
             
 
@@ -258,10 +258,10 @@ class Ajust_honsya:
         unsou = ''
         sitei = row['顧客指定運送屋']
         iraisaki = row['依頼先']
-        if sitei == '無し' and sitei == '無':
-            unsou = sitei
-        else:
+        if sitei == '無し' or sitei == '無':
             unsou = iraisaki
+        else:
+            unsou = sitei
         return unsou
 
 
