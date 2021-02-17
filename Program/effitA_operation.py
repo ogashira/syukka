@@ -9,7 +9,6 @@ from toke import *
 from honsya import *
 from recorder import Recorder
 from kenpin import *
-from uriage_sumi import *
 from modify_output import *
 from kenpin import *
 
@@ -133,44 +132,16 @@ def start():
     PHの方もﾁｪｯｸはしないがconcat->uriage_sumiをmerge->
     uriage_sumiに合わせてから->土気と本社に分ける
     """
-    us = UriageSumi(myfolder)
-    uriage_sumi = us.get_uriage_sumi()
-
-    if len(PH_toke.index)!= 0 and len(PH_honsya.index)!= 0 :
-        PH_concat = pd.concat([PH_toke, PH_honsya])
-    elif len(PH_toke.index) != 0 and len(PH_honsya.index) == 0:
-        PH_concat = PH_toke
-    elif len(PH_toke.index) == 0 and len(PH_honsya.index) != 0:
-        PH_concat = PH_honsya
-
-    if len(UU_toke.index)!= 0 and len(UU_honsya.index)!= 0 :
-        UU_concat = pd.concat([UU_toke, UU_honsya])
-    elif len(UU_toke.index) != 0 and len(UU_honsya.index) == 0:
-        UU_concat = UU_toke
-    elif len(UU_toke.index) == 0 and len(UU_honsya.index) != 0:
-        UU_concat = UU_honsya
-
-    
-
-    if not UU_concat.empty:
-        UU_concat_sumi= us.get_output_sumi(UU_concat, uriage_sumi)
-        # UU_concatを渡して売上入力のﾁｪｯｸを行う。
-        us.check_sumi(UU_concat_sumi)
-
-    if not PH_concat.empty:
-        PH_concat_sumi = us.get_output_sumi(PH_concat, uriage_sumi)
-
-    del us
 
 
-    # PHを修正する。uriage_sumiに合わせる。 
-    modify = ModifyOutput()
-    modified_PH = modify.get_modified_PH(PH_concat_sumi)
-    # UUを修正する。uriage_sumiに合わせる。
-    modified_UU = modify.get_modified_UU(UU_concat_sumi)
-    del modify
-    del PH_concat_sumi
-    del UU_concat_sumi
+
+    if not (UU_toke.empty and UU_honsya.empty):
+        modify = ModifyOutput(myfolder)
+        modify.uriageSumi_check_sumi(UU_toke, UU_honsya)
+        modified_UU = modify.get_modified_UU(UU_toke, UU_honsya)
+        modified_PH = modify.get_modified_PH(PH_toke, PH_honsya)
+
+        del modify
 
 
     # PH,UUを土気、本社に分ける

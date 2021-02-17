@@ -80,8 +80,8 @@ class Toke:
 
 
 
-            self.packingCoa = ajust_toke.get_packingCoa(self.packingHinban, 
-                    self.untinForUriage)
+            # self.packingCoa = ajust_toke.get_packingCoa(self.packingHinban, 
+                  # self.untinForUriage)
             
             del ajust_toke
 

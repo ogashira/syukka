@@ -5,6 +5,9 @@
 import pandas as pd
 import pickle
 
+from uriage_sumi import *
+
+
 """
 PH_tokeとPH_honsyaをconcatしてから、uriage_sumiをmergeする。
 uriage_sumiの結果に合せてから、土気と本社に分ける。
@@ -13,13 +16,16 @@ uriage_sumiの結果に合せてから、土気と本社に分ける。
 
 class ModifyOutput(object):
 
-    def __init__(self):
+    def __init__(self, myfolder):
 
         """
         unsou_dic = {'ﾄｰﾙ':'U0001', '新潟':'U0009' ......}
         これを、key, value をひっくり返す
         dic_unsou = {'U0001':'ﾄｰﾙ', '新潟':'U0009',........}
         """
+        
+        self.myfolder = myfolder
+
 
         def k_v_change(data_dic):
             change_dic = {} 
@@ -35,6 +41,35 @@ class ModifyOutput(object):
 
         souko_dic = data_loaded['souko_dic']
         self.dic_souko = k_v_change(souko_dic)
+
+
+
+    
+    def toke_honsya_concat_sumi(self, toke, honsya):
+        """
+        PH_toke,PH_honsyaまたはUU_toke,UU_honsyaをconcatして
+        uriage_sumiをmergeする
+        """
+        if len(toke.index)!= 0 and len(honsya.index)!= 0 :
+            toke_honsya_concat = pd.concat([toke, honsya])
+        elif len(toke.index) != 0 and len(honsya.index) == 0:
+            toke_honsya_concat = toke
+        elif len(toke.index) == 0 and len(honsya.index) != 0:
+            toke_honsya_concat = honsya
+
+        us = UriageSumi(self.myfolder)
+        concat_sumi = us.get_output_sumi(toke_honsya_concat)
+        del us
+
+        return concat_sumi
+        
+
+    def uriageSumi_check_sumi(self, UU_toke, UU_honsya):
+        concat_sumi = self.toke_honsya_concat_sumi(UU_toke, UU_honsya)
+        us = UriageSumi(self.myfolder)
+        us.check_sumi(concat_sumi)
+
+        
 
 
 
@@ -72,7 +107,7 @@ class ModifyOutput(object):
 
 
 
-    def get_modified_PH(self, PH_concat_sumi):
+    def get_modified_PH(self, PH_toke, PH_honsya):
 
         def modify_PH(row):
             haisou = row['配送区分']
@@ -143,6 +178,10 @@ class ModifyOutput(object):
                 syukka, yotei_souko, nouki_x, closeDate_x])
 
 
+
+        PH_concat_sumi = self.toke_honsya_concat_sumi(PH_toke, PH_honsya)
+
+
         PH_concat_sumi[['依頼先_x', 'cans_x', '得意先コード_x', 
             '納入先コード_x', 'hinban_x', '受注数量_x', '受注単位_x', 
             '得意先注文ＮＯ_x', '備考_x', '出荷', '出荷予定倉庫', '納期_x', 
@@ -166,7 +205,7 @@ class ModifyOutput(object):
 
     
 
-    def get_modified_UU(self, UU_concat_sumi):
+    def get_modified_UU(self, UU_toke, UU_honsya):
         
         def modify_UU(row):
             tokui_code_x = row['得意先コード_x']
@@ -238,6 +277,8 @@ class ModifyOutput(object):
                 tokui_no_x, hinban_kanji_x, jutyuu_suuryou_x, hinban_x, cans_x,
                 nouki_x, syukka, closeDate_x, lot_x, yotei_souko])
 
+
+        UU_concat_sumi = self.toke_honsya_concat_sumi(UU_toke, UU_honsya)
 
         UU_concat_sumi[['得意先コード_x','納入先コード_x','依頼先_x', '備考_x',
             '得意先注文ＮＯ_x', '品番_x', '受注数量_x', 'hinban_x', 'cans_x',

@@ -109,7 +109,8 @@ class UriageSumi(object):
 
 
 
-    def get_output_sumi(self, output, uriage_sumi):
+    def get_output_sumi(self, output):
+        uriage_sumi = self.get_uriage_sumi()
 
         output_sumi = pd.merge(output, uriage_sumi, on =['受注ＮＯ', '受注行ＮＯ'], how = 'left')
 

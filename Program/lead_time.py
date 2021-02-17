@@ -35,10 +35,14 @@ class LeadTime(object):
         for row in nounyuusaki_l:
             rows = []
             rows.append(row[0])       # 得意先コード
-            rows.append(row[1])       # 納入先コード
+            if row[1]=='' or row[1] is None:
+                rows.append('noData')  # 納入先コード空白はnoDataにする
+            else:
+                rows.append(row[1])       # 納入先コード
             rows.append(row[3])       # 配達日数
             rows.append(row[5])       # 納入先名称
             self.nounyuusaki.append(rows)
+            
 
         # 0列:年月日,1列:東洋休日, 2列:運送屋休日
         if pf == 'Windows':

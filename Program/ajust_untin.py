@@ -238,7 +238,7 @@ class Ajust_toke:
 
         packingCoa = packingCoa[[
             '出荷予定日', '得意先コード', '納入先コード', '納入先名称１', 
-            'hinban', '出荷', '受注ＮＯ', '受注行ＮＯ', 'lot'
+            'hinban', '出荷', '受注ＮＯ', '受注行ＮＯ', 'lot','出荷予定倉庫'
         ]]
 
         return packingCoa
