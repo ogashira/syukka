@@ -36,7 +36,7 @@ class LeadTime(object):
             rows = []
             rows.append(row[0])       # 得意先コード
             if row[1]=='' or row[1] is None:
-                rows.append('noData')  # 納入先コード空白はnoDataにする
+                rows.append('')  # 納入先コード空白は''にする
             else:
                 rows.append(row[1])       # 納入先コード
             rows.append(row[3])       # 配達日数

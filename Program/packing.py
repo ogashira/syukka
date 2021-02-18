@@ -54,7 +54,7 @@ class Packing :
         # 2021/2/16納入先コードが全てNANになるとなぜかエラーになる
         # unsoutaiou.add_addressでエラーになる？　理由はわからないが
         # fillna で対策した。unsoutaiou_toke,honsyaでも同様にfillnaした
-        self.untin_moto = self.untin_moto.fillna({'納入先コード': 'noData'})
+        self.untin_moto = self.untin_moto.fillna({'納入先コード': ''})
 
 
         self.untin_moto = self.untin_moto.fillna({'備考':'noData'})

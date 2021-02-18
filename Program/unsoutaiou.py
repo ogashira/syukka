@@ -30,7 +30,7 @@ class Unsoutaiou_toke :
         )
 
         # 2021/2/16 納入先コードが全てNaNだとエラーになる？だからfillnaした
-        self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': 'noData'})
+        self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': ''})
 
     def add_unsoutaiou(self, df):
         dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１'])
@@ -87,7 +87,7 @@ class Unsoutaiou_honsya :
         )
 
         # 2021/2/16 納入先コードが全てNaNだとエラーになる？だからfillnaした
-        self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': 'noData'})
+        self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': ''})
 
     def add_unsoutaiou(self, df):
         dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１'])
