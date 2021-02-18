@@ -10,7 +10,6 @@ from honsya import *
 from recorder import Recorder
 from kenpin import *
 from modify_output import *
-from kenpin import *
 
 
 

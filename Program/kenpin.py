@@ -196,6 +196,8 @@ class Kenpin(object):
                        '相手先略称':'納入先名'}
                     )
 
+        merge_data = merge_data.fillna({'納入先コード':'noData'})
+
         # merge_dataのNaNを空文字にしておく。こうしないとmergeができない。
         merge_data = merge_data.fillna('')
         
