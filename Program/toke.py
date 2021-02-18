@@ -75,16 +75,10 @@ class Toke:
             gyoumu.get_excel_style(filePath_eigyou)
 
 
-
             del gyoumu
 
-
-
-            # self.packingCoa = ajust_toke.get_packingCoa(self.packingHinban, 
-                  # self.untinForUriage)
             
             del ajust_toke
-
 
         
         del packing

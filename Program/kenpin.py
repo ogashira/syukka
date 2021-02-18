@@ -65,7 +65,10 @@ class Kenpin(object):
             iraisaki = df_row['依頼先']
             yotei_souko = df_row['出荷予定倉庫_y']
             syukkabi = df_row['出荷予定日']
-            cans = df_row['cans']
+            if pd.isnull(df_row['cans']):
+                cans = 0
+            else:
+                cans = df_row['cans']
             unsou = unsou_dic2[iraisaki][0]
             unsou_code = unsou_dic2[iraisaki][1]
             if '営業所' in yotei_souko:

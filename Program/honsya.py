@@ -68,16 +68,10 @@ class Honsya:
             gyoumu.get_excel_style(filePath_eigyou)
 
 
-
             del gyoumu
         
 
-
-            self.packingCoa = ajust_honsya.get_packingCoa(self.packingHinban, 
-                    self.untinForUriage)
-            
             del ajust_honsya
-
 
 
         del packing

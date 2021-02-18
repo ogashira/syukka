@@ -188,6 +188,8 @@ class Packing :
                 = moto_honsya['受注数量']/ moto_honsya['ireme']
         moto_honsya.loc[moto_honsya['受注単位']== 'CN','cans'] \
                 = moto_honsya['受注数量']
+        moto_honsya.loc[moto_honsya['受注単位']== 'BI','cans'] \
+                = moto_honsya['受注数量']
         #applyでdataframごと関数に渡す。関数の中で複数列を評価する。
         moto_honsya['can_weight'] = moto_honsya.apply(get_can_weight,axis=1)
         
