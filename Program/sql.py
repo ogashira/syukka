@@ -38,12 +38,13 @@ cnxn = pyodbc.connect('DRIVER=' + driver +
                       ';SERVER=' + server + 
                       ';DATABASE=' + database +
                       ';UID=' + uid +
-                      ';PWD=' + pwd
+                      ';PWD=' + pwd +
+                      ';CHARSET = cp932'
                      )
 
 cursor = cnxn.cursor()
 
-sqlQuery = "SELECT * FROM dbo.RJYUCD WHERE RjcSKDay = '20210219'"
+sqlQuery = "SELECT RJCHinNam FROM dbo.RJYUCD WHERE RjcSKDay = '20210219'"
 df = pd.read_sql(sqlQuery, cnxn)
 
 print(df)

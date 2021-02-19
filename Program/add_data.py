@@ -31,6 +31,8 @@ class AddData(object):
         for row in ws.rows:
             rows = []
             for cell in row:
+                if cell.value is None:
+                    cell.value = ''
                 rows.append(cell.value)
             self.coa_list.append(rows)
 
@@ -42,6 +44,8 @@ class AddData(object):
         for row in ws.rows:
             rows = []
             for cell in row:
+                if cell.value is None:
+                    cell.value = ''
                 rows.append(cell.value)
             self.sitei_denpyou.append(rows)
 
