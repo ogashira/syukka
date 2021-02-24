@@ -4,7 +4,6 @@ import pprint
 import pyodbc
 import pandas as pd
 
-"""
 driver = '{SQL Server}'
 server = 'PC750\SQLEXPRESS'
 database = 'hinkan_sheet'
@@ -24,10 +23,9 @@ print(df)
 
 cursor.close()
 cnxn.close()
+
+
 """
-
-
-
 driver = '{SQL Server}'
 server = '192.168.1.245\SQL2016'
 database = '東洋工業塗料'
@@ -51,7 +49,7 @@ print(df)
 
 cursor.close()
 cnxn.close()
-
+"""
 
 
 

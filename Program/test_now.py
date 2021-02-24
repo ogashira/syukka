@@ -6,12 +6,37 @@ from modify_output import *
 from toke import *
 from honsya import *
 from kenpin import *
+from eigyoubi import *
 
 
 
 
-toke = Toke('./')
-honsya = Honsya('./')
+while True:
+    try:
+        uriagebi = input('売上日を入力してください(例: 20201204) :')
+        if (
+        len(uriagebi) == 8 and
+        2020 <= int(uriagebi[:4]) <= 2100 and
+        1 <= int(uriagebi[4:6]) <= 12 and
+        1 <= int(uriagebi[6:]) <= 31
+        ):
+            break
+    except:
+        pass
+    print('正しい年月日を入力してください(例: 20200930)')
+
+
+pd.set_option('display.unicode.east_asian_width', True)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.width', None)
+
+
+eigyoubi = Eigyoubi()
+sengetu = eigyoubi.get_sengetu()
+del eigyoubi
+
+toke = Toke('./', uriagebi, sengetu)
+honsya = Honsya('./', uriagebi, sengetu)
 
 UU_toke = toke.get_untinForUriage()
 UU_honsya = honsya.get_untinForUriage()

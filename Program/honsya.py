@@ -12,11 +12,11 @@ pd.set_option('display.width', None)
 
 class Honsya:
 
-    def __init__(self, myfolder):
+    def __init__(self, myfolder, uriagebi, sengetu):
 
 
         self.myfolder = myfolder
-        packing = Packing()
+        packing = Packing(uriagebi, sengetu)
         
         self.honsya_moto = packing.get_honsya_moto()
         if self.honsya_moto.empty:

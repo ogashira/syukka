@@ -12,11 +12,11 @@ pd.set_option('display.width', None)
 
 class Toke:
 
-    def __init__(self, myfolder):
+    def __init__(self, myfolder, uriagebi, sengetu):
 
 
         self.myfolder = myfolder
-        packing = Packing()
+        packing = Packing(uriagebi, sengetu)
         
         self.toke_moto = packing.get_toke_moto()
         if self.toke_moto.empty:

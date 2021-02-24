@@ -14,13 +14,14 @@ from untin_toke import *
 from untin_honsya import *
 from toyo_untin import *
 from untin_keisan_sheet import *
+from sql_server import *
 
 
 
 
 class Packing :
 	
-    def __init__(self):
+    def __init__(self, uriagebi, sengetu):
         pf = platform.system()
         if pf == 'Windows':
             mypath = (r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/'\
@@ -44,8 +45,16 @@ class Packing :
         	self.tanjuu.append(lines)
         
         #運賃計算ｼｰﾄ_改の元ｼｰﾄ
-        self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
-                                      encoding='cp932',skiprows=1)
+
+        if pf == 'Windows':
+            sql = SqlServer(uriagebi, sengetu)
+            self.untin_moto = sql.get_untin_keisan_sheet()
+        elif pf == 'Linux':
+            self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
+                                                    encoding='cp932',skiprows=1)
+        else:
+            self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
+                                                    encoding='cp932',skiprows=1)
         if self.untin_moto.shape[0] == 0 :
             print('運賃計算ｼｰﾄ_改.csv にﾃﾞｰﾀがありません。終了します。')
             sys.exit()
