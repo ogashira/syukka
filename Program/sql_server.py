@@ -23,6 +23,8 @@ cnxn = pyodbc.connect('DRIVER=' + driver +
 
 cursor = cnxn.cursor()
 
+# 運賃計算ｼｰﾄ_改download>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+"""
 sqlQuery = ("SELECT RJYUCD.RjcTokCD, RJYUCD.RjcNonyuCD, RJYUCH.RjcTokNam1," 
             " RJYUCH.RjcNonyuNam1, RJYUCH.RjcNonyuNam2, RJYUCD.RjcSKDay,"
             " RJYUCD.RjcHinCD, RJYUCD.RjcHinNam, RJYUCD.RjcJcSu, RJYUCD.RjcTniCD,"
@@ -31,7 +33,7 @@ sqlQuery = ("SELECT RJYUCD.RjcTokCD, RJYUCD.RjcNonyuCD, RJYUCH.RjcTokNam1,"
             " From dbo.RJYUCD"
             " LEFT JOIN dbo.RJYUCH"
             " ON RJYUCD.RjcJCNo = RJYUCH.RjcJCNo"
-            " WHERE RJYUCD.RjcSKDay = '20210219'")
+            " WHERE RJYUCD.RjcSKDay = '20210222'")
 df = pd.read_sql(sqlQuery, cnxn)
 df = df.rename(columns={'RjcTokCD': '得意先コード', 'RjcNonyuCD': '納入先コード', 
                         'RjcTokNam1': '得意先名称１','RjcNonyuNam1': '納入先名称１', 
@@ -41,6 +43,30 @@ df = df.rename(columns={'RjcTokCD': '得意先コード', 'RjcNonyuCD': '納入�
                         'RjcJCNo': '受注ＮＯ', 'RjcJGNo': '受注行ＮＯ', 
                         'RjcMBiko': '備考', 'RjcSokoCD': '出荷予定倉庫', 
                         'RjcHBiko': '備考.1', 'RjcNODay': '納期'})
+df = df.sort_values(['得意先コード','納入先コード'])
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+"""
+sqlQuery = ("SELECT RURIDT.RurUNo, RURIDT.RurUGNo, RuRMEI.RmeSeqNo," 
+            " RURIDT.RurUriDay, RURIDT.RurToriKBN, RURIDT.RurTokCD,"
+            " RURIDT.RurNonyuCD, RURIHD.RurUnsCD, RURIDT.RurFreeKBN1,"
+            " RURIDT.RurSeiYMDY, RURMEI.RmeKojFrom, RURMEI.RmeSokoFrom,"
+            " RURIDT.RurJCNo, RURIDT.RurJGNo, RURMEI.RmeHinCD, RURMEI.RmeKoSuUp,"
+            " RURIDT.RurKanriTniCD, RURMEI_U2002.RmeMHinCD, RURMEI_U2002.RmeMSu,"
+            " RURIDT.RurCMNo, RURIDT.RurMBiko, RURMEI.RmeLotNo, RURIDT.RurNODay"
+            " FROM dbo.RURIDT"
+            " LEFT JOIN dbo.RURMEI"
+            " ON RURIDT.RurUNo = RURMEI.RmeUNo AND RURIDT.RurUGNo = RURMEI.RmeUGNo"
+            " LEFT JOIN dbo.RURIHD"
+            " ON RURIDT.RurUNo = RURIHD.RurUNo"
+            " LEFT JOIN dbo.RURMEI_U2002"
+            " ON RURIDT.RurUNo = RURMEI_U2002.RmeUNO"
+            " AND RURIDT.RurUGNo = RURMEI_U2002.RmeUGNo"
+            " AND RURMEI.RmeSeqNo = RURMEI_U2002.RmeSeqNo"
+            " WHERE RURIDT.RurUriDay = '20210222'")
+
+df = pd.read_sql(sqlQuery, cnxn)
+
+
 
 
 
