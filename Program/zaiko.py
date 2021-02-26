@@ -6,6 +6,8 @@ import os
 import platform
 from datetime import datetime, date, timedelta
 from recorder import *
+from sql_server import *
+
 
 '''
 売上処理のための在庫の引き当て（LOT）を行う
@@ -22,9 +24,11 @@ from recorder import *
 
 class Zaiko:
 
-    def __init__ (self, myfolder):
+    def __init__ (self, myfolder, uriagebi, sengetu):
 
         self.myfolder = myfolder
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
 
 
      
@@ -129,11 +133,18 @@ class Zaiko:
 
 
     # 受注DT.csv の取得
-        JDT = pd.read_csv(r'../master/effitA/受注DT.csv', skiprows = 1
-                          , encoding = 'cp932')
-        JDT = JDT.drop_duplicates(['受注ＮＯ'])
-        JDT = JDT.loc[:,['受注ＮＯ','受注日']]
-        self.JDT_d = dict(zip(JDT['受注ＮＯ'], JDT['受注日']))
+        if pf == 'Windows':
+            sql = SqlServer(self.uriagebi, self.sengetu)
+            JDT = sql.get_JDT()
+            JDT = JDT.drop_duplicates(['受注ＮＯ'])
+            JDT = JDT.loc[:,['受注ＮＯ','受注日']]
+            self.JDT_d = dict(zip(JDT['受注ＮＯ'], JDT['受注日']))
+        else:
+            JDT = pd.read_csv(r'../master/effitA/受注DT.csv', skiprows = 1
+                              , encoding = 'cp932')
+            JDT = JDT.drop_duplicates(['受注ＮＯ'])
+            JDT = JDT.loc[:,['受注ＮＯ','受注日']]
+            self.JDT_d = dict(zip(JDT['受注ＮＯ'], JDT['受注日']))
     
  
 

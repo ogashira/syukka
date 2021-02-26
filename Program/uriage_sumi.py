@@ -5,20 +5,34 @@ import pandas as pd
 import datetime
 import numpy as np
 import pickle
+import platform
 from recorder import *
+from sql_server import *
+
 
 
 class UriageSumi(object):
 
-    def __init__ (self, myfolder):
+    def __init__ (self, myfolder, uriagebi, sengetu):
 
         self.myfolder = myfolder
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
 
-        uriage_sumi = pd.read_csv(
-                r'../master/effitA/uriage_sumi.csv', 
-                skiprows = 1,
-                encoding='cp932'
-        )
+        pf = platform.system()
+        if pf == 'Windows':
+            sql = SqlServer(self.uriagebi, self.sengetu)
+            uriage_sumi = sql.get_uriage_sumi()
+            uriage_sumi = uriage_sumi.applymap(
+                                           lambda x : np.nan if x == ' ' else x)
+            del sql
+        else:
+            uriage_sumi = pd.read_csv(
+                    r'../master/effitA/uriage_sumi.csv', 
+                    skiprows = 1,
+                    encoding='cp932'
+            )
+
         uriage_sumi = uriage_sumi.rename(
                 columns = {
                     '売上日':'出荷予定日',
@@ -66,44 +80,47 @@ class UriageSumi(object):
             dic_lot[lot] = cans
             return dic_lot
 
-        uriage_sumi = self.uriage_sumi.copy()
-        uriage_sumi['dic_lot'] = uriage_sumi.apply(get_dic_lot, axis=1)
+        if not self.uriage_sumi.empty:
+            uriage_sumi = self.uriage_sumi.copy()
+            uriage_sumi['dic_lot'] = uriage_sumi.apply(get_dic_lot, axis=1)
 
-        uriage_sumi = uriage_sumi.sort_values(['受注ＮＯ', '受注行ＮＯ'])
-        uriage_sumi = uriage_sumi.reset_index()
+            uriage_sumi = uriage_sumi.sort_values(['受注ＮＯ', '受注行ＮＯ'])
+            uriage_sumi = uriage_sumi.reset_index()
 
-        # dic_lotを{'21011201H': 15, '21011501H': 3}の形にする
-        # 受注数量も削除する分を残す分に加える。
-        for i in range(len(uriage_sumi)-1):
-            JNo = uriage_sumi.loc[i, '受注ＮＯ']
-            JGNo = uriage_sumi.loc[i, '受注行ＮＯ']
-            dic_lot = uriage_sumi.loc[i, 'dic_lot']
-            Jsuu = uriage_sumi.loc[i, '受注数量']
-            j = 1
-            while uriage_sumi.loc[i+j, '受注ＮＯ'] == JNo and (
-                    uriage_sumi.loc[i+j, '受注行ＮＯ'] == JGNo):
-                add_dic_lot = uriage_sumi.loc[i+j, 'dic_lot']
-                add_lot = [k for k, v in add_dic_lot.items()][0]
-                add_cans = [v for k, v in add_dic_lot.items()][0]
-                add_Jsuu = uriage_sumi.loc[i+j, '受注数量']
+            # dic_lotを{'21011201H': 15, '21011501H': 3}の形にする
+            # 受注数量も削除する分を残す分に加える。
+            for i in range(len(uriage_sumi)-1):
+                JNo = uriage_sumi.loc[i, '受注ＮＯ']
+                JGNo = uriage_sumi.loc[i, '受注行ＮＯ']
+                dic_lot = uriage_sumi.loc[i, 'dic_lot']
+                Jsuu = uriage_sumi.loc[i, '受注数量']
+                j = 1
+                while uriage_sumi.loc[i+j, '受注ＮＯ'] == JNo and (
+                        uriage_sumi.loc[i+j, '受注行ＮＯ'] == JGNo):
+                    add_dic_lot = uriage_sumi.loc[i+j, 'dic_lot']
+                    add_lot = [k for k, v in add_dic_lot.items()][0]
+                    add_cans = [v for k, v in add_dic_lot.items()][0]
+                    add_Jsuu = uriage_sumi.loc[i+j, '受注数量']
 
-                dic_lot[add_lot] = add_cans
-                Jsuu = Jsuu + add_Jsuu
+                    dic_lot[add_lot] = add_cans
+                    Jsuu = Jsuu + add_Jsuu
 
-                # .locではエラーになる。辞書やﾘｽﾄを代入するときは.atを使う
-                # .locでは複数選択の意味があるので単一セルしか選択できない.atを使う
-                uriage_sumi.at[i, 'dic_lot'] = dic_lot
-                uriage_sumi.loc[i, '受注数量'] = Jsuu
+                    # .locではエラーになる。辞書やﾘｽﾄを代入するときは.atを使う
+                    # .locでは複数選択の意味があるので単一セルしか選択できない.atを使う
+                    uriage_sumi.at[i, 'dic_lot'] = dic_lot
+                    uriage_sumi.loc[i, '受注数量'] = Jsuu
 
-                uriage_sumi.loc[i+j, '得意先注文ＮＯ'] = 'del'
+                    uriage_sumi.loc[i+j, '得意先注文ＮＯ'] = 'del'
 
-                # i+jが最終行であったらwhileを抜ける
-                if i + j == len(uriage_sumi)-1:
-                    break
+                    # i+jが最終行であったらwhileを抜ける
+                    if i + j == len(uriage_sumi)-1:
+                        break
 
-                j += 1
+                    j += 1
 
-        uriage_sumi2 = uriage_sumi.loc[uriage_sumi['得意先注文ＮＯ'] != 'del', :]
+            uriage_sumi2 = uriage_sumi.loc[uriage_sumi['得意先注文ＮＯ'] != 'del', :]
+        else:
+            uriage_sumi2 = self.uriage_sumi
 
         return uriage_sumi2
 

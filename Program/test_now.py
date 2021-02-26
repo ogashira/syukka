@@ -7,8 +7,9 @@ from toke import *
 from honsya import *
 from kenpin import *
 from eigyoubi import *
+from sql_server import *
 
-
+import platform
 
 
 while True:
@@ -46,27 +47,38 @@ PH_toke = toke.get_packingHinban()
 PH_honsya = honsya.get_packingHinban()
 
 
-
-
+pf = platform.system()
+if pf == 'Windows':
+    sql = SqlServer(uriagebi, sengetu)
+    uriage_sumi = sql.get_uriage_sumi()
+else:
+    uriage_sumi = pd.read_csv(
+            r'../master/effitA/uriage_sumi.csv', 
+            skiprows = 1,
+            encoding='cp932'
+    )
 
 
 # 売上入力のチェック
-if not (UU_toke.empty and UU_honsya.empty):
-    modify = ModifyOutput('./')
+if not (UU_toke.empty and UU_honsya.empty) and not uriage_sumi.empty:
+    modify = ModifyOutput('./', uriagebi, sengetu)
     modify.uriageSumi_check_sumi(UU_toke, UU_honsya)
     modified_UU = modify.get_modified_UU(UU_toke, UU_honsya)
     modified_PH = modify.get_modified_PH(PH_toke, PH_honsya)
 
     del modify
 
+    # PH,UUを土気、本社に分ける
+    modi_PH_toke = modified_PH.loc[modified_PH['出荷'] == '土気出荷', :]
+    modi_PH_honsya = modified_PH.loc[modified_PH['出荷'] == '本社出荷', :]
 
-
-# PH,UUを土気、本社に分ける
-modi_PH_toke = modified_PH.loc[modified_PH['出荷'] == '土気出荷', :]
-modi_PH_honsya = modified_PH.loc[modified_PH['出荷'] == '本社出荷', :]
-
-modi_UU_toke = modified_UU.loc[modified_UU['出荷'] == '土気出荷', :]
-modi_UU_honsya = modified_UU.loc[modified_UU['出荷'] == '本社出荷', :]
+    modi_UU_toke = modified_UU.loc[modified_UU['出荷'] == '土気出荷', :]
+    modi_UU_honsya = modified_UU.loc[modified_UU['出荷'] == '本社出荷', :]
+else:
+    modi_PH_toke = PH_toke
+    modi_PH_honsya = PH_honsya
+    modi_UU_toke = UU_toke
+    modi_UU_honsya = UU_honsya
 
 
 gyoumu = Gyoumu('./')

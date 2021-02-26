@@ -16,6 +16,8 @@ class Honsya:
 
 
         self.myfolder = myfolder
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
         packing = Packing(uriagebi, sengetu)
         
         self.honsya_moto = packing.get_honsya_moto()
@@ -28,7 +30,7 @@ class Honsya:
         else:
             self.honsya_untin = packing.get_untin_honsya()
 
-            ajust_honsya = Ajust_honsya(self.myfolder)
+            ajust_honsya = Ajust_honsya(self.myfolder,self.uriagebi, self.sengetu)
 
             self.allHauler = ajust_honsya.get_allHauler(self.honsya_moto, 
                                                         self.honsya_untin)
@@ -41,6 +43,11 @@ class Honsya:
             # この時点でuntinForUriageから出荷予定倉庫を削除して、packingHinbanの
             # 出荷予定倉庫を結合するので、robot_logで表示される出荷予定倉庫は
             # 入れ替え前のものとなる。
+            """
+            2021/2/26 robot_logの表示をこの時点で行うように変更した。
+            ajust_untinからrecorder.out_log,recorder.out_fileをここに
+            移動した。
+            """
             merge_data = self.packingHinban[['受注ＮＯ', '受注行ＮＯ', 
                                                              '出荷予定倉庫']]
             UU = self.untinForUriage.drop(columns = '出荷予定倉庫')
@@ -48,6 +55,12 @@ class Honsya:
             self.untinForUriage = pd.merge(UU, merge_data, on= ['受注ＮＯ', 
                                                     '受注行ＮＯ'], how = 'left')
 
+            recorder = Recorder(self.myfolder)
+            recorder.out_log('')
+            recorder.out_file('')
+            recorder.out_log(self.untinForUriage, '\n')
+            recorder.out_file(self.untinForUriage, '\n')
+            del recorder
 
             
             #untinForUriageをいったん保存

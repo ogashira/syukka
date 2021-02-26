@@ -16,7 +16,7 @@ uriage_sumiの結果に合せてから、土気と本社に分ける。
 
 class ModifyOutput(object):
 
-    def __init__(self, myfolder):
+    def __init__(self, myfolder, uriagebi, sengetu):
 
         """
         unsou_dic = {'ﾄｰﾙ':'U0001', '新潟':'U0009' ......}
@@ -25,6 +25,8 @@ class ModifyOutput(object):
         """
         
         self.myfolder = myfolder
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
 
 
         def k_v_change(data_dic):
@@ -57,7 +59,7 @@ class ModifyOutput(object):
         elif len(toke.index) == 0 and len(honsya.index) != 0:
             toke_honsya_concat = honsya
 
-        us = UriageSumi(self.myfolder)
+        us = UriageSumi(self.myfolder, self.uriagebi, self.sengetu)
         concat_sumi = us.get_output_sumi(toke_honsya_concat)
         del us
 
@@ -66,8 +68,9 @@ class ModifyOutput(object):
 
     def uriageSumi_check_sumi(self, UU_toke, UU_honsya):
         concat_sumi = self.toke_honsya_concat_sumi(UU_toke, UU_honsya)
-        us = UriageSumi(self.myfolder)
+        us = UriageSumi(self.myfolder, self.uriagebi, self.sengetu)
         us.check_sumi(concat_sumi)
+        del us
 
         
 

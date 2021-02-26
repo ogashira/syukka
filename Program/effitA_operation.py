@@ -135,7 +135,7 @@ def start():
 
 
     if not (UU_toke.empty and UU_honsya.empty):
-        modify = ModifyOutput(myfolder)
+        modify = ModifyOutput(myfolder, uriagebi, sengetu)
         modify.uriageSumi_check_sumi(UU_toke, UU_honsya)
         modified_UU = modify.get_modified_UU(UU_toke, UU_honsya)
         modified_PH = modify.get_modified_PH(PH_toke, PH_honsya)

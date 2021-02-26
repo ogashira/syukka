@@ -25,3 +25,5 @@ class Recorder(object):
     def out_csv (self, df, filePath):
         df.to_csv(filePath, encoding='cp932')
 
+
+

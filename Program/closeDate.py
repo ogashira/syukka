@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 import csv
 import pandas as pd
 import platform
+import pickle
 
 
 
@@ -135,8 +136,25 @@ class CloseDate:
                 #締め日の方が小さかったら、出荷日の翌月の締め日。                                   
                 effit_close = (syukkabi + relativedelta(months=1)).replace(day= int(close_D))
                 
-        if closeDate != effit_close:
+
+        # data.pickleからﾀﾞｳﾝﾛｰﾄﾞ>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        with open(r'./data.pickle', 'rb') as f:
+            data_loaded = pickle.load(f)
+
+        
+        # close_dateを変更しないリスト（スタンレー得意先コード）
+        nonChange_list = data_loaded['nonChange_list'] 
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # 請求予定日  
+        # 得意先がスタンレーの場合はclose_dateは変更しない
+        # closeDateがeffit_closeと一致しない且つnonchange_listに載っていなかったら
+        # 「次」を記載する
+        #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+        if closeDate != effit_close and tokuisakiCode not in nonChange_list:
             syukkaYoteiSouko.append('次')
+
+
+
 
         return syukkaYoteiSouko
 

@@ -16,8 +16,10 @@ pd.set_option('display.max_columns', None)
 
 class Ajust_toke:
 
-    def __init__ (self, myfolder):
+    def __init__ (self, myfolder, uriagebi, sengetu):
         self.myfolder = myfolder
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
 
     def get_siteiUnsou(self, row):
         unsou = ''
@@ -209,7 +211,7 @@ class Ajust_toke:
         del lead_time
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         
-        zaiko = Zaiko(self.myfolder)
+        zaiko = Zaiko(self.myfolder, self.uriagebi, self.sengetu)
         recorder = Recorder(self.myfolder)
         
         txt ='売上処理入力用ﾃﾞｰﾀ（土気）' 
@@ -218,10 +220,14 @@ class Ajust_toke:
 
         untinForUriage2['lot'] = untinForUriage2.apply(zaiko.get_lot, axis=1)
         
+        """
+        この部分はtoke.pyに移動して、logにも正確な出荷予定倉庫が
+        表示されるようにした。2021/2/26
         recorder.out_log('')
         recorder.out_file('')
         recorder.out_log(untinForUriage2, '\n')
         recorder.out_file(untinForUriage2, '\n')
+        """
 
         del zaiko
         del recorder
@@ -250,8 +256,10 @@ class Ajust_toke:
 class Ajust_honsya:
 
 
-    def __init__ (self, myfolder):
+    def __init__ (self, myfolder, uriagebi, sengetu):
         self.myfolder = myfolder
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
 
 
     def get_siteiUnsou(self, row):
@@ -445,7 +453,7 @@ class Ajust_honsya:
         del lead_time
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-        zaiko = Zaiko(self.myfolder)
+        zaiko = Zaiko(self.myfolder, self.uriagebi, self.sengetu)
         recorder = Recorder(self.myfolder)
 
         txt ='売上処理入力用ﾃﾞｰﾀ（本社）' 
@@ -454,10 +462,14 @@ class Ajust_honsya:
 
         untinForUriage2['lot'] = untinForUriage2.apply(zaiko.get_lot, axis=1)
         
+        """
+        この部分はhonsya.pyに移動して、logにも正確な出荷予定倉庫が
+        表示されるようにした。2021/2/26
         recorder.out_log('')
         recorder.out_file('')
         recorder.out_log(untinForUriage2, '\n')
         recorder.out_file(untinForUriage2, '\n')
+        """
 
         del zaiko
         del recorder

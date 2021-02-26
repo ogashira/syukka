@@ -60,7 +60,7 @@ class Toyo_untin:
 
             if key_tpl in self.seikyuu:
                 ncan_tuika = calc_ncan(code,name)
-                ncan = max(ncan_tuika, ncan_jutyuu)
+                ncan = max(ncan_tuika, float(ncan_jutyuu))
                 toyo_dist = int(self.seikyuu[key_tpl][0])
                 toyo_tyuukei = int(self.seikyuu[key_tpl][1])
                 

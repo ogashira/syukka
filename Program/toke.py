@@ -5,6 +5,8 @@
 from packing import *
 from ajust_untin import *
 from gyoumu import *
+from recorder import *
+
 
 pd.set_option('display.unicode.east_asian_width', True)
 pd.set_option('display.max_rows', None)
@@ -16,6 +18,8 @@ class Toke:
 
 
         self.myfolder = myfolder
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
         packing = Packing(uriagebi, sengetu)
         
         self.toke_moto = packing.get_toke_moto()
@@ -28,7 +32,7 @@ class Toke:
         else:
             self.toke_untin = packing.get_untin_toke()
             
-            ajust_toke = Ajust_toke(self.myfolder)
+            ajust_toke = Ajust_toke(self.myfolder,self.uriagebi,self.sengetu)
             
             self.allHauler = ajust_toke.get_allHauler(self.toke_moto, 
                     self.toke_untin)
@@ -41,12 +45,24 @@ class Toke:
             # この時点でuntinForUriageから出荷予定倉庫を削除して、packingHinbanの
             # 出荷予定倉庫を結合するので、robot_logで表示される出荷予定倉庫は
             # 入れ替え前のものとなる。
+            """
+            2021/2/26 robot_logの表示をこの時点で行うように変更した。
+            ajust_untinからrecorder.out_log,recorder.out_fileをここに
+            移動した。
+            """
             merge_data = self.packingHinban[['受注ＮＯ', '受注行ＮＯ', 
                                                              '出荷予定倉庫']]
             UU = self.untinForUriage.drop(columns = '出荷予定倉庫')
             
             self.untinForUriage = pd.merge(UU, merge_data, on= ['受注ＮＯ', 
                                                     '受注行ＮＯ'], how = 'left')
+
+            recorder = Recorder(self.myfolder)
+            recorder.out_log('')
+            recorder.out_file('')
+            recorder.out_log(self.untinForUriage, '\n')
+            recorder.out_file(self.untinForUriage, '\n')
+            del recorder
 
 
 

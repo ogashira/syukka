@@ -129,7 +129,7 @@ del us
 
 
 # PHを修正する。uriage_sumiに合わせる。 
-modify = ModifyOutput()
+modify = ModifyOutput(myfolder, uriagebi, sengetu)
 modified_PH = modify.get_modified_PH(PH_concat_sumi)
 # UUを修正する。uriage_sumiに合わせる。
 modified_UU = modify.get_modified_UU(UU_concat_sumi)

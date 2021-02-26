@@ -49,6 +49,12 @@ class Packing :
         if pf == 'Windows':
             sql = SqlServer(uriagebi, sengetu)
             self.untin_moto = sql.get_untin_keisan_sheet()
+            self.untin_moto = self.untin_moto.applymap(
+                                           lambda x : np.nan if x == ' ' else x)
+            # self.untin_moto['備考.1'] = self.untin_moto['備考.1'].map(
+                                                             # lambda x : float(x))
+            # self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
+                                                     # encoding='cp932',skiprows=1)
         elif pf == 'Linux':
             self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
                                                     encoding='cp932',skiprows=1)
@@ -58,7 +64,8 @@ class Packing :
         if self.untin_moto.shape[0] == 0 :
             print('運賃計算ｼｰﾄ_改.csv にﾃﾞｰﾀがありません。終了します。')
             sys.exit()
-
+        
+        
 
         # 2021/2/16納入先コードが全てNANになるとなぜかエラーになる
         # unsoutaiou.add_addressでエラーになる？　理由はわからないが
@@ -167,7 +174,7 @@ class Packing :
         moto_h = moto_h01.copy()
 
         # UntinKeisanSheetに渡して、sheet_add_cntにする>>>>>>>>>>>>>>>>>>>>>>
-        UKS = UntinKeisanSheet(moto_h)
+        UKS = UntinKeisanSheet(moto_h, uriagebi, sengetu)
         moto_h = UKS.sheet_add_cnt()
 
         # 更に、sheet_add_sumi に渡して、入力済を識別する

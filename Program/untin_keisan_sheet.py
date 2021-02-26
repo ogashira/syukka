@@ -3,6 +3,10 @@
 
 import os
 import pandas as pd
+import platform
+from sql_server import *
+import numpy as np
+
 
 
 class UntinKeisanSheet(object):
@@ -13,8 +17,10 @@ class UntinKeisanSheet(object):
     sumi.csvが存在すれば、cnt はsumi.csvのadd列のmaxとする
     '''
 
-    def __init__(self, untin_moto):
+    def __init__(self, untin_moto, uriagebi, sengetu):
         
+        self.uriagebi = uriagebi
+        self.sengetu = sengetu
         self.untin_moto = untin_moto
         self.uriage_day = str(untin_moto.loc[0, '出荷予定日'])
         folder_name = self.uriage_day
@@ -49,10 +55,17 @@ class UntinKeisanSheet(object):
 
 
     def sheet_add_sumi(self, moto):
-        uriage_mae = pd.read_csv(
-            r'../master/effitA/uriage_mae.csv',
-            skiprows = 1,
-            encoding= 'cp932'
+        pf = platform.system()
+        if pf == 'Windows':
+            sql = SqlServer(self.uriagebi, self.sengetu)
+            uriage_mae = sql.get_uriage_sumi()
+            uriage_mae = uriage_mae.applymap(lambda x : np.nan if x == ' ' else x)
+            del sql
+        else:
+            uriage_mae = pd.read_csv(
+                r'../master/effitA/uriage_mae.csv',
+                skiprows = 1,
+                encoding= 'cp932'
         )
         uriage_mae = uriage_mae.drop_duplicates(['売上ＮＯ', '売上行ＮＯ'])
         uriage_mae = uriage_mae[['受注ＮＯ', '受注行ＮＯ']]

@@ -20,6 +20,20 @@ class SqlServer(object):
         self.uid = 'sa'
         self.pwd = 'toyo-mjsys'
 
+        
+    # 2021/2/26変換できない文字ℓなどをテキストﾌｧｲﾙなどに書き込むときに
+    # エラーが出て半日悩んだ。この関数で変換できない文字を？に変換して解決。
+    # 変換できない文字を無視する場合は、
+    # replaceの代わりにignoreを使う
+    def henkan(self, str_text):
+        if type(str_text) == str:
+            str_text = str_text.encode('cp932','replace')
+            #このままだと出力時に\x90D\x93cのようになって読めないので直す
+            str_text = str_text.decode('cp932')
+        return str_text
+
+
+
     def get_untin_keisan_sheet(self):
 
 
@@ -27,7 +41,7 @@ class SqlServer(object):
                               ';SERVER=' + self.server + 
                               ';DATABASE=' + self.database +
                               ';UID=' + self.uid +
-                              ';PWD=' + self.pwd +
+                              ';PWD=' + self.pwd + 
                               ';CHARSET = cp932'
                              )
 
@@ -56,6 +70,11 @@ class SqlServer(object):
 
         cursor.close()
         cnxn.close()
+
+        # henkanに渡して、変換できない文字ℓなどを？に変換する。    
+        df = df.applymap(self.henkan)
+
+
         return df
 
 
@@ -124,6 +143,8 @@ class SqlServer(object):
         cursor.close()
         cnxn.close()
 
+        # henkanに渡して、変換できない文字ℓなどを？に変換する。    
+        df = df.applymap(self.henkan)
         return df
 
 
@@ -158,4 +179,6 @@ class SqlServer(object):
         cursor.close()
         cnxn.close()
 
+        # henkanに渡して、変換できない文字ℓなどを？に変換する。    
+        df = df.applymap(self.henkan)
         return df
