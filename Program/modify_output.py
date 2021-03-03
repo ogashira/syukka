@@ -141,9 +141,10 @@ class ModifyOutput(object):
             nouki_y = row['納期_y']
             closeDate_x = row['closeDate_x']
             closeDate_y = row['closeDate_y']
+            dic_lot = row['dic_lot']
 
             hinban_result = None
-            cans_result = None
+            cans_result = 0
 
             if not pd.isnull(uriageNo):
 
@@ -151,10 +152,11 @@ class ModifyOutput(object):
 
                 if pd.isnull(hinban_y):
                     hinban_result = hinban_kanji
-                    cans_result = jutyuu_suuryou_y
                 else:
                     hinban_result = hinban_y
-                    cans_result = cans_y
+
+                for v in dic_lot.values():
+                    cans_result += int(v)
 
                 #  営業持参などで売上入力がnanの場合を考慮する
                 if pd.isnull(irai_y):
@@ -242,7 +244,7 @@ class ModifyOutput(object):
             uriageNo = row['売上ＮＯ']
 
             hinban_result = None
-            cans_result = None
+            cans_result = 0
 
             if not pd.isnull(uriageNo):
 
@@ -250,10 +252,11 @@ class ModifyOutput(object):
 
                 if pd.isnull(hinban_y):
                     hinban_result = hinban_kanji_y
-                    cans_result = jutyuu_suuryou_y
                 else:
                     hinban_result = hinban_y
-                    cans_result = cans_y
+
+                for v in dic_lot.values():
+                    cans_result += int(v)
 
                 tokui_code_x = tokui_code_y
                 nounyuu_code_x = nounyuu_code_y
