@@ -92,7 +92,12 @@ class Zaiko:
 
 
     # 現在庫ﾃﾞｰﾀの取得 
-        zaiko = pd.read_csv(r'../master/effitA/zaiko.csv',encoding='cp932')
+        if pf == 'Windows':
+            sql = SqlServer(self.uriagebi, self.sengetu)
+            zaiko = sql.get_genzaiko()
+        else:
+            zaiko = pd.read_csv(r'../master/effitA/zaiko.csv',encoding='cp932')
+
         zaiko = zaiko.loc[(zaiko['倉庫']=='大阪倉庫')|(zaiko['倉庫']=='本社倉庫')
                           |(zaiko['倉庫']=='土気倉庫'), ['品番','ロットNo',
                           '在庫数量（現在）','倉庫']]

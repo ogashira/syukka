@@ -83,7 +83,10 @@ class Toyo_untin:
                             tanka = untinMtx[i][dist_idx].replace(',', '')
                             break
                      
-                untin = int(tanka) * int(cans) * float(ireme)
+                if (not pd.isnull(cans) and not pd.isnull(ireme)
+                    and not pd.isnull(tanka)
+                   ):
+                    untin = int(tanka) * int(cans) * float(ireme)
                 
 
             return pd.Series([ncan_tuika, untin])

@@ -215,7 +215,7 @@ class UriageSumi(object):
                 UU_unsou = unsou_dic[df_row['依頼先_x']]
                 sumi_unsou = df_row['依頼先_y']
                 UU_kubun = kubun_hantei(df_row['出荷予定倉庫'])
-                sumi_kubun = df_row['配送区分']
+                sumi_kubun = int(df_row['配送区分'])
                 UU_closeDate = df_row['closeDate_x']
                 sumi_closeDate = df_row['closeDate_y']
                 UU_souko = souko_dic[df_row['出荷']]

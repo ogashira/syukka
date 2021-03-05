@@ -57,6 +57,7 @@ with open('result.txt', 'w') as result:
 
 def start():
     recorder = Recorder(myfolder)
+    """
 
     effita = EffitA(myfolder)
     effita.launch_effitA()
@@ -70,12 +71,13 @@ def start():
     effita.close_DBmanager2()
     effita.dl_zaiko()
     recorder.out_log('現在庫をダウンロード、保存しました','\n')
+    """
 
-    toke = Toke(myfolder)
+    toke = Toke(myfolder, uriagebi, sengetu)
     PH_toke = toke.get_packingHinban()
     UU_toke = toke.get_untinForUriage()
 
-    honsya = Honsya(myfolder)
+    honsya = Honsya(myfolder, uriagebi, sengetu)
     PH_honsya = honsya.get_packingHinban()
     UU_honsya = honsya.get_untinForUriage()
 
@@ -94,6 +96,9 @@ def start():
     sumi_toke = list(UU_toke.loc[:, 'sumi'])
     sumi_honsya = list(UU_honsya.loc[:, 'sumi'])
 
+
+    effita = EffitA(myfolder)
+    effita.launch_effitA()
     # 売上入力実施 UU_tokeが空ではなく、sumiが全部'済 'でなかったら実行
     if not UU_toke.empty and len(sumi_toke) > sumi_toke.count('済'):
         effita.launch_uriage_nyuuryoku('toke')
@@ -110,11 +115,13 @@ def start():
     recorder.out_log(txt, '\n')
     recorder.out_file(txt, '\n')
 
+    """
     # 売上済(uriage_sumi)ダウンロード
     effita.launch_DBmanager2()
     effita.dl_DBmanager2('uriage_sumi', uriagebi)
     recorder.out_log('売上済をダウンロード、保存しました','\n')
     effita.close_DBmanager2()
+    """
 
 
     # effitAを閉じる
@@ -143,12 +150,17 @@ def start():
         del modify
 
 
-    # PH,UUを土気、本社に分ける
-    modi_PH_toke = modified_PH.loc[modified_PH['出荷'] == '土気出荷', :]
-    modi_PH_honsya = modified_PH.loc[modified_PH['出荷'] == '本社出荷', :]
-    
-    modi_UU_toke = modified_UU.loc[modified_UU['出荷'] == '土気出荷', :]
-    modi_UU_honsya = modified_UU.loc[modified_UU['出荷'] == '本社出荷', :]
+        # PH,UUを土気、本社に分ける
+        modi_PH_toke = modified_PH.loc[modified_PH['出荷'] == '土気出荷', :]
+        modi_PH_honsya = modified_PH.loc[modified_PH['出荷'] == '本社出荷', :]
+        
+        modi_UU_toke = modified_UU.loc[modified_UU['出荷'] == '土気出荷', :]
+        modi_UU_honsya = modified_UU.loc[modified_UU['出荷'] == '本社出荷', :]
+    else:
+        modi_PH_toke = PH_toke
+        modi_PH_honsya = PH_honsya
+        modi_UU_toke = UU_toke
+        modi_UU_honsya = UU_honsya
     
 
     # sortingを作って、エクセルで保存
