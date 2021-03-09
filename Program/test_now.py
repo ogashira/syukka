@@ -8,6 +8,8 @@ from honsya import *
 from kenpin import *
 from eigyoubi import *
 from sql_server import *
+from coa import *
+
 
 import platform
 
@@ -114,3 +116,9 @@ if not UU_honsya.empty:
 
 del gyoumu
 
+# ここからCOA作成>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+coa = Coa()
+packingCoa_toke = coa.get_packingCoa(modi_PH_toke, modi_UU_toke)
+packingCoa_honsya = coa.get_packingCoa(modi_PH_honsya, modi_UU_honsya)
+
+print(packingCoa_toke)

@@ -45,9 +45,12 @@ class Gyoumu:
             
             #国内のdupli 備考内の文字を半角小文字空白無しにする。
             PH_domestic.loc[:,'mojiHenkan'] = PH_domestic['備考'].map(moji_henkan)
+            PH_domestic = PH_domestic.sort_values(['納入先名称１', 'mojiHenkan'])
+
             PH_domestic['dupli'] = PH_domestic.duplicated(
                                subset=['納入先名称１', 'mojiHenkan'],keep='first')
             #輸出のdupli
+            PH_export = PH_export.sort_values('得意先注文ＮＯ')
             PH_export['dupli'] = PH_export.duplicated(subset=['得意先注文ＮＯ'] \
                                                       ,keep='first')
             
@@ -55,7 +58,6 @@ class Gyoumu:
             PH_con = pd.concat([PH_domestic, PH_export], sort=True)
             PH_con.loc[:,'dupli'] = PH_con.loc[:, 'dupli'].map(lambda x: bool(x))
 
-            PH_con = PH_con.sort_values(['得意先コード', 'mojiHenkan'])
 
             PH_con.reset_index(inplace=True, drop=True)
             

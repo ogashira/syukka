@@ -375,25 +375,23 @@ class Zaiko:
         orderNo = df_row['得意先注文ＮＯ']
         JNo = df_row['受注ＮＯ']
         syukka_souko = df_row['出荷']
+        sumi = df_row['sumi']
         lot = {}
-        if yusyutu == 'y':
-            lot = pattern_y(hinban, cans, orderNo, syukka_souko, lot)
-        else:
-            pattern = '-'
-            pattern = get_pattern(hinban)
-            if pattern == 'J':
-                lot = pattern_J(hinban,cans,JNo, syukka_souko, lot)
-                # JNoは受注日を求めるために必要。受注製品の製造日は受注日よりも後が必須なため。
-            elif pattern == 'M':
-                lot = pattern_M(hinban,cans, syukka_souko, lot)
+        # 2021/3/9 済は在庫を引き当てない
+        if sumi != '済':
+            if yusyutu == 'y':
+                lot = pattern_y(hinban, cans, orderNo, syukka_souko, lot)
             else:
-                recorder.out_log('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + str(hinban) + ')')
-                recorder.out_file('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + str(hinban) + ')' )
+                pattern = '-'
+                pattern = get_pattern(hinban)
+                if pattern == 'J':
+                    lot = pattern_J(hinban,cans,JNo, syukka_souko, lot)
+                    # JNoは受注日を求めるために必要。受注製品の製造日は受注日よりも後が必須なため。
+                elif pattern == 'M':
+                    lot = pattern_M(hinban,cans, syukka_souko, lot)
+                else:
+                    recorder.out_log('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + str(hinban) + ')')
+                    recorder.out_file('・受注見込みﾘｽﾄ.csvに製品のﾃﾞｰﾀがありません(' + str(hinban) + ')' )
                 
         return lot
-
-
-
-
-
 

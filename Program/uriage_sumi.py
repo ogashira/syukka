@@ -206,7 +206,7 @@ class UriageSumi(object):
             hinban = np.nan
             suuryou = np.nan
             lot = np.nan
-
+            # 売上noがnanでなかったら実行する。
             if  not pd.isnull(df_row['売上ＮＯ']):
                 UU_syukkabi = df_row['出荷予定日_x']
                 sumi_syukkabi = df_row['出荷予定日_y']
@@ -226,16 +226,32 @@ class UriageSumi(object):
                 sumi_suuryou = df_row['受注数量_y']
                 UU_lot = df_row['lot_x']
                 sumi_lot = df_row['dic_lot']
+                sumi = df_row['sumi']
 
-                syukkabi = 'ok' if UU_syukkabi == sumi_syukkabi else 'ng'
-                tokuisaki = 'ok' if UU_tokuisaki == sumi_tokuisaki else 'ng'
-                unsou = 'ok' if UU_unsou == sumi_unsou else 'ng' 
-                kubun = 'ok' if UU_kubun == sumi_kubun else 'ng' 
-                closeDate = 'ok' if UU_closeDate == sumi_closeDate else 'ng' 
-                souko = 'ok' if UU_souko == sumi_souko else 'ng' 
-                hinban = 'ok' if UU_hinban == sumi_hinban else 'ng' 
-                suuryou = 'ok' if UU_suuryou == sumi_suuryou else 'ng'
-                lot = 'ok' if UU_lot == sumi_lot else 'ng'
+                # 済だったら、売上入力しないので全てokにする。
+                if sumi != '済':
+                    syukkabi = 'ok' if UU_syukkabi == sumi_syukkabi else 'ng'
+                    tokuisaki = 'ok' if UU_tokuisaki == sumi_tokuisaki else 'ng'
+                    unsou = 'ok' if UU_unsou == sumi_unsou else 'ng' 
+                    kubun = 'ok' if UU_kubun == sumi_kubun else 'ng' 
+                    closeDate = 'ok' if UU_closeDate == sumi_closeDate else 'ng' 
+                    souko = 'ok' if UU_souko == sumi_souko else 'ng' 
+                    hinban = 'ok' if UU_hinban == sumi_hinban else 'ng' 
+                    suuryou = 'ok' if UU_suuryou == sumi_suuryou else 'ng'
+                    lot = 'ok' if UU_lot == sumi_lot else 'ng'
+                else:
+                    syukkabi = 'ok'
+                    tokuisaki = 'ok'
+                    unsou = 'ok'
+                    kubun = 'ok'
+                    closeDate = 'ok'
+                    souko = 'ok'
+                    hinban = 'ok'
+                    suuryou = 'ok'
+                    lot = 'ok'
+
+
+
 
             return pd.Series([syukkabi, tokuisaki, unsou, kubun, closeDate, 
                               souko, hinban, suuryou, lot])

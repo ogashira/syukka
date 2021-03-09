@@ -236,7 +236,7 @@ class Ajust_toke:
 
         return untinForUriage2
 
-
+    """
     def get_packingCoa(self, packingHinban, untinForUriage):
         lot_data = untinForUriage[['受注ＮＯ', '受注行ＮＯ', 'lot']]
         packingCoa = pd.merge(packingHinban, lot_data, on =['受注ＮＯ', '受注行ＮＯ'] 
@@ -248,7 +248,7 @@ class Ajust_toke:
         ]]
 
         return packingCoa
-        
+    """   
 
 
 
@@ -479,6 +479,7 @@ class Ajust_honsya:
 
 
 
+    """
     def get_packingCoa(self, packingHinban, untinForUriage):
         lot_data = untinForUriage[['受注ＮＯ', '受注行ＮＯ', 'lot']]
         packingCoa = pd.merge(packingHinban, lot_data, on =['受注ＮＯ', '受注行ＮＯ'] 
@@ -490,3 +491,4 @@ class Ajust_honsya:
         ]]
 
         return packingCoa
+    """

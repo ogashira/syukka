@@ -115,8 +115,10 @@ class Honsya:
         return self.untinForUriage
 
 
+    """
     # 成績表用仕分け表を取得する
     def get_packingCoa(self):
         return self.packingCoa
+    """
 
 
