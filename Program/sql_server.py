@@ -216,3 +216,31 @@ class SqlServer(object):
         cnxn.close()
 
         return df
+
+
+    def get_tokuisaki_sime(self):
+        
+        cnxn = pyodbc.connect('DRIVER=' + self.driver + 
+                              ';SERVER=' + self.server + 
+                              ';DATABASE=' + self.database +
+                              ';UID=' + self.uid +
+                              ';PWD=' + self.pwd +
+                              ';CHARSET = cp932'
+                             )
+
+        cursor = cnxn.cursor()
+
+        sqlQuery = ("SELECT TokTokCD AS '得意先コード', TokSimD1 AS '締め日１'"
+                    " From dbo.MTOKUI"
+                    " WHERE TokTokCD < 'T6000'"
+                    )
+        df = pd.read_sql(sqlQuery, cnxn)
+
+        df = df.sort_values('得意先コード')
+        df = df.reset_index(drop = True)
+
+
+        cursor.close()
+        cnxn.close()
+
+        return df

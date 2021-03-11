@@ -3,6 +3,7 @@
 
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
+from sql_server import *
 import csv
 import pandas as pd
 import platform
@@ -12,29 +13,52 @@ import pickle
 
 class CloseDate:
 
-    def __init__(self):
+    def __init__(self, uriagebi, sengetu):
         
         pf = platform.system()
         if pf == 'Windows':
-            mypath = r'//192.168.1.247/共有/受注check/master/tokuisaki.csv'
+            sql = SqlServer(uriagebi, sengetu)
+            tokuisaki_df = sql.get_tokuisaki_sime()
+            del sql
+            tokuisaki = tokuisaki_df.values.tolist()
+            self.closeDate = {}
+            for line in tokuisaki:
+                if line[0] >= 'T6000':
+                    break
+                else:
+                    self.closeDate[line[0]] = line[1]
         elif pf == 'Linux':
             mypath = r'/mnt/public/受注check/master/tokuisaki.csv'
+            tokuisaki_file = open(mypath, encoding='cp932')
+            file_reader = csv.reader(tokuisaki_file)
+            tokuisaki = list(file_reader)
+            tokuisaki_file.close()
+        
+            del tokuisaki[0:2]
+
+            self.closeDate = {}
+            for line in tokuisaki:
+                if line[0] >= 'T6000':
+                    break
+                else:
+                    self.closeDate[line[0]] = line[8]
         else:
             mypath = r'../master/effitA/tokuisaki.csv'
-
-        tokuisaki_file = open('../master/effitA/tokuisaki.csv',encoding='cp932')
-        file_reader = csv.reader(tokuisaki_file)
-        tokuisaki = list(file_reader)
-        tokuisaki_file.close()
+            tokuisaki_file = open(mypath, encoding='cp932')
+            file_reader = csv.reader(tokuisaki_file)
+            tokuisaki = list(file_reader)
+            tokuisaki_file.close()
         
-        del tokuisaki[0:2]
+            del tokuisaki[0:2]
 
-        self.closeDate = {}
-        for line in tokuisaki:
-            if line[0] >= 'T6000':
-                break
-            else:
-                self.closeDate[line[0]] = line[8]
+            self.closeDate = {}
+            for line in tokuisaki:
+                if line[0] >= 'T6000':
+                    break
+                else:
+                    self.closeDate[line[0]] = line[8]
+
+
         #self.closeDate : {'T1060':'31', 'T1070':'20' .......}
 
 

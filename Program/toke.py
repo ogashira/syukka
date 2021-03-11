@@ -13,6 +13,11 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.width', None)
 
 class Toke:
+    """
+    allHaulerの得意先コード、納入先コードはunsoutaiou_tokeのデータの
+    右端の値。これらは、allHaulerで表示されるが、その後の計算では
+    使用されないため、間違っていいても問題ない。
+    """
 
     def __init__(self, myfolder, uriagebi, sengetu):
 

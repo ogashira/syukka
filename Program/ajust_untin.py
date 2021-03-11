@@ -111,7 +111,7 @@ class Ajust_toke:
         
 
         # 次回請求を求める>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        closeDate = CloseDate()
+        closeDate = CloseDate(self.uriagebi, self.sengetu)
 
         packingHinban2 = packingHinban.copy() 
         packingHinban2[['出荷予定日','納期','曜日','closeDate']] = \
@@ -193,7 +193,7 @@ class Ajust_toke:
 
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-        closeDate = CloseDate()
+        closeDate = CloseDate(self.uriagebi, self.sengetu)
 
         untinForUriage2 = untinForUriage.copy() 
         untinForUriage2[['出荷予定日','納期','曜日','closeDate']] = \
@@ -353,7 +353,7 @@ class Ajust_honsya:
 
 
         # 次回請求を求める>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        closeDate = CloseDate()
+        closeDate = CloseDate(self.uriagebi, self.sengetu)
 
         packingHinban2 = packingHinban.copy() 
         packingHinban2[['出荷予定日','納期','曜日','closeDate']] = \
@@ -435,7 +435,7 @@ class Ajust_honsya:
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-        closeDate = CloseDate()
+        closeDate = CloseDate(self.uriagebi, self.sengetu)
 
         untinForUriage2 = untinForUriage.copy() 
         untinForUriage2[['出荷予定日','納期','曜日','closeDate']] = \
