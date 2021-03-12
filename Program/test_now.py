@@ -119,11 +119,14 @@ if not UU_honsya.empty:
 del gyoumu
 
 # ここからCOA作成>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-coa = Coa()
-packingCoa_toke = coa.get_packingCoa(modi_PH_toke, modi_UU_toke)
-packingCoa_honsya = coa.get_packingCoa(modi_PH_honsya, modi_UU_honsya)
+coa_toke = Coa(modi_PH_toke, modi_UU_toke)
+coa_honsya = Coa(modi_PH_honsya, modi_UU_honsya)
+packingCoa_toke = coa_toke.get_packingCoa()
+packingCoa_honsya = coa_honsya.get_packingCoa()
 
+packingCoa_list_toke = coa_toke.get_packingCoa_list()
 print(packingCoa_toke)
+print(packingCoa_list_toke)
 recorder = Recorder('./')
     
 
