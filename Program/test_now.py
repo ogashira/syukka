@@ -9,6 +9,8 @@ from kenpin import *
 from eigyoubi import *
 from sql_server import *
 from coa import *
+from recorder import *
+
 
 
 import platform
@@ -122,3 +124,17 @@ packingCoa_toke = coa.get_packingCoa(modi_PH_toke, modi_UU_toke)
 packingCoa_honsya = coa.get_packingCoa(modi_PH_honsya, modi_UU_honsya)
 
 print(packingCoa_toke)
+recorder = Recorder('./')
+    
+
+
+
+
+
+
+
+
+txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n' 
+                '*********プログラムは無事終了しました。********** \n')
+recorder.out_log(txt)
+recorder.out_file(txt)

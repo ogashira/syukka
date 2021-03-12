@@ -44,9 +44,9 @@ class Coa(object):
     def find_coa(self):
 
         directory = r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/testreport/櫻田/'
-        path = directory + '*20102951T*旭真空*.pdf'
+        path = directory + '*20102951T*.pdf'
         files = glob.glob(path)
-
+        print(len(files))
         for file in files:
             try:
                 new_file_path = './'

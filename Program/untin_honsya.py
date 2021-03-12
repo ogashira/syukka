@@ -97,6 +97,8 @@ class Untin_honsya :
                     tyuukei_fare = self.torr_tyuukei[i][1].replace(',', '')
                     tyuukei_fare = float(tyuukei_fare) * float(tyuukei)
                     break
+                else:
+                    tyuukei_fare = float(self.torr_tyuukei[1][1].replace(',', ''))
         
 
         return float(std_fare) + float(tyuukei_fare)
@@ -132,6 +134,8 @@ class Untin_honsya :
                     tyuukei_fare = self.niigata_tyuukei[i][1].replace(',', '')
                     tyuukei_fare = float(tyuukei_fare) * float(tyuukei)
                     break
+                else:
+                    tyuukei_fare = float(self.niigata_tyuukei[1][1].replace(',', ''))
 
         return float(std_fare) + float(tyuukei_fare)
                 

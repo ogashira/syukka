@@ -200,3 +200,10 @@ def start():
 
 
     import line
+
+
+    txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n'
+                '*********プログラムは無事終了しました。********** \n')
+    
+    recorder.out_log(txt)
+    recorder.out_file(txt)
