@@ -57,6 +57,7 @@ class Gyoumu:
             #concat後indexをreset
             PH_con = pd.concat([PH_domestic, PH_export], sort=True)
             PH_con.loc[:,'dupli'] = PH_con.loc[:, 'dupli'].map(lambda x: bool(x))
+            PH_con = PH_con.sort_values(by = '得意先コード')
 
 
             PH_con.reset_index(inplace=True, drop=True)

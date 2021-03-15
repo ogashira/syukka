@@ -43,8 +43,18 @@ class Coa(object):
 
         packingCoa = self.get_packingCoa()
         packingCoa = packingCoa.fillna({'納入先コード':''})
-        packingCoa.loc[3,'lot']['21031200H'] = 15 
+        coa_list = self.get_coa_list()
+        del coa_list[:2]
 
+        #packingCoa['出荷予定倉庫'].map(lambda x : x.append('成'))
+        #packingCoa['lot'].map(lambda x :  x['21031200H'] = 15)
+
+        """
+        packingCoa_listを作る。
+        packingCoa(dataframe)から成のある行を抜き出し、
+        [['lot','tokuiCD', 'nonyuCD', 'hinban']....]にする
+        lotが２つ以上ある場合も対応して表示する
+        """
         packingCoa_list = []
         for i in range(len(packingCoa)):
             yoteisouko = packingCoa.loc[i,'出荷予定倉庫']
@@ -52,7 +62,6 @@ class Coa(object):
             tokuiCD = packingCoa.loc[i,'得意先コード']
             nonyuCD = packingCoa.loc[i,'納入先コード']
             hinban = packingCoa.loc[i,'hinban']
-
 
             if '成' in yoteisouko:
                 for k in lot.keys():
@@ -63,6 +72,18 @@ class Coa(object):
                     list_row.append(hinban)
 
                     packingCoa_list.append(list_row)
+
+        """
+        packingCoaﾘｽﾄにcoa_listの作成部署、成績書formatをくっつける
+        """
+        for row in packingCoa_list:
+            for add_row in coa_list:
+                if (row[1] == add_row[0] and row[2] == add_row[1] 
+                                                      and row[3] == add_row[3]):
+                    row.append(add_row[5])
+                    row.append(add_row[6])
+
+                    
 
 
 
