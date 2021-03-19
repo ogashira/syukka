@@ -59,7 +59,10 @@ class UriageSumi(object):
                 lambda x : '{}/{}/{}'.format(str(x)[:4],str(x)[4:6],str(x)[6:])
         )
 
-        self.uriage_sumi = uriage_sumi[uriage_sumi['得意先コード'] < 'T6000']
+        uriage_sumi = uriage_sumi[uriage_sumi['得意先コード'] < 'T6000']
+
+        self.uriage_sumi= uriage_sumi.copy() 
+        self.uriage_sumi['dic_lot'] = np.nan 
 
 
     def get_uriage_sumi(self):
@@ -80,8 +83,9 @@ class UriageSumi(object):
             dic_lot[lot] = cans
             return dic_lot
 
-        if not self.uriage_sumi.empty:
-            uriage_sumi = self.uriage_sumi.copy()
+
+        uriage_sumi = self.uriage_sumi.copy()
+        if not uriage_sumi.empty:
             uriage_sumi['dic_lot'] = uriage_sumi.apply(get_dic_lot, axis=1)
 
             uriage_sumi = uriage_sumi.sort_values(['受注ＮＯ', '受注行ＮＯ'])

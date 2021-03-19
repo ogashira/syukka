@@ -5,14 +5,17 @@ import glob
 import shutil
 import pandas as pd
 from add_data import AddData
+from recorder import *
+from hinkan_sheet import *
 
 
 class Coa(object):
 
 
-    def __init__(self, modi_PH, modi_UU):
+    def __init__(self, modi_PH, modi_UU, myfolder):
         self.modi_PH = modi_PH
         self.modi_UU = modi_UU
+        self.myfolder = myfolder
 
 
     def get_packingCoa(self):
@@ -46,8 +49,6 @@ class Coa(object):
         coa_list = self.get_coa_list()
         del coa_list[:2]
 
-        #packingCoa['出荷予定倉庫'].map(lambda x : x.append('成'))
-        #packingCoa['lot'].map(lambda x :  x['21031200H'] = 15)
 
         """
         packingCoa_listを作る。
@@ -83,32 +84,81 @@ class Coa(object):
                     row.append(add_row[5])
                     row.append(add_row[6])
 
-                    
-
-
-
         return packingCoa_list
 
 
 
+    def copy_coa(self, coa_folder, packingCoa_list):
+        """
+        copy出来なかったcoaを返す
+        """
+        nonExistent_coa = []
 
-
-
-
-
-
-    def find_coa(self):
+        # 工場名を取得
+        factory = coa_folder[-2 :]
 
         directory = r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/testreport/櫻田/'
-        path = directory + '*20120801H*伊坂(美光ABなし).pdf'
-        files = glob.glob(path)
-        print(len(files))
-        for file in files:
-            try:
-                new_file_path = './'
-                shutil.copy(file, new_file_path)
+        for row in packingCoa_list:
+            if row[5] != 'ﾒﾀﾙ':
+                path = directory + '*' + row[0] + '*' + row[5] + '.pdf'
+            else:
+                path = directory + '*' + row[0] + '*' + '.pdf'
 
-            except FileNotFoundError:
-                print('File Not Found!')
+            files = glob.glob(path)
+            if len(files) > 0:
+                for file in files:
+                    shutil.copy(file, coa_folder)
+                    break
+            else:
+                nonExistent_coa.append(row)
+
+        recorder = Recorder(self.myfolder)
+        txt = ('{}分の検査成績書を所定のﾌｫﾙﾀﾞ―にｺﾋﾟｰしました。\n'.format(factory))
+        recorder.out_log(txt)
+        recorder.out_file(txt)
+        if nonExistent_coa == []:
+            txt = ('{}分の検査成績書は全て完了です。\n'.format(factory))
+            recorder.out_log(txt)
+            recorder.out_file(txt)
+        else:
+            txt = ('{}分の検査成績書の以下が見つかりません。\n'.format(factory))
+            recorder.out_log(txt)
+            recorder.out_file(txt)
+            recorder.out_log(nonExistent_coa, '\n\n')
+            recorder.out_file(nonExistent_coa, '\n\n')
+
+        return nonExistent_coa
+
+    
+    def get_HS_nonExistent_coa(self, nonExistent_coa):
+        """品管ｼｰﾄ分のnonExistent_coaを求める"""
+        HS_nonExistent_coa = []
+        for row in nonExistent_coa:
+            if row[5] != 'ﾒﾀﾙ':
+                HS_nonExistent_coa.append(row)
+        return HS_nonExistent_coa
 
 
+
+    def get_MHS_nonExistent_coa(self, nonExistent_coa):
+        """ﾒﾀﾙ品管ｼｰﾄ分のnonExistent_coaを求める"""
+        MHS_nonExistent_coa = []
+        for row in nonExistent_coa:
+            if row[5] == 'ﾒﾀﾙ':
+                MHS_nonExistent_coa.append(row)
+        return MHS_nonExistent_coa
+
+
+    def create_coa(self, nonExistent_coa):
+        HS_nonExistent_coa = self.get_HS_nonExistent_coa(nonExistent_coa)
+        MHS_nonExistent_coa = self.get_MHS_nonExistent_coa(nonExistent_coa)
+
+        nonCreate_coa = [] 
+        if HS_nonExistent_coa != [] :
+            HS = HinkanSheet(HS_nonExistent_coa)
+
+        if MHS_nonExistent_coa != []:
+            pass
+
+
+        return nonCreate_coa

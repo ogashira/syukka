@@ -11,10 +11,9 @@ from sql_server import *
 from coa import *
 from recorder import *
 
-
-
 import platform
 
+MYFOLDER = './'
 
 while True:
     try:
@@ -40,8 +39,8 @@ eigyoubi = Eigyoubi()
 sengetu = eigyoubi.get_sengetu()
 del eigyoubi
 
-toke = Toke('./', uriagebi, sengetu)
-honsya = Honsya('./', uriagebi, sengetu)
+toke = Toke(MYFOLDER, uriagebi, sengetu)
+honsya = Honsya(MYFOLDER, uriagebi, sengetu)
 
 UU_toke = toke.get_untinForUriage()
 UU_honsya = honsya.get_untinForUriage()
@@ -65,7 +64,7 @@ else:
 
 # 売上入力のチェック
 if not (UU_toke.empty and UU_honsya.empty) and not uriage_sumi.empty:
-    modify = ModifyOutput('./', uriagebi, sengetu)
+    modify = ModifyOutput(MYFOLDER, uriagebi, sengetu)
     modify.uriageSumi_check_sumi(UU_toke, UU_honsya)
     modified_UU = modify.get_modified_UU(UU_toke, UU_honsya)
     modified_PH = modify.get_modified_PH(PH_toke, PH_honsya)
@@ -85,16 +84,16 @@ else:
     modi_UU_honsya = UU_honsya
 
 
-gyoumu = Gyoumu('./')
+gyoumu = Gyoumu(MYFOLDER)
 
 # sortingを作って、エクセルで保存
 if len(modi_PH_toke.index) != 0 :
-    sorting = gyoumu.get_sorting(modi_PH_toke, './', '土気')
-    filePath_gyoumu_toke = '{}/{}業務_packing.xlsx'.format('./', '土気')
+    sorting = gyoumu.get_sorting(modi_PH_toke, MYFOLDER, '土気')
+    filePath_gyoumu_toke = '{}/{}業務_packing.xlsx'.format(MYFOLDER, '土気')
 
 if len(modi_PH_honsya) != 0:
-    sorting = gyoumu.get_sorting(modi_PH_honsya, './', '本社')
-    filePath_gyoumu_honsya = '{}/{}業務_packing.xlsx'.format('./', '本社')
+    sorting = gyoumu.get_sorting(modi_PH_honsya, MYFOLDER, '本社')
+    filePath_gyoumu_honsya = '{}/{}業務_packing.xlsx'.format(MYFOLDER, '本社')
 
 # sortingのスタイル調整して再保存
 if len(modi_PH_toke.index) != 0:
@@ -104,14 +103,14 @@ if len(modi_PH_honsya.index) != 0:
 
 # kenpin,出荷実績照会作成
 if not UU_toke.empty:
-    kenpin_toke = Kenpin('toke', modi_PH_toke, modi_UU_toke, './')
+    kenpin_toke = Kenpin('toke', modi_PH_toke, modi_UU_toke, MYFOLDER)
     kenpin_toke.create_kenpin()
     kenpin_toke.get_syukka_jisseki_syoukai()
     del kenpin_toke
     
 if not UU_honsya.empty:
     kenpin_honsya = Kenpin('honsya', modi_PH_honsya, modi_UU_honsya,
-                                                            './')
+                                                            MYFOLDER)
     kenpin_honsya.create_kenpin()
     kenpin_honsya.get_syukka_jisseki_syoukai()
     del kenpin_honsya
@@ -119,27 +118,96 @@ if not UU_honsya.empty:
 del gyoumu
 
 # ここからCOA作成>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+recorder = Recorder(MYFOLDER)
+
+# packingCoa_listを作る
+packingCoa_list_toke = []
+packingCoa_list_honsya = []
 if not modi_PH_toke.empty:
-    coa_toke = Coa(modi_PH_toke, modi_UU_toke)
+    coa_toke = Coa(modi_PH_toke, modi_UU_toke, MYFOLDER)
     packingCoa_toke = coa_toke.get_packingCoa()
 
     packingCoa_list_toke = coa_toke.get_packingCoa_list()
 
-    print(packingCoa_toke)
-    print(packingCoa_list_toke)
+    txt = '\n 成績書発行準備ﾃﾞｰﾀ>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n'
+    recorder.out_file(txt)
+    txt = '土気分\n'
+    recorder.out_file(txt)
+    recorder.out_file(packingCoa_toke, '\n')
+    recorder.out_file(packingCoa_list_toke, '\n')
+
 if not modi_PH_honsya.empty:
-    coa_honsya = Coa(modi_PH_honsya, modi_UU_honsya)
+    coa_honsya = Coa(modi_PH_honsya, modi_UU_honsya, MYFOLDER)
     packingCoa_honsya = coa_honsya.get_packingCoa()
 
-recorder = Recorder('./')
+    packingCoa_list_honsya = coa_honsya.get_packingCoa_list()
+
+    txt = '本社分\n'
+    recorder.out_file(txt)
+    recorder.out_file(packingCoa_honsya, '\n')
+    recorder.out_file(packingCoa_list_honsya, '\n')
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# packingCoa_listを使って、coaを所定のﾌｫﾙﾀﾞにｺﾋﾟｰし、存在しないcoaの
+# ﾘｽﾄを作る
+# ><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<    
+# coa_folder_toke, coa_folder_honsyaを作る
+nonExistent_coa_toke = []
+nonExistent_coa_honsya = []
+
+if packingCoa_list_toke != []:
+    coa_folder_toke = MYFOLDER + 'Coa_土気'
+    try:
+        os.makedirs(coa_folder_toke)
+    except Exception as ex:
+        # 既にfolderが存在する場合は削除して再度作成する。
+        # folderの中身を空にするため
+        shutil.rmtree(coa_folder_toke)
+        os.makedirs(coa_folder_toke)
+
+
+    nonExistent_coa_toke = coa_toke.copy_coa(coa_folder_toke, 
+                                              packingCoa_list_toke)
+
+
+if packingCoa_list_honsya != []:
+    coa_folder_honsya = MYFOLDER + 'Coa_本社'
+    try:
+        os.makedirs(coa_folder_honsya)
+    except Exception as ex:
+        # 既にfolderが存在する場合は削除して再度作成する。
+        # folderの中身を空にするため
+        shutil.rmtree(coa_folder_toke)
+        os.makedirs(coa_folder_toke)
+        
+    nonExistent_coa_honsya = coa_honsya.copy_coa(coa_folder_honsya, 
+                                              packingCoa_list_honsya)
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+""" 
+nonExistent_coa_toke を品管ｼｰﾄ分とﾒﾀﾙ品管ｼｰﾄ分の２つに分ける
+nonExistent_coa_honsyaも同様に２つに分ける。合計４つになる。
+HS:品管ｼｰﾄ、MHS:ﾒﾀﾙ品管ｼｰﾄ
+if nonExistent_coa_toke != []:
+    HS_nonExistent_coa_toke = coa.get_HS_nonExistent_coa(nonExistent_coa_toke)
+    MHS_nonExistent_coa_toke = coa.get_MHS_nonExistent_coa(nonExistent_coa_toke)
     
+if nonExistent_coa_honsya != []:
+    HS_nonExistent_coa_honsya = coa.get_HS_nonExistent_coa(
+                                                        nonExistent_coa_honsya)
+    MHS_nonExistent_coa_honsya = coa.get_MHS_nonExistent_coa(
+                                                        nonExistent_coa_honsya)
+"""
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+""" 
+作成済みの成績書が無い場合は（nonExistent_coaが空でない場合は)
+coa.pyにnonExistent_coaを渡して、成績書を作ってもらう"""
 
-
-
-
-
-
-
+if nonExistent_coa_toke != []:
+    nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke)
+    
+if nonExistent_coa_honsya != []:
+    nonCreate_coa_honsya = coa_honsya.create_coa(nonExistent_coa_honsya)
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n' 
                 '*********プログラムは無事終了しました。********** \n')

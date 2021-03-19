@@ -11,7 +11,7 @@ class AddData(object):
 
     def __init__(self):
 
-    #輸出塗料連絡表の取得
+    #成績表、指定伝票ﾃﾞｰﾀの取得
         pf = platform.system()
         if pf == 'Windows':
             mypath = r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/櫻田/☆☆☆/売上処理(水野課長用)/' \
