@@ -23,4 +23,4 @@ class HinkanSheet(object):
 
         self.spec_data = pd.read_excel(r'//192.168.1.247/Guest/品質検査管理ｼｰﾄ2017.xlsm', 'ﾌｫｰﾏｯﾄ用ﾃﾞｰﾀ', engine='openpyxl')
         self.spec_data = self.spec_data.fillna('-')
-        print(self.spec_data.head(100)) 
+        #print(self.spec_data.head(100)) 

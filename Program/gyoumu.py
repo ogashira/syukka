@@ -18,6 +18,9 @@ class Gyoumu:
 
 
     def get_sorting(self, PH, myfolder, factory):
+        """
+        PHはmodi_PHのこと
+        """
 
 
         def get_dupli(packingHinban):
@@ -45,19 +48,24 @@ class Gyoumu:
             
             #国内のdupli 備考内の文字を半角小文字空白無しにする。
             PH_domestic.loc[:,'mojiHenkan'] = PH_domestic['備考'].map(moji_henkan)
-            PH_domestic = PH_domestic.sort_values(['納入先名称１', 'mojiHenkan'])
+            PH_domestic = PH_domestic.sort_values(by=['納入先名称１', 'mojiHenkan'])
 
             PH_domestic['dupli'] = PH_domestic.duplicated(
                                subset=['納入先名称１', 'mojiHenkan'],keep='first')
             #輸出のdupli
-            PH_export = PH_export.sort_values('得意先注文ＮＯ')
+            PH_export = PH_export.sort_values(by='得意先注文ＮＯ')
             PH_export['dupli'] = PH_export.duplicated(subset=['得意先注文ＮＯ'] \
                                                       ,keep='first')
             
             #concat後indexをreset
             PH_con = pd.concat([PH_domestic, PH_export], sort=True)
             PH_con.loc[:,'dupli'] = PH_con.loc[:, 'dupli'].map(lambda x: bool(x))
-            PH_con = PH_con.sort_values(by = '得意先コード')
+
+
+            # 大ﾊﾞｸﾞ→このsort_valuesによって、輸出のpackingの区分けがめちゃlめ
+            #ちゃになる。
+            PH_con = PH_con.sort_values(by = ['得意先コード', '納入先名称１', 
+                                                 '得意先注文ＮＯ', 'mojiHenkan'])
 
 
             PH_con.reset_index(inplace=True, drop=True)
