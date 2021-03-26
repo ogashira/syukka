@@ -37,7 +37,6 @@ class SqlExpress(object):
 
         # lots = "ロットＮＯ = '21031201H' OR ロットＮＯ = '21031231H'"
 
-
         sqlQuery = ("SELECT *"
                     " FROM dbo.hinken_data"
                     " LEFT JOIN dbo.tantousya_data"
@@ -48,5 +47,7 @@ class SqlExpress(object):
 
         cursor.close()
         cnxn.close()
+
+        return df
 
 

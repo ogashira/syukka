@@ -13,7 +13,7 @@ from recorder import *
 
 import platform
 
-MYFOLDER = './'
+MYFOLDER = r'C:/Users/oga/Documents/syukka/Program'
 
 while True:
     try:
@@ -156,7 +156,7 @@ nonExistent_coa_toke = []
 nonExistent_coa_honsya = []
 
 if packingCoa_list_toke != []:
-    coa_folder_toke = MYFOLDER + 'Coa_土気'
+    coa_folder_toke = MYFOLDER + '/Coa_土気'
     try:
         os.makedirs(coa_folder_toke)
     except Exception as ex:
@@ -171,7 +171,7 @@ if packingCoa_list_toke != []:
 
 
 if packingCoa_list_honsya != []:
-    coa_folder_honsya = MYFOLDER + 'Coa_本社'
+    coa_folder_honsya = MYFOLDER + '/Coa_本社'
     try:
         os.makedirs(coa_folder_honsya)
     except Exception as ex:
@@ -200,13 +200,16 @@ if nonExistent_coa_honsya != []:
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 """ 
 作成済みの成績書が無い場合は（nonExistent_coaが空でない場合は)
-coa.pyにnonExistent_coaを渡して、成績書を作ってもらう"""
+coa.pyにnonExistent_coaを渡して、成績書を作ってもらう
+"""
 
 if nonExistent_coa_toke != []:
-    nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke)
+    nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke, 
+                                                                coa_folder_toke)
     
 if nonExistent_coa_honsya != []:
-    nonCreate_coa_honsya = coa_honsya.create_coa(nonExistent_coa_honsya)
+    nonCreate_coa_honsya = coa_honsya.create_coa(nonExistent_coa_honsya, 
+                                                              coa_folder_honsya)
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n' 

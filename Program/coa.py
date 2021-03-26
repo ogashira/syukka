@@ -149,13 +149,36 @@ class Coa(object):
         return MHS_nonExistent_coa
 
 
-    def create_coa(self, nonExistent_coa):
+    def get_GIJUTU_nonExistent_coa(self, nonExistent_coa):
+        """小糸ｼｰﾄ分のnonExistent_coaを求める"""
+        GIJUTU_nonExistent_coa = []
+        for row in nonExistent_coa:
+            if row[4] == '技術':
+                GIJUTU.append(row)
+        return GIJUTU_nonExistent_coa
+
+
+    def create_coa(self, nonExistent_coa, coa_folder):
+        """
+        HS_nonExistent_coa, MHS_nonExistent_coa, GIJUTU_nonExistent_coaに
+        分けて、HS_nonExistent_coaはHinkan_sheetに渡して、成績書を
+        作成する。作成できなかった成績書はreturnして、nonCreate_coaに
+        appendする
+        """
         HS_nonExistent_coa = self.get_HS_nonExistent_coa(nonExistent_coa)
         MHS_nonExistent_coa = self.get_MHS_nonExistent_coa(nonExistent_coa)
+        GIJUTU_nonExistent_coa = self.get_GIJUTU_nonExistent_coa(nonExistent_coa)
 
         nonCreate_coa = [] 
+        if GIJUTU_nonExistent_coa != []:
+            for row in GIJUTU_nonExistent_coa:
+                nonCreate_coa.append(row) # 小糸は成績書作らずにappend
         if HS_nonExistent_coa != [] :
             HS = HinkanSheet(HS_nonExistent_coa)
+            HS_nonCreate_coa = HS.HS_create_coa(coa_folder)
+            """品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
+            """
+            nonCreate_coa.append(HS_nonCreate_coa)
 
         if MHS_nonExistent_coa != []:
             pass
