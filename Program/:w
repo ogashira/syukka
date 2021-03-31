@@ -35,7 +35,7 @@ class SqlExpress(object):
             else:
                 lots = lots + " OR ﾛｯﾄNo = " + '\'' + lot + '\''
 
-        # lots = " ﾛｯﾄNo = '21031201H' OR ﾛｯﾄNo = '21031231H'"
+        # lots = "ロットＮＯ = '21031201H' OR ロットＮＯ = '21031231H'"
 
         sqlQuery = ("SELECT *"
                     " FROM dbo.hinken_data"

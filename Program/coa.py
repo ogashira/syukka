@@ -121,7 +121,9 @@ class Coa(object):
             recorder.out_log(txt)
             recorder.out_file(txt)
         else:
-            txt = ('{}分の検査成績書の以下が見つかりません。\n'.format(factory))
+            txt = ('{}分の検査成績書の以下が見つかりません。\n'
+                   '新たに検査成績書を作成します。\n'.format(factory))
+            
             recorder.out_log(txt)
             recorder.out_file(txt)
             recorder.out_log(nonExistent_coa, '\n\n')
@@ -154,7 +156,7 @@ class Coa(object):
         GIJUTU_nonExistent_coa = []
         for row in nonExistent_coa:
             if row[4] == '技術':
-                GIJUTU.append(row)
+                GIJUTU_nonExistent_coa.append(row)
         return GIJUTU_nonExistent_coa
 
 
@@ -165,6 +167,10 @@ class Coa(object):
         作成する。作成できなかった成績書はreturnして、nonCreate_coaに
         appendする
         """
+        
+        factory = coa_folder[-2 :]
+        recorder = Recorder(self.myfolder)
+
         HS_nonExistent_coa = self.get_HS_nonExistent_coa(nonExistent_coa)
         MHS_nonExistent_coa = self.get_MHS_nonExistent_coa(nonExistent_coa)
         GIJUTU_nonExistent_coa = self.get_GIJUTU_nonExistent_coa(nonExistent_coa)
@@ -173,12 +179,31 @@ class Coa(object):
         if GIJUTU_nonExistent_coa != []:
             for row in GIJUTU_nonExistent_coa:
                 nonCreate_coa.append(row) # 小糸は成績書作らずにappend
+            
+            txt = ('{}分の技術発行の以下の検査成績書がありません。\n'
+                   '技術部に連絡してください\n'.format(factory))
+            
+            recorder.out_log(txt)
+            recorder.out_file(txt)
+            recorder.out_log(GIJUTU_nonExistent_coa, '\n\n')
+            recorder.out_file(GIJUTU_nonExistent_coa, '\n\n')
+
         if HS_nonExistent_coa != [] :
             HS = HinkanSheet(HS_nonExistent_coa)
             HS_nonCreate_coa = HS.HS_create_coa(coa_folder)
             """品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
             """
-            nonCreate_coa.append(HS_nonCreate_coa)
+            for row in HS_nonCreate_coa:
+                nonCreate_coa.append(HS_nonCreate_coa)
+
+            if HS_nonCreate_coa != []:
+                txt = ('{}分の以下の成績書が品管ｼｰﾄから作成できませんでした\n'
+                       .format(factory))
+                
+                recorder.out_log(txt)
+                recorder.out_file(txt)
+                recorder.out_log(HS_nonCreate_coa, '\n\n')
+                recorder.out_file(HS_nonCreate_coa, '\n\n')
 
         if MHS_nonExistent_coa != []:
             pass
