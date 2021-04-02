@@ -46,6 +46,7 @@ class Toke:
             self.untinForUriage = ajust_toke.get_untinForUriage(self.toke_moto,
                     self.allHauler)
 
+
             # untinForUriageにpackingHinbanの'出荷予定倉庫'を取り入れる>>>>>>>>>
             # この時点でuntinForUriageから出荷予定倉庫を削除して、packingHinbanの
             # 出荷予定倉庫を結合するので、robot_logで表示される出荷予定倉庫は

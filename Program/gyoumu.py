@@ -52,6 +52,7 @@ class Gyoumu:
 
             PH_domestic['dupli'] = PH_domestic.duplicated(
                                subset=['納入先名称１', 'mojiHenkan'],keep='first')
+
             #輸出のdupli
             PH_export = PH_export.sort_values(by='得意先注文ＮＯ')
             PH_export['dupli'] = PH_export.duplicated(subset=['得意先注文ＮＯ'] \
@@ -60,15 +61,21 @@ class Gyoumu:
             #concat後indexをreset
             PH_con = pd.concat([PH_domestic, PH_export], sort=True)
             PH_con.loc[:,'dupli'] = PH_con.loc[:, 'dupli'].map(lambda x: bool(x))
-
+            # 下の２回のreset_indexによって昇順の'index'列を作る
+            PH_con.reset_index(inplace = True, drop=True)
+            PH_con.reset_index(inplace = True)
+            
 
             # 大ﾊﾞｸﾞ→このsort_valuesによって、輸出のpackingの区分けがめちゃlめ
-            #ちゃになる。
-            PH_con = PH_con.sort_values(by = ['得意先コード', '納入先名称１', 
-                                                 '得意先注文ＮＯ', 'mojiHenkan'])
+            #ちゃになる。直した得意先コードと昇順index列でソート
+            PH_con = PH_con.sort_values(by = ['得意先コード', 'index'])
 
-
+            PH_con = PH_con.drop('index', axis = 1) # index列を削除
+            
             PH_con.reset_index(inplace=True, drop=True)
+            print('\n\n\n\n')
+            print(PH_con)
+
             
             return PH_con
 

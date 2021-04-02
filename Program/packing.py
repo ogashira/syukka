@@ -292,6 +292,8 @@ class Packing :
         unsoutaiou_toke = Unsoutaiou_toke()
         tokeMoto = unsoutaiou_toke.add_address(toke_moto)
         del unsoutaiou_toke
+
+
         
         #大阪直送、営業持参の場合は運賃計算しないように「住所１」を
         #「NoCalc」に変更しておく
