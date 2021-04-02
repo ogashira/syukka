@@ -73,8 +73,6 @@ class Gyoumu:
             PH_con = PH_con.drop('index', axis = 1) # index列を削除
             
             PH_con.reset_index(inplace=True, drop=True)
-            print('\n\n\n\n')
-            print(PH_con)
 
             
             return PH_con
