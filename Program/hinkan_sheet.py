@@ -19,7 +19,7 @@ class HinkanSheet(object):
         self.nonExistent_coa = HS_nonExistent_coa
         
         nonExistent_coa_lot = [] # get_hinken_dataに渡す
-        nonExistent_coa_hinban = [] # get_spec_dataに渡す
+        nonExistent_coa_hinban = [] # spec_dataに渡す
         for row in self.nonExistent_coa:
             if row[4] == '営業':
                 nonExistent_coa_lot.append(row[0])
