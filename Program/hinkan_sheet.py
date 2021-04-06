@@ -292,9 +292,13 @@ class HinkanSheet(object):
 
 
         xlapp = win32com.client.Dispatch("Excel.Application")    # Excelの起動
-        xlapp.DisplayAlerts = False
-        # xlapp.Visible = True
-        wb = xlapp.Workbooks.Open(EXCEL_PATH, ReadOnly=1)    # Excelファイルを開く
+        xlapp.DisplayAlerts = True
+        # xlapp.Visible = False
+
+        # UpdateLinks = Falseを指定しないと「読み取り専用で開きますか」の
+        # メッセージが出て止まってしまう。なぜかわからない。
+        wb = xlapp.Workbooks.Open(EXCEL_PATH, 
+                    UpdateLinks = False, ReadOnly = True)   # Excelファイルを開く
         # time.sleep(20)
 
         ws_work = wb.Worksheets('work')
