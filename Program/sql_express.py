@@ -12,7 +12,7 @@ class SqlExpress(object):
     def __init__(self):
 
         self.driver = '{SQL Server}'
-        self.server = 'PC750\SQLEXPRESS'
+        self.server = '192.168.3.210\SQLEXPRESS'
         self.database = 'hinkan_sheet'
         self.trusted_connection = 'yes'
 

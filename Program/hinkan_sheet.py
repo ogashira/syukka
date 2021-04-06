@@ -11,12 +11,13 @@ import time
 
 class HinkanSheet(object):
 
-    def __init__(self, HS_nonExistent_coa):
+    def __init__(self, HS_nonExistent_coa, coa_folder):
         """
         HS_nonExistent_coaはnonExistent_coaの中の品管ｼｰﾄ分のみ
         """
         sql = SqlExpress()
         self.nonExistent_coa = HS_nonExistent_coa
+        self.coa_folder = coa_folder
         
         nonExistent_coa_lot = [] # get_hinken_dataに渡す
         nonExistent_coa_hinban = [] # spec_dataに渡す
@@ -38,7 +39,7 @@ class HinkanSheet(object):
 
 
 
-    def coa_data_copy(self, ws_work, ws_format, ws_inn, lot, hinban):
+    def coa_data_copy(self, ws_work, ws_format, ws_inn, row, HS_nonCreate_coa):
         """
         品管ｼｰﾄのworkに、品質試験ﾃﾞｰﾀとﾌｫｰﾏｯﾄ用ﾃﾞｰﾀ(spec)を転記する
         """
@@ -47,8 +48,9 @@ class HinkanSheet(object):
         locで得たデータはSeriesなので、それのiloc[0]がリテラルのデータとなる
         """
 
-        # 検査ngなどで、成績書が作成できなかったらfalseを返す
-        bool_success = True
+        hinban = row[3]
+        lot = row[0]
+
 
         coaName          = self.spec_data.loc[
                             self.spec_data['入力名']== hinban, '成績書名'].iloc[0]
@@ -210,16 +212,17 @@ class HinkanSheet(object):
             ws_work.Range("V7").Value = data_haze
             ws_work.Range("W7").Value = data_dltaE
 
-            self.shape_copy(ws_format, ws_inn, data_tantou)
+            HS_nonCreate_coa = self.shape_copy(ws_format, ws_inn, data_tantou, 
+                                                        row, HS_nonCreate_coa)
         else:
-            bool_success = False
+            row.append('Did not pass')
+            HS_nonCreate_coa.append(row)
 
 
-        return bool_success
+        return HS_nonCreate_coa
+        
 
-
-
-    def shape_copy(self, ws_format, ws_inn, data_tantou):
+    def shape_copy(self, ws_format, ws_inn, data_tantou, row, HS_nonCreate_coa):
 
         def press_inn(inn, col):
             ws_inn.Activate()
@@ -277,10 +280,14 @@ class HinkanSheet(object):
 
         press_inn(tantou_inn, "F")
         press_inn(kensa_inn, "H")
+
+        HS_nonCreate_coa = self.create_pdf(row, ws_format, HS_nonCreate_coa)
+
+        return HS_nonCreate_coa
         
 
 
-    def HS_create_coa(self, coa_folder):
+    def HS_create_coa(self):
         """
         HS_nonExistent_coaを基にcoaを作る。作れなかったcoaがあったら、
         HS_nonCreate_coaのリストを返す
@@ -323,28 +330,10 @@ class HinkanSheet(object):
             ws_format.Activate()
 
             # coa_data_copyを実行すれば、returnなくてもws_workに転記されるはず
-            bool_success = self.coa_data_copy(ws_work, ws_format, ws_inn,  
-                                                                 lot, hinban)
+            HS_nonCreate_coa = self.coa_data_copy(ws_work, ws_format, ws_inn, 
+                                                          row, HS_nonCreate_coa)
             # bool_successがfalseならば、HS_nonCreate_coaにappendして、次のroopへ行く
-            if not bool_success:
-                row.append('Did not pass')
-                HS_nonCreate_coa.append(row)
-                continue
-               
-                
 
-            # pdfに変換　絶対パスが必要
-            """
-            try.expectで例外が出たら、HS_nonCreate_coaにrowを追加する。
-            """
-            try:
-                ws_format.ExportAsFixedFormat(Type = 0, Quality = 0, 
-                                Filename = '{}/{}_{}_{}.pdf'
-                                .format(coa_folder,hinban, lot, coa_format))
-            except Exception as ex:
-                print('*****************成績書作成エラー*******************')
-                print('{}({})のcoaが作成できませんでした'.format(hinban, lot))
-                HS_nonCreate_coa.append(row)
 
 
         ws_hinken.Activate()
@@ -353,4 +342,26 @@ class HinkanSheet(object):
         
 
         return HS_nonCreate_coa
-        
+
+
+    def create_pdf(self, row, ws_format, HS_nonCreate_coa):
+
+        # pdfに変換　絶対パスが必要
+        """
+        try.expectで例外が出たら、HS_nonCreate_coaにrowを追加する。
+        """
+        lot = row[0]
+        hinban = row[3]
+        coa_format = row[5]
+        try:
+            ws_format.ExportAsFixedFormat(Type = 0, Quality = 0, 
+                            Filename = '{}/{}_{}_{}.pdf'
+                            .format(self.coa_folder,hinban, lot, coa_format))
+        except Exception as ex:
+            print('*****************成績書作成エラー*******************')
+            print('{}({})のcoaが作成できませんでした'.format(hinban, lot))
+            row.append('pdf error')
+            HS_nonCreate_coa.append(row)
+        finally:
+            return HS_nonCreate_coa
+

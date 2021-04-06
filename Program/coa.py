@@ -189,12 +189,12 @@ class Coa(object):
             recorder.out_file(GIJUTU_nonExistent_coa, '\n\n')
 
         if HS_nonExistent_coa != [] :
-            HS = HinkanSheet(HS_nonExistent_coa)
-            HS_nonCreate_coa = HS.HS_create_coa(coa_folder)
+            HS = HinkanSheet(HS_nonExistent_coa, coa_folder)
+            HS_nonCreate_coa = HS.HS_create_coa()
             """品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
             """
             for row in HS_nonCreate_coa:
-                nonCreate_coa.append(HS_nonCreate_coa)
+                nonCreate_coa.append(row)
 
             if HS_nonCreate_coa != []:
                 txt = ('{}分の以下の成績書が品管ｼｰﾄから作成できませんでした\n'
