@@ -7,6 +7,7 @@ import pandas as pd
 from add_data import AddData
 from recorder import *
 from hinkan_sheet import *
+from metal_hinkan_sheet import *
 
 
 class Coa(object):

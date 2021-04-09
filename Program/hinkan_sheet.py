@@ -283,6 +283,9 @@ class HinkanSheet(object):
 
         HS_nonCreate_coa = self.create_pdf(row, ws_format, HS_nonCreate_coa)
 
+        ws_format.Shapes(tantou_inn).Delete()
+        ws_format.Shapes(kensa_inn).Delete()
+
         return HS_nonCreate_coa
         
 
@@ -309,7 +312,7 @@ class HinkanSheet(object):
         # time.sleep(20)
 
         ws_work = wb.Worksheets('work')
-        ws_hinken = wb.Worksheets('品質試験ﾃﾞｰﾀ')
+        ws_hinken = wb.Worksheets('品質試験ﾃﾞｰﾀ') #book閉じる時にｱｸﾃｨﾌﾞにするｼｰﾄ
         ws_inn = wb.Worksheets('印')
 
 
@@ -329,11 +332,10 @@ class HinkanSheet(object):
             ws_format.Visible = -1 # Vidible=-1, Hidden=0
             ws_format.Activate()
 
-            # coa_data_copyを実行すれば、returnなくてもws_workに転記されるはず
+            """coa_data_copyを実行すれば、returnなくてもws_workに転記されるはず
+            coa_data_copyの中でshape_copyを呼び出して印をする"""
             HS_nonCreate_coa = self.coa_data_copy(ws_work, ws_format, ws_inn, 
                                                           row, HS_nonCreate_coa)
-            # bool_successがfalseならば、HS_nonCreate_coaにappendして、次のroopへ行く
-
 
 
         ws_hinken.Activate()
