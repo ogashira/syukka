@@ -137,7 +137,7 @@ class Coa(object):
         """品管ｼｰﾄ分のnonExistent_coaを求める"""
         HS_nonExistent_coa = []
         for row in nonExistent_coa:
-            if row[5] != 'ﾒﾀﾙ':
+            if row[5] != 'ﾒﾀﾙ' and row[4] !='技術':
                 HS_nonExistent_coa.append(row)
         return HS_nonExistent_coa
 
@@ -207,7 +207,21 @@ class Coa(object):
                 recorder.out_file(HS_nonCreate_coa, '\n\n')
 
         if MHS_nonExistent_coa != []:
-            pass
+            MHS = MetalHinkanSheet(MHS_nonExistent_coa, coa_folder)
+            MHS_nonCreate_coa = MHS.MHS_create_coa()
 
+            """ﾒﾀﾙ品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
+            """
+            for row in MHS_nonCreate_coa:
+                nonCreate_coa.append(row)
+
+            if MHS_nonCreate_coa != []:
+                txt = ('{}分の以下の成績書が品管ｼｰﾄから作成できませんでした\n'
+                       .format(factory))
+                
+                recorder.out_log(txt)
+                recorder.out_file(txt)
+                recorder.out_log(MHS_nonCreate_coa, '\n\n')
+                recorder.out_file(MHS_nonCreate_coa, '\n\n')
 
         return nonCreate_coa
