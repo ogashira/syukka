@@ -206,12 +206,16 @@ coa.pyにnonExistent_coaを渡して、成績書を作ってもらう
 if nonExistent_coa_toke != []:
     nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke, 
                                                                 coa_folder_toke)
-    print(nonCreate_coa_toke)
+else:
+    nonCreate_coa_toke = []
+print('土気分の未発行成績書：\n', nonCreate_coa_toke, '\n')
     
 if nonExistent_coa_honsya != []:
     nonCreate_coa_honsya = coa_honsya.create_coa(nonExistent_coa_honsya, 
                                                               coa_folder_honsya)
-    print(nonCreate_coa_honsya)
+else:
+    nonCreate_coa_honsya = []
+print('本社分の未発行成績書：\n', nonCreate_coa_honsya, '\n')
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n' 
