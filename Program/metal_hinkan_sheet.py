@@ -70,7 +70,7 @@ class MetalHinkanSheet(object):
         IK50がA試験かB試験かを判定する。
         ik-50のﾃﾞｰﾀﾌﾚｰﾑからlotのﾘｽﾄを作ってindexから前回LOTを求める
         """
-        ik50lot_l = list(self.ik50_df.loc[:, '\nLOt'])
+        ik50lot_l = list(self.ik50_df.loc[:, '\nLOT'])
         ik50lot_l.sort()
 
         this_time_idx = ik50lot_l.index(this_time_lot)
@@ -96,19 +96,19 @@ class MetalHinkanSheet(object):
         if ((this_time_month == '12' or this_time_month == '06') 
             and interval_month == 0):
             test_type = 'A'
-        elif ((this_time_month == '11' or this_time_mont == '05')
+        elif ((this_time_month == '11' or this_time_month == '05')
             and interval_month <= 5):
             test_type = 'A'
-        elif ((this_time_month == '10' or this_time_mont == '04')
+        elif ((this_time_month == '10' or this_time_month == '04')
             and interval_month <= 4):
             test_type = 'A'
-        elif ((this_time_month == '09' or this_time_mont == '03')
+        elif ((this_time_month == '09' or this_time_month == '03')
             and interval_month <= 3):
             test_type = 'A'
-        elif ((this_time_month == '08' or this_time_mont == '02')
+        elif ((this_time_month == '08' or this_time_month == '02')
             and interval_month <= 2):
             test_type = 'A'
-        elif ((this_time_month == '07' or this_time_mont == '01')
+        elif ((this_time_month == '07' or this_time_month == '01')
             and interval_month <= 1):
             test_type = 'A'
         else:
@@ -119,10 +119,11 @@ class MetalHinkanSheet(object):
         (MHS.spec_data.columns
         ['品番', '品名',,, '', '', '',
         '配合後の\n粘度 min', '配合後の\n粘度 max', '', '',
-        '配合後の\n加熱残分 min', '配合後の\n加熱残分 max', '中心光度 min', '中心光度 max', '中心光度 結果',
+        '配合後の\n加熱残分 min', '配合後の\n加熱残分 max', '中心光度 min', 
+        '中心光度 max', '中心光度 結果',
         '', '', '', '', '配合後の容器の中での状態 規格',
-        '配合後の容器の中での状態 結果', '作業性 規格', '作業性 結果', '', '', '',
-        '', '', '', '耐熱後\n正反射低下', '耐温水性 規格', '耐温水性 結果',
+        '配合後の容器の中での状態 結果', '作業性 規格', '作業性 結果', '', '',
+        '','', '', '', '耐熱後\n正反射低下', '耐温水性 規格', '耐温水性 結果',
         '', '', '耐湿後\n正反射低下', '', '', '有効期限',
         '', 'Unnamed: 40']
 
@@ -131,17 +132,23 @@ class MetalHinkanSheet(object):
         MHS.test_data.columns
         ['発行', '', '\n品番', '品名', '\nLOT', '', '', '', '',
         '', '', '', '配合後の\n粘度', '', '', '',
-        '配合後の\n加熱残分', '中心光度\n1', '中心光度\n2', '中心光度\n3', '中心光度\n4', '中心光度\n5',
-        '耐熱後\n 正反射', '耐湿後\n正反射', '薄塗り\n全反射', '薄塗り\n拡散', '薄塗り\n正反射', 'n=1\n全反射',
+        '配合後の\n加熱残分', '中心光度\n1', '中心光度\n2', '中心光度\n3', 
+        '中心光度\n4', '中心光度\n5',
+        '耐熱後\n 正反射', '耐湿後\n正反射', '薄塗り\n全反射', '薄塗り\n拡散', 
+        '薄塗り\n正反射', 'n=1\n全反射',
         'n=1\n拡散', '', 'n=2\n全反射', 'n=2\n拡散', '', 'n=3\n全反射',
-        'n=3\n拡散', '', '厚塗り\n全反射', '厚塗り\n拡散', '厚塗り\n正反射', '温度', '湿度',
-        '天気', 'その他\n情報', '容器の中での状態', '配合後の容器の中での状態', '作業性', '塗膜の外観', '付着性',
-        '耐熱性', '耐熱後\n付着性', '耐温水性', '耐湿性', '耐湿後\n付着性', '冷熱ｻｲｸﾙ', '備考'])
+        'n=3\n拡散', '', '厚塗り\n全反射', '厚塗り\n拡散', '厚塗り\n正反射', 
+        '温度', '湿度',
+        '天気', 'その他\n情報', '容器の中での状態', '配合後の容器の中での状態', 
+        '作業性', '塗膜の外観', '付着性',
+        '耐熱性', '耐熱後\n付着性', '耐温水性', '耐湿性', '耐湿後\n付着性', 
+        '冷熱ｻｲｸﾙ', '備考'])
         """
 
 
 
-    def coa_data_copy(self, ws_work, ws_format, row, MHS_nonCreate_coa):
+    def coa_data_copy(self, ws_work, ws_format, row, MHS_nonCreate_coa, 
+                                                                     test_type):
         """
         品管ｼｰﾄのworkに、品質試験ﾃﾞｰﾀとﾌｫｰﾏｯﾄ用ﾃﾞｰﾀ(spec)を転記する
         """
@@ -253,8 +260,19 @@ class MetalHinkanSheet(object):
             ws_work.Range("AK14").Value = spec_cycl
             ws_work.Range("AL14").Value = judge_cycl
             ws_work.Range("AN14").Value = spec_ireme
+
+            # IK-50がB試験、A試験
+            if (hinban == 'S7-IK50-M' or hinban == 'S7-IK50-4-M') \
+                and test_type == 'B':
+                ws_work.Range("AI14").Value = '合格'
+                ws_work.Range("AL14").Value = '合格'
+            else:
+                ws_work.Range("AI14").Value = '-'
+                ws_work.Range("AL14").Value = '-'
+            
             
             # sheets("work")に転記するtest_data
+            ws_work.Range("E20").Value = lot
             ws_work.Range("F20").Value = data_suu
             ws_work.Range("G20").Value = data_sg1
             ws_work.Range("H20").Value = data_sg2
@@ -298,7 +316,7 @@ class MetalHinkanSheet(object):
 
 
         xlapp = win32com.client.Dispatch("Excel.Application")  #Excelの起動
-        xlapp.DisplayAlerts = True
+        xlapp.DisplayAlerts = False
 
         """UpdateLinks = Falseを指定しないと「読み取り専用で開きますか」の
         メッセージが出て止まってしまう。なぜかわからない。"""
@@ -327,10 +345,16 @@ class MetalHinkanSheet(object):
                 test_type = self.judge_test_type(lot)
 
             """coa_data_copyを実行すれば、returnなくてもws_workに転記されるはず
-            coa_data_copyの中でshape_copyを呼び出して印をする"""
-            MHS_nonCreate_coa = self.coa_data_copy(ws_work, ws_format, 
-                                                          row, MHS_nonCreate_coa)
+            検査印はデフォルトでｼｰﾄに押してある"""
 
+            try:
+                MHS_nonCreate_coa = self.coa_data_copy(ws_work, ws_format, 
+                                               row, MHS_nonCreate_coa,test_type)
+            except Exception as ex:
+                print('*****************成績書作成エラー*******************')
+                print('{}({})のcoaが作成できませんでした'.format(hinban, lot))
+                row.append('coa error')
+                MHS_nonCreate_coa.append(row)
 
 
         ws_test.Activate()
@@ -359,8 +383,6 @@ class MetalHinkanSheet(object):
                             Filename = '{}/{}_{}_{}.pdf'
                             .format(self.coa_folder,hinban, lot, sheet_format))
         except Exception as ex:
-            print('*****************成績書作成エラー*******************')
-            print('{}({})のcoaが作成できませんでした'.format(hinban, lot))
             row.append('pdf error')
             MHS_nonCreate_coa.append(row)
         finally:

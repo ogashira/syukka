@@ -176,6 +176,7 @@ class Coa(object):
         MHS_nonExistent_coa = self.get_MHS_nonExistent_coa(nonExistent_coa)
         GIJUTU_nonExistent_coa = self.get_GIJUTU_nonExistent_coa(nonExistent_coa)
 
+
         nonCreate_coa = [] 
         if GIJUTU_nonExistent_coa != []:
             for row in GIJUTU_nonExistent_coa:

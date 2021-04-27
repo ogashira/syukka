@@ -49,6 +49,22 @@ PH_toke = toke.get_packingHinban()
 
 PH_honsya = honsya.get_packingHinban()
 
+#effitAを立ち上げるかどうかの判定>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+sumi_toke = list(UU_toke.loc[:, 'sumi'])
+sumi_honsya = list(UU_honsya.loc[:, 'sumi'])
+
+if not  (
+        (UU_toke.empty and UU_honsya.empty) 
+        or  (
+            len(sumi_toke) == sumi_toke.count('済') and
+            len(sumi_honsya) == sumi_honsya.count('済')
+            )   
+        ):
+    print('\n\neffitAを立ち上げる\n\n')
+else:
+    print('\n\neffitAを立ち上げない\n\n')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 pf = platform.system()
 if pf == 'Windows':
@@ -60,7 +76,6 @@ else:
             skiprows = 1,
             encoding='cp932'
     )
-
 
 # 売上入力のチェック
 if not (UU_toke.empty and UU_honsya.empty) and not uriage_sumi.empty:
@@ -116,6 +131,13 @@ if not UU_honsya.empty:
     del kenpin_honsya
 
 del gyoumu
+
+txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n'
+            '**売上入力、業務用fileは作成は終了しました。*** \n\n'
+            '検査成績書を探し、無ければ発行します。\n\n')
+
+recorder.out_log(txt)
+recorder.out_file(txt)
 
 # ここからCOA作成>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 recorder = Recorder(MYFOLDER)
@@ -177,8 +199,8 @@ if packingCoa_list_honsya != []:
     except Exception as ex:
         # 既にfolderが存在する場合は削除して再度作成する。
         # folderの中身を空にするため
-        shutil.rmtree(coa_folder_toke)
-        os.makedirs(coa_folder_toke)
+        shutil.rmtree(coa_folder_honsya)
+        os.makedirs(coa_folder_honsya)
         
     nonExistent_coa_honsya = coa_honsya.copy_coa(coa_folder_honsya, 
                                               packingCoa_list_honsya)
