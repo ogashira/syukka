@@ -11,12 +11,13 @@ import time
 
 class HinkanSheet(object):
 
-    def __init__(self, HS_nonExistent_coa):
+    def __init__(self, HS_nonExistent_coa, coa_folder):
         """
         HS_nonExistent_coaはnonExistent_coaの中の品管ｼｰﾄ分のみ
         """
         sql = SqlExpress()
         self.nonExistent_coa = HS_nonExistent_coa
+        self.coa_folder = coa_folder
         
         nonExistent_coa_lot = [] # get_hinken_dataに渡す
         nonExistent_coa_hinban = [] # spec_dataに渡す
@@ -38,7 +39,7 @@ class HinkanSheet(object):
 
 
 
-    def coa_data_copy(self, ws_work, ws_format, ws_inn, lot, hinban):
+    def coa_data_copy(self, ws_work, ws_format, ws_inn, row, HS_nonCreate_coa):
         """
         品管ｼｰﾄのworkに、品質試験ﾃﾞｰﾀとﾌｫｰﾏｯﾄ用ﾃﾞｰﾀ(spec)を転記する
         """
@@ -47,8 +48,9 @@ class HinkanSheet(object):
         locで得たデータはSeriesなので、それのiloc[0]がリテラルのデータとなる
         """
 
-        # 検査ngなどで、成績書が作成できなかったらfalseを返す
-        bool_success = True
+        hinban = row[3]
+        lot = row[0]
+
 
         coaName          = self.spec_data.loc[
                             self.spec_data['入力名']== hinban, '成績書名'].iloc[0]
@@ -82,12 +84,36 @@ class HinkanSheet(object):
                                 self.spec_data['入力名']== hinban, 'ΔE2'].iloc[0]
         spec_dltaE3      = self.spec_data.loc[
                                 self.spec_data['入力名']== hinban, 'ΔE3'].iloc[0]
+        spec_L_ti1       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'L値1'].iloc[0]
+        spec_L_ti2       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'L値2'].iloc[0]
+        spec_L_ti3       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'L値3'].iloc[0]
+        spec_a_ti1       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'a値1'].iloc[0]
+        spec_a_ti2       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'a値2'].iloc[0]
+        spec_a_ti3       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'a値3'].iloc[0]
+        spec_b_ti1       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'b値1'].iloc[0]
+        spec_b_ti2       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'b値2'].iloc[0]
+        spec_b_ti3       = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'b値3'].iloc[0]
         spec_nendo      = self.spec_data.loc[
                                 self.spec_data['入力名']== hinban, '粘度'].iloc[0]
         spec_hijuu      = self.spec_data.loc[
                                 self.spec_data['入力名']== hinban, '比重'].iloc[0]
         spec_kazan      = self.spec_data.loc[
                                 self.spec_data['入力名']== hinban, '加残'].iloc[0]
+        spec_L_ti        = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'L値'].iloc[0]
+        spec_a_ti        = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'a値'].iloc[0]
+        spec_b_ti        = self.spec_data.loc[
+                                self.spec_data['入力名']== hinban, 'b値'].iloc[0]
         judg_eki         = self.spec_data.loc[
                               self.spec_data['入力名']== hinban, '液外KS'].iloc[0]
         spec_eki         = self.spec_data.loc[
@@ -149,6 +175,12 @@ class HinkanSheet(object):
                             self.hinken_data['ﾛｯﾄNo'] == lot, 'Haze'].iloc[0]
         data_dltaE        = self.hinken_data.loc[
                              self.hinken_data['ﾛｯﾄNo'] == lot, 'ΔE'].iloc[0]
+        data_L_ti         = self.hinken_data.loc[
+                             self.hinken_data['ﾛｯﾄNo'] == lot, 'L値'].iloc[0]
+        data_a_ti         = self.hinken_data.loc[
+                             self.hinken_data['ﾛｯﾄNo'] == lot, 'a値'].iloc[0]
+        data_b_ti         = self.hinken_data.loc[
+                             self.hinken_data['ﾛｯﾄNo'] == lot, 'b値'].iloc[0]
 
 
         if data_hantei == '合格':
@@ -170,10 +202,23 @@ class HinkanSheet(object):
             ws_work.Range("Q2").Value = spec_haze3
             ws_work.Range("R2").Value = spec_dltaE1
             ws_work.Range("S2").Value = spec_dltaE2
+            ws_work.Range("T2").Value = spec_dltaE3
+            ws_work.Range("U2").Value = spec_L_ti1
+            ws_work.Range("V2").Value = spec_L_ti2
+            ws_work.Range("W2").Value = spec_L_ti3
+            ws_work.Range("X2").Value = spec_a_ti1
+            ws_work.Range("Y2").Value = spec_a_ti2
+            ws_work.Range("Z2").Value = spec_a_ti3
+            ws_work.Range("aa2").Value = spec_b_ti1
+            ws_work.Range("ab2").Value = spec_b_ti2
+            ws_work.Range("ac2").Value = spec_b_ti3
 
             ws_work.Range("AS2").Value = spec_nendo
             ws_work.Range("AT2").Value = spec_hijuu
             ws_work.Range("AU2").Value = spec_kazan
+            ws_work.Range("AX2").Value = spec_L_ti
+            ws_work.Range("AY2").Value = spec_a_ti
+            ws_work.Range("AZ2").Value = spec_b_ti
 
             ws_work.Range("BF2").Value = judg_eki
             ws_work.Range("BG2").Value = spec_eki
@@ -209,27 +254,31 @@ class HinkanSheet(object):
             ws_work.Range("S7").Value = data_nv
             ws_work.Range("V7").Value = data_haze
             ws_work.Range("W7").Value = data_dltaE
+            ws_work.Range("X7").Value = data_L_ti
+            ws_work.Range("Y7").Value = data_a_ti
+            ws_work.Range("Z7").Value = data_b_ti
 
-            self.shape_copy(ws_format, ws_inn, data_tantou)
+            HS_nonCreate_coa = self.shape_copy(ws_format, ws_inn, data_tantou, 
+                                                        row, HS_nonCreate_coa)
         else:
-            bool_success = False
+            row.append('Did not pass')
+            HS_nonCreate_coa.append(row)
 
 
-        return bool_success
+        return HS_nonCreate_coa
+        
 
-
-
-    def shape_copy(self, ws_format, ws_inn, data_tantou):
+    def shape_copy(self, ws_format, ws_inn, data_tantou, row, HS_nonCreate_coa):
 
         def press_inn(inn, col):
             ws_inn.Activate()
             ws_inn.Shapes(inn).Copy()
             ws_format.Activate()
             if ws_format.Name == '一般品':
-                ws_format.Range(col + "25").Activate()
+                ws_format.Range(col + "28").Activate()
                 ws_format.Paste()
-                ws_format.Shapes(inn).Left = ws_format.Range(col + "25").Left + 15
-                ws_format.Shapes(inn).Top = ws_format.Range(col + "25").Top + 8
+                ws_format.Shapes(inn).Left = ws_format.Range(col + "28").Left + 15
+                ws_format.Shapes(inn).Top = ws_format.Range(col + "28").Top + 8
             elif ws_format.Name == '秦野':
                 ws_format.Range(col + "24").Activate() 
                 ws_format.Paste()
@@ -277,10 +326,17 @@ class HinkanSheet(object):
 
         press_inn(tantou_inn, "F")
         press_inn(kensa_inn, "H")
+
+        HS_nonCreate_coa = self.create_pdf(row, ws_format, HS_nonCreate_coa)
+
+        ws_format.Shapes(tantou_inn).Delete()
+        ws_format.Shapes(kensa_inn).Delete()
+
+        return HS_nonCreate_coa
         
 
 
-    def HS_create_coa(self, coa_folder):
+    def HS_create_coa(self):
         """
         HS_nonExistent_coaを基にcoaを作る。作れなかったcoaがあったら、
         HS_nonCreate_coaのリストを返す
@@ -293,12 +349,16 @@ class HinkanSheet(object):
 
         xlapp = win32com.client.Dispatch("Excel.Application")    # Excelの起動
         xlapp.DisplayAlerts = False
-        # xlapp.Visible = True
-        wb = xlapp.Workbooks.Open(EXCEL_PATH, ReadOnly=1)    # Excelファイルを開く
+        # xlapp.Visible = False
+
+        # UpdateLinks = Falseを指定しないと「読み取り専用で開きますか」の
+        # メッセージが出て止まってしまう。なぜかわからない。
+        wb = xlapp.Workbooks.Open(EXCEL_PATH, 
+                    UpdateLinks = False, ReadOnly = True)   # Excelファイルを開く
         # time.sleep(20)
 
         ws_work = wb.Worksheets('work')
-        ws_hinken = wb.Worksheets('品質試験ﾃﾞｰﾀ')
+        ws_hinken = wb.Worksheets('品質試験ﾃﾞｰﾀ') #book閉じる時にｱｸﾃｨﾌﾞにするｼｰﾄ
         ws_inn = wb.Worksheets('印')
 
 
@@ -318,30 +378,16 @@ class HinkanSheet(object):
             ws_format.Visible = -1 # Vidible=-1, Hidden=0
             ws_format.Activate()
 
-            # coa_data_copyを実行すれば、returnなくてもws_workに転記されるはず
-            bool_success = self.coa_data_copy(ws_work, ws_format, ws_inn,  
-                                                                 lot, hinban)
-            # bool_successがfalseならば、HS_nonCreate_coaにappendして、次のroopへ行く
-            if not bool_success:
-                row.append('Did not pass')
-                HS_nonCreate_coa.append(row)
-                continue
-               
-                
-
-            # pdfに変換　絶対パスが必要
-            """
-            try.expectで例外が出たら、HS_nonCreate_coaにrowを追加する。
-            """
+            """coa_data_copyを実行すれば、returnなくてもws_workに転記されるはず
+            coa_data_copyの中でshape_copyを呼び出して印をする"""
             try:
-                ws_format.ExportAsFixedFormat(Type = 0, Quality = 0, 
-                                Filename = '{}/{}_{}_{}.pdf'
-                                .format(coa_folder,hinban, lot, coa_format))
+                HS_nonCreate_coa = self.coa_data_copy(ws_work, ws_format, 
+                                                ws_inn, row, HS_nonCreate_coa)
             except Exception as ex:
                 print('*****************成績書作成エラー*******************')
                 print('{}({})のcoaが作成できませんでした'.format(hinban, lot))
+                row.append('coa error')
                 HS_nonCreate_coa.append(row)
-
 
         ws_hinken.Activate()
         wb.Close(SaveChanges = False)    # 開いたエクセルを閉じる
@@ -349,4 +395,24 @@ class HinkanSheet(object):
         
 
         return HS_nonCreate_coa
-        
+
+
+    def create_pdf(self, row, ws_format, HS_nonCreate_coa):
+
+        # pdfに変換　絶対パスが必要
+        """
+        try.expectで例外が出たら、HS_nonCreate_coaにrowを追加する。
+        """
+        lot = row[0]
+        hinban = row[3]
+        coa_format = row[5]
+        try:
+            ws_format.ExportAsFixedFormat(Type = 0, Quality = 0, 
+                            Filename = '{}/{}_{}_{}.pdf'
+                            .format(self.coa_folder,hinban, lot, coa_format))
+        except Exception as ex:
+            row.append('pdf error')
+            HS_nonCreate_coa.append(row)
+        finally:
+            return HS_nonCreate_coa
+
