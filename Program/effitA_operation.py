@@ -215,11 +215,9 @@ def start():
     
 
 
-    import line
 
 
-    txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n'
-                '**売上入力、業務用fileの作成は終了しました。*** \n\n'
+    txt = ( '***********売上入力、業務用fileの作成は終了しました。******** \n\n'
                 '検査成績書を探し、無ければ発行します。\n\n')
     
     recorder.out_log(txt)
@@ -315,19 +313,30 @@ def start():
 
     if nonExistent_coa_toke != []:
         nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke, 
-                                                                    coa_folder_toke)
+                                                            coa_folder_toke)
     else:
         nonCreate_coa_toke = []
-    print('土気分の未発行成績書：\n', nonCreate_coa_toke, '\n')
         
     if nonExistent_coa_honsya != []:
         nonCreate_coa_honsya = coa_honsya.create_coa(nonExistent_coa_honsya, 
-                                                                  coa_folder_honsya)
+                                                            coa_folder_honsya)
     else:
         nonCreate_coa_honsya = []
-    print('本社分の未発行成績書：\n', nonCreate_coa_honsya, '\n')
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    txt = ('\n *********プログラムは無事終了しました。********** \n')
+    keisen = '>' * 100
+    txt =   ('\n{}\n'
+             '土気分の未発行成績書：\n{}\n\n'
+             '本社分の未発行成績書：\n{} \n'
+             '{}'.format(keisen, nonCreate_coa_toke, nonExistent_coa_honsya,
+              keisen))
+    
+
+    recorder.out_log(txt)
+    recorder.out_file(txt)
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    import line
+
+    txt = ('\n ********LINE で送信しました!!!********** \n'
+            '>>>>>>>>プログラムは無事終了しました>>>>>>>>')
     recorder.out_log(txt)
     recorder.out_file(txt)
