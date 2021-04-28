@@ -1,4 +1,4 @@
-*.txt
+﻿*.txt
 *.ipynb
 *.py~
 *.pyc
@@ -16,3 +16,17 @@ __pycache__
 土気営業_uriage.xlsx
 本社営業_uriage.xlsx
 出荷実績照会_Mac.xlsx
+出荷実績照会_土気.xlsx
+出荷実績照会_本社.xlsx
+kenpin_toke.csv
+kenpin_土気.csv
+kenpin_本社.csv
+kenpin.csv
+kenpin_mac.csv
+kenpin_honsya.csv
+barcode*
+Coa_本社/
+Coa_土気/
+./master/
+./png_file/
+./tmp/
