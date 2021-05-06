@@ -176,7 +176,6 @@ class Kenpin(object):
 
 
 
-
     def get_syukka_jisseki_syoukai(self):
         
 

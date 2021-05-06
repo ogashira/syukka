@@ -9,6 +9,7 @@ from recorder import *
 from hinkan_sheet import *
 from metal_hinkan_sheet import *
 
+import pprint
 
 class Coa(object):
 
@@ -127,8 +128,8 @@ class Coa(object):
             
             recorder.out_log(txt)
             recorder.out_file(txt)
-            recorder.out_log(nonExistent_coa, '\n\n')
-            recorder.out_file(nonExistent_coa, '\n\n')
+            recorder.out_log(pprint.pformat(nonExistent_coa), '\n\n')
+            recorder.out_file(pprint.pformat(nonExistent_coa), '\n\n')
 
         return nonExistent_coa
 
@@ -187,8 +188,8 @@ class Coa(object):
             
             recorder.out_log(txt)
             recorder.out_file(txt)
-            recorder.out_log(GIJUTU_nonExistent_coa, '\n\n')
-            recorder.out_file(GIJUTU_nonExistent_coa, '\n\n')
+            recorder.out_log(pprint.pformat(GIJUTU_nonExistent_coa), '\n\n')
+            recorder.out_file(pprint.pformat(GIJUTU_nonExistent_coa), '\n\n')
 
         if HS_nonExistent_coa != [] :
             HS = HinkanSheet(HS_nonExistent_coa, coa_folder)
@@ -204,8 +205,8 @@ class Coa(object):
                 
                 recorder.out_log(txt)
                 recorder.out_file(txt)
-                recorder.out_log(HS_nonCreate_coa, '\n\n')
-                recorder.out_file(HS_nonCreate_coa, '\n\n')
+                recorder.out_log(pprint.pformat(HS_nonCreate_coa), '\n\n')
+                recorder.out_file(pprint.pformat(HS_nonCreate_coa), '\n\n')
 
         if MHS_nonExistent_coa != []:
             MHS = MetalHinkanSheet(MHS_nonExistent_coa, coa_folder)
@@ -222,7 +223,7 @@ class Coa(object):
                 
                 recorder.out_log(txt)
                 recorder.out_file(txt)
-                recorder.out_log(MHS_nonCreate_coa, '\n\n')
-                recorder.out_file(MHS_nonCreate_coa, '\n\n')
+                recorder.out_log(pprint.pformat(MHS_nonCreate_coa), '\n\n')
+                recorder.out_file(pprint.pformat(MHS_nonCreate_coa), '\n\n')
 
         return nonCreate_coa
