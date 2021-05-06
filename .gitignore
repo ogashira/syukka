@@ -25,8 +25,10 @@ kenpin.csv
 kenpin_mac.csv
 kenpin_honsya.csv
 barcode*
+Robot_log.txt
 Coa_本社/
 Coa_土気/
 ./master/
 ./png_file/
 ./tmp/
+*~
