@@ -217,7 +217,6 @@ def start():
 
 
 
-    recorder = Recorder(myfolder)
 
     txt = ('\n**売上入力、業務用fileは作成は終了しました。*** \n\n'
             '検査成績書を探し、無ければ発行します。\n\n')
