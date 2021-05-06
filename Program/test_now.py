@@ -12,6 +12,8 @@ from coa import *
 from recorder import *
 
 import platform
+import pprint
+
 
 MYFOLDER = r'C:/Users/oga/Documents/syukka/Program'
 
@@ -133,8 +135,7 @@ if not UU_honsya.empty:
 del gyoumu
 
 recorder = Recorder(MYFOLDER)
-txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n'
-            '**売上入力、業務用fileは作成は終了しました。*** \n\n'
+txt = ('\n**売上入力、業務用fileは作成は終了しました。*** \n\n'
             '検査成績書を探し、無ければ発行します。\n\n')
 
 recorder.out_log(txt)
@@ -156,7 +157,7 @@ if not modi_PH_toke.empty:
     txt = '土気分\n'
     recorder.out_file(txt)
     recorder.out_file(packingCoa_toke, '\n')
-    recorder.out_file(packingCoa_list_toke, '\n')
+    recorder.out_file(pprint.pformat(packingCoa_list_toke), '\n')
 
 if not modi_PH_honsya.empty:
     coa_honsya = Coa(modi_PH_honsya, modi_UU_honsya, MYFOLDER)
@@ -167,7 +168,7 @@ if not modi_PH_honsya.empty:
     txt = '本社分\n'
     recorder.out_file(txt)
     recorder.out_file(packingCoa_honsya, '\n')
-    recorder.out_file(packingCoa_list_honsya, '\n')
+    recorder.out_file(pprint.pformat(packingCoa_list_honsya), '\n')
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # packingCoa_listを使って、coaを所定のﾌｫﾙﾀﾞにｺﾋﾟｰし、存在しないcoaの
@@ -230,17 +231,26 @@ if nonExistent_coa_toke != []:
                                                                 coa_folder_toke)
 else:
     nonCreate_coa_toke = []
-print('土気分の未発行成績書：\n', nonCreate_coa_toke, '\n')
     
 if nonExistent_coa_honsya != []:
     nonCreate_coa_honsya = coa_honsya.create_coa(nonExistent_coa_honsya, 
                                                               coa_folder_honsya)
 else:
     nonCreate_coa_honsya = []
-print('本社分の未発行成績書：\n', nonCreate_coa_honsya, '\n')
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+kubun = '>' * 100
+
+txt = ('\n{}\n'
+        '成績書最終結果 \n'
+        '土気分の未発行成績書：\n{}\n\n'
+        '本社分の未発行成績書：\n{}\n'
+        '{}\n'.format(kubun, pprint.pformat(nonCreate_coa_toke), 
+                                pprint.pformat(nonCreate_coa_honsya), kubun))
+recorder.out_log(txt)
+recorder.out_file(txt)
+
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n' 
-                '*********プログラムは無事終了しました。********** \n')
+txt = ('\n *********プログラムは無事終了しました。********** \n')
 recorder.out_log(txt)
 recorder.out_file(txt)
