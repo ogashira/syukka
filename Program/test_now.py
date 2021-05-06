@@ -132,6 +132,7 @@ if not UU_honsya.empty:
 
 del gyoumu
 
+recorder = Recorder(MYFOLDER)
 txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n'
             '**売上入力、業務用fileは作成は終了しました。*** \n\n'
             '検査成績書を探し、無ければ発行します。\n\n')
@@ -140,7 +141,6 @@ recorder.out_log(txt)
 recorder.out_file(txt)
 
 # ここからCOA作成>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-recorder = Recorder(MYFOLDER)
 
 # packingCoa_listを作る
 packingCoa_list_toke = []
