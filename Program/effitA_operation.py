@@ -217,6 +217,7 @@ def start():
 
     import line
 
+    recorder = Recorder(myfolder)
 
     txt = ('\n  !!!!!!!LINEで送信しました!!!!!!!!!\n'
                 '**売上入力、業務用fileの作成は終了しました。*** \n\n'
@@ -228,7 +229,6 @@ def start():
 
 
     # ここからCOA作成>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    recorder = Recorder(myfolder)
 
     # packingCoa_listを作る
     packingCoa_list_toke = []
