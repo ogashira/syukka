@@ -120,7 +120,7 @@ def start():
             effita.uriage_nyuuryoku(UU_toke)
             effita.close_uriage_nyuuryoku()
         
-        if not (UU_honsya.empty or len(sumi_honsya) == sumi_hosnya.count('済')):
+        if not (UU_honsya.empty or len(sumi_honsya) == sumi_honsya.count('済')):
             effita.launch_uriage_nyuuryoku('honsya')
             effita.uriage_nyuuryoku(UU_honsya)
             effita.close_uriage_nyuuryoku()
