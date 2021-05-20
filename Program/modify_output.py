@@ -187,6 +187,7 @@ class ModifyOutput(object):
         PH_concat_sumi = self.toke_honsya_concat_sumi(PH_toke, PH_honsya)
 
 
+
         PH_concat_sumi[['依頼先_x', 'cans_x', '得意先コード_x', 
             '納入先コード_x', 'hinban_x', '受注数量_x', '受注単位_x', 
             '得意先注文ＮＯ_x', '備考_x', '出荷', '出荷予定倉庫', '納期_x', 

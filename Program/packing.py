@@ -219,21 +219,20 @@ class Packing :
 
 
 
-        #備考から土気出荷、本社出荷、大阪直送、営業持参　を抜き出す
-        # 先に土気出荷、本社出荷を入力次に直送、持参を上書きする
+        #備考から、本社出荷、を抜き出す
         moto_honsya['出荷'] = moto_honsya.loc[:,'備考'].str.extract \
-                (r'(土気出荷|本社出荷|大阪直送|営業持参)')
+                (r'(本社出荷)')
 
-        # moto_honsya['出荷'] = moto_honsya.loc[:,'備考'].str.extract \
-                # (r'(大阪直送|営業持参)')
+        
+
         
         moto_honsya = moto_honsya.fillna({'出荷':''})
-        # この時点で出荷の列に入っているデータは、土気出荷、本社出荷、
-        # 大阪直送、営業持参、空白文字
+        # この時点で出荷の列に入っているデータは、本社出荷、空白文字
 
 
 
         moto_honsya= moto_honsya.rename(columns= {'備考.1':'受注時運賃n缶'})
+
 
         # 出荷予定倉庫の列を[]にする。このやり方でないとうまくいかなかった。
         moto_honsya['出荷予定倉庫'] = moto_honsya.apply(lambda x: [], axis=1) 
@@ -244,16 +243,21 @@ class Packing :
         del toyo_untin
 
         # 土気出荷、空白はtoke_motoに　本社出荷、大阪直送はhonsya_motoに分ける 
-        self.toke_moto = moto_honsya[(moto_honsya['出荷'] == '土気出荷')
-                                                  | (moto_honsya['出荷'] == '')]
-        self.honsya_moto = moto_honsya[(moto_honsya['出荷'] == '本社出荷')
-                                          | (moto_honsya['出荷'] == '大阪直送')]
+        self.toke_moto = moto_honsya[moto_honsya['出荷'] == '']
+        self.honsya_moto = moto_honsya[moto_honsya['出荷'] == '本社出荷']
 
 
         self.moto_honsya = moto_honsya.copy()
         #moto_honsyaは大阪顧客を除いた本社、土気出荷分の元データ
 
 
+    def get_NoCalc(self, row):
+        bikou = row['備考']
+        add1 = row['住所１']
+        if '営業持参' in bikou or '大阪直送' in bikou:
+            return 'NoCalc'
+        else:
+            return add1
 
 
     def get_honsya_moto(self):
@@ -271,8 +275,12 @@ class Packing :
 
         #大阪直送、営業持参の場合は運賃計算しないように「住所１」を
         #「NoCalc」に変更しておく
-        honsyaMoto.loc[honsyaMoto['出荷'] =='営業持参','住所１'] = 'NoCalc'
+        # honsyaMoto.loc[honsyaMoto['備考'] =='営業持参','住所１'] = 'NoCalc'
+        honsyaMoto['住所１'] = honsyaMoto.apply(self.get_NoCalc, axis=1)
 
+        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+        #print(honsyaMoto)
+        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
         return honsyaMoto
 
 
@@ -297,7 +305,12 @@ class Packing :
         
         #大阪直送、営業持参の場合は運賃計算しないように「住所１」を
         #「NoCalc」に変更しておく
-        tokeMoto.loc[tokeMoto['出荷'] =='営業持参','住所１'] = 'NoCalc'
+        # tokeMoto.loc[tokeMoto['出荷'] =='営業持参','住所１'] = 'NoCalc'
+        tokeMoto['住所１'] = tokeMoto.apply(self.get_NoCalc, axis=1)
+
+        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+        #print(tokeMoto)
+        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
 
         return tokeMoto
 

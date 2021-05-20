@@ -135,6 +135,7 @@ class UriageSumi(object):
 
         output_sumi = pd.merge(output, uriage_sumi, on =['受注ＮＯ', '受注行ＮＯ'], how = 'left')
 
+
         return output_sumi
 
 

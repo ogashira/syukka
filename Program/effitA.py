@@ -372,6 +372,14 @@ class EffitA(object):
             if sumi == '済':
                 continue
 
+            # 2021/5/19<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            # 備考に'営業持参'が含まれていたら、iraisakiをNoDataから配達に変更
+            # しておく、これにより、売上入力が行われるようになる
+
+            if '営業持参' in bikou:
+                iraisaki = '配達'
+
+
 
             # npNan : 運送対応表に納入先名称が載っていない
             if iraisaki == 'NoCalc' or iraisaki == 'npNan' or iraisaki == 'NoData' or hikiate == {} \

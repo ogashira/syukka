@@ -88,6 +88,7 @@ if not (UU_toke.empty and UU_honsya.empty) and not uriage_sumi.empty:
 
     del modify
 
+
     # PH,UUを土気、本社に分ける
     modi_PH_toke = modified_PH.loc[modified_PH['出荷'] == '土気出荷', :]
     modi_PH_honsya = modified_PH.loc[modified_PH['出荷'] == '本社出荷', :]
