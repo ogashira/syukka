@@ -76,6 +76,7 @@ class Coa(object):
 
                     packingCoa_list.append(list_row)
 
+
         """
         packingCoaﾘｽﾄにcoa_listの作成部署、成績書formatをくっつける
         """
@@ -85,6 +86,9 @@ class Coa(object):
                                                       and row[3] == add_row[3]):
                     row.append(add_row[5])
                     row.append(add_row[6])
+                    break
+
+
 
         return packingCoa_list
 
