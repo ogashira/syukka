@@ -211,6 +211,7 @@ class Zaiko:
                                 lot = {'short':0}
                                 break                 
                             
+                            
             if lot == {}:
                 txt = '輸出製品{}が輸出塗料連絡表にないか、出荷予定倉庫と違う倉庫にあります'.format(hinban)
                 recorder.out_log(txt)

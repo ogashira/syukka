@@ -86,6 +86,7 @@ class Coa(object):
                                                       and row[3] == add_row[3]):
                     row.append(add_row[5])
                     row.append(add_row[6])
+                    row.append(add_row[7])
                     break
 
 

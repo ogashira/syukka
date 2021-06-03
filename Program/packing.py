@@ -308,9 +308,6 @@ class Packing :
         # tokeMoto.loc[tokeMoto['出荷'] =='営業持参','住所１'] = 'NoCalc'
         tokeMoto['住所１'] = tokeMoto.apply(self.get_NoCalc, axis=1)
 
-        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        #print(tokeMoto)
-        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
 
         return tokeMoto
 
