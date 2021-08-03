@@ -278,9 +278,6 @@ class Packing :
         # honsyaMoto.loc[honsyaMoto['備考'] =='営業持参','住所１'] = 'NoCalc'
         honsyaMoto['住所１'] = honsyaMoto.apply(self.get_NoCalc, axis=1)
 
-        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        #print(honsyaMoto)
-        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
         return honsyaMoto
 
 
@@ -300,6 +297,7 @@ class Packing :
         unsoutaiou_toke = Unsoutaiou_toke()
         tokeMoto = unsoutaiou_toke.add_address(toke_moto)
         del unsoutaiou_toke
+
 
 
         
@@ -334,7 +332,7 @@ class Packing :
             
             unsoutaiou_toke = Unsoutaiou_toke()
             tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto_gr)
-
+            
             del unsoutaiou_toke
 
             untin_toke = Untin_toke()
@@ -342,6 +340,7 @@ class Packing :
             #Seriesにして返す。関数はUnsou_tokeｸﾗｽのget_untinﾒｿｯﾄﾞ。
             tokeMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','ﾄﾅﾐ差額']] =  \
                     tokeMoto_add_unsoutaiou.apply(untin_toke.get_untin, axis=1)
+
 
             del untin_toke
         
