@@ -278,9 +278,6 @@ class Packing :
         # honsyaMoto.loc[honsyaMoto['備考'] =='営業持参','住所１'] = 'NoCalc'
         honsyaMoto['住所１'] = honsyaMoto.apply(self.get_NoCalc, axis=1)
 
-        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        #print(honsyaMoto)
-        #print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
         return honsyaMoto
 
 
@@ -300,6 +297,7 @@ class Packing :
         unsoutaiou_toke = Unsoutaiou_toke()
         tokeMoto = unsoutaiou_toke.add_address(toke_moto)
         del unsoutaiou_toke
+
 
 
         

@@ -34,7 +34,7 @@ class Unsoutaiou_toke :
 
     def add_unsoutaiou(self, df):
         dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１'])
-        
+
         add_unsoutaiou = pd.merge(
                 df,dup_unsoutaiou, on='住所１', 
                 how='left'
@@ -58,19 +58,20 @@ class Unsoutaiou_toke :
         """
 
         unsoutaiou = self.unsoutaiou[[
-            '相手先コード１', '納入先名称１','住所１']]    
+            '相手先コード１', '納入先名称１','住所１','納入先コード']]    
 
         unsoutaiou = unsoutaiou.rename(
                 columns={'相手先コード１':'得意先コード'}
         )
 
         dup_unsoutaiou = unsoutaiou.drop_duplicates(['得意先コード',
-                                                '納入先名称１'])
+                                                '納入先名称１','納入先コード'])
         add_address = pd.merge(
                 df, dup_unsoutaiou, 
-                on=['得意先コード','納入先名称１'],
+                on=['得意先コード','納入先名称１','納入先コード'],
                 how = 'left'
         )
+
         return add_address
     
         
@@ -117,6 +118,7 @@ class Unsoutaiou_honsya :
 
 
     def add_address(self, df):
+        """
         unsoutaiou = self.unsoutaiou[[
             '得意先コード','納入先コード','納入先名称１','住所１']]    
         dup_unsoutaiou = unsoutaiou.drop_duplicates(['得意先コード',
@@ -126,5 +128,31 @@ class Unsoutaiou_honsya :
                 on=['得意先コード','納入先コード','納入先名称１'],
                 how = 'left'
         )
+        """
         
+        unsoutaiou = self.unsoutaiou[[
+            '相手先コード１', '納入先名称１','住所１','納入先コード']]    
+
+        unsoutaiou = unsoutaiou.rename(
+                columns={'相手先コード１':'得意先コード'}
+        )
+
+        dup_unsoutaiou = unsoutaiou.drop_duplicates(['得意先コード',
+                                                '納入先名称１','納入先コード'])
+        add_address = pd.merge(
+                df, dup_unsoutaiou, 
+                on=['得意先コード','納入先名称１','納入先コード'],
+                how = 'left'
+                )
+
         return add_address
+
+
+
+
+
+
+
+
+
+
