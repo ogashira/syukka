@@ -227,6 +227,7 @@ if nonExistent_coa_honsya != []:
 coa.pyにnonExistent_coaを渡して、成績書を作ってもらう
 """
 
+"""
 if nonExistent_coa_toke != []:
     nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke, 
                                                                 coa_folder_toke)
@@ -255,3 +256,4 @@ recorder.out_file(txt)
 txt = ('\n *********プログラムは無事終了しました。********** \n')
 recorder.out_log(txt)
 recorder.out_file(txt)
+"""

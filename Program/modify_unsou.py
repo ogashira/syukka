@@ -13,6 +13,8 @@ class ModifyUnsou(object):
         新潟とﾄｰﾙが１缶の場合は新潟にするなど
         AHはallHaulerの略
         """
+        #顧客指定運送屋をﾘｽﾄにしておく
+        list_sitei = list(AH['顧客指定運送屋'])
 
         AH_group = AH.groupby('依頼先')['cans'].sum()
 
@@ -28,9 +30,11 @@ class ModifyUnsou(object):
         torr_cans = get_unsou_cans('ﾄｰﾙ')
         niigata_cans = get_unsou_cans('新潟')
 
-        if niigata_cans >= 1 and torr_cans == 1:
+        #ﾄｰﾙが1缶、新潟が2缶以上かつ、顧客指定運送屋にﾄｰﾙが無かったら、
+        #ﾄｰﾙを新潟に変更する。その逆は逆をする。
+        if niigata_cans >= 2 and torr_cans == 1 and 'ﾄｰﾙ' not in list_sitei:
             AH['依頼先'] = AH['依頼先'].map(lambda x : '新潟' if x == 'ﾄｰﾙ' else x)
-        elif niigata_cans == 1 and torr_cans >= 2:
+        elif niigata_cans == 1 and torr_cans >= 2 and '新潟' not in list_sitei:
             AH['依頼先'] = AH['依頼先'].map(lambda x : 'ﾄｰﾙ' if x == '新潟' else x)
 
         return AH

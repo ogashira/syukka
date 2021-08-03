@@ -332,7 +332,7 @@ class Packing :
             
             unsoutaiou_toke = Unsoutaiou_toke()
             tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto_gr)
-
+            
             del unsoutaiou_toke
 
             untin_toke = Untin_toke()
@@ -340,6 +340,7 @@ class Packing :
             #Seriesにして返す。関数はUnsou_tokeｸﾗｽのget_untinﾒｿｯﾄﾞ。
             tokeMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','ﾄﾅﾐ差額']] =  \
                     tokeMoto_add_unsoutaiou.apply(untin_toke.get_untin, axis=1)
+
 
             del untin_toke
         
