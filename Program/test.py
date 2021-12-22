@@ -14,6 +14,7 @@ from recorder import *
 import platform
 import pprint
 
+#****test 
 
 MYFOLDER = r'C:/Users/oga/Documents/syukka/Program'
 

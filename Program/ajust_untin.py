@@ -74,7 +74,6 @@ class Ajust_toke:
         allHauler2.loc[:,'依頼先'] = allHauler2['依頼先'].map(lambda x : x[0])
 
 
-
         allHauler2['依頼先'] = allHauler2.apply(self.get_siteiUnsou, axis = 1)
 
 

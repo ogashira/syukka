@@ -46,6 +46,7 @@ class UriageSumi(object):
                     'ロットＮＯ':'lot',
                 }
         )
+
         # uriage_sumiの備考のNaNを処理する。2021/2/11 
         uriage_sumi = uriage_sumi.fillna({'備考':'noData'})
 
