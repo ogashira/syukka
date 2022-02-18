@@ -189,6 +189,22 @@ class Zaiko:
             輸出塗料連絡表の出荷缶数は無視する（見ていない）
             出荷倉庫と在庫倉庫が不一致の場合、{'short':0}だして売上立てない
             '''
+
+            '''
+            2022/2/18
+            ｵｰﾀﾞｰNo「タミヤ様分」のlotが引き当てできない問題にたいして以下
+            7行を追加した。輸出塗料連絡表から作ったdic中のorderNoは、
+            空白除去や半角変換をしているので、orderNoを一致させるために
+            追加した。
+            '''
+            #小文字を大文字にする
+            orderNo = str(orderNo).upper() 
+            #全角を半角にする(数字も記号も)
+            orderNo = jaconv.z2h(orderNo,digit=True,ascii=True) 
+            #空白を除去
+            orderNo = orderNo.replace(' ','') 
+            orderNo = orderNo.replace('　','')
+            
             yusyutu = self.yusyutuRenrakuLot.get(orderNo, {})
             # {20090501H : 3, 20091852T : 5....}
             for line in self.genzaiko_l:
