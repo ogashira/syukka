@@ -35,7 +35,7 @@ class AddData(object):
                     cell.value = ''
                 rows.append(cell.value)
             self.coa_list.append(rows)
-
+        
 
         ws = wb['指定伝票']
         

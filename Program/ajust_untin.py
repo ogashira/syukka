@@ -59,6 +59,7 @@ class Ajust_toke:
 
         syukkabi = moto.iloc[0,5]
 
+
         untin['依頼先'] = untin.apply(best_hauler, axis=1) 
         untin['出荷予定日'] = syukkabi
 
@@ -72,6 +73,10 @@ class Ajust_toke:
         allHauler2 = allHauler.copy()
         allHauler2.loc[:,'依頼先'] = allHauler2['依頼先'].map(lambda x : x[0])
 
+
+        allHauler2['依頼先'] = allHauler2.apply(self.get_siteiUnsou, axis = 1)
+
+
         # modify_unsouを呼び出して、運送屋の調整をする
         # 新潟とﾄｰﾙが１缶の時は、新潟にする。
         modi_unsou = ModifyUnsou()
@@ -80,8 +85,6 @@ class Ajust_toke:
 
         # 顧客指定運送屋がある場合は修正する
             
-        allHauler3['依頼先'] = allHauler3.apply(self.get_siteiUnsou, axis = 1)
-
         allHauler4 = allHauler3[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
                            'ﾄﾅﾐ差額','依頼先','輸出向先']]

@@ -46,6 +46,7 @@ class UriageSumi(object):
                     'ロットＮＯ':'lot',
                 }
         )
+
         # uriage_sumiの備考のNaNを処理する。2021/2/11 
         uriage_sumi = uriage_sumi.fillna({'備考':'noData'})
 
@@ -134,6 +135,7 @@ class UriageSumi(object):
         uriage_sumi = self.get_uriage_sumi()
 
         output_sumi = pd.merge(output, uriage_sumi, on =['受注ＮＯ', '受注行ＮＯ'], how = 'left')
+
 
         return output_sumi
 

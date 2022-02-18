@@ -16,11 +16,12 @@ class HinkanSheet(object):
         HS_nonExistent_coaはnonExistent_coaの中の品管ｼｰﾄ分のみ
         """
         sql = SqlExpress()
-        self.nonExistent_coa = HS_nonExistent_coa
+        self.nonExistent_coa = HS_nonExistent_coa #2次元ﾘｽﾄ(注意)
         self.coa_folder = coa_folder
         
-        nonExistent_coa_lot = [] # get_hinken_dataに渡す
-        nonExistent_coa_hinban = [] # spec_dataに渡す
+        nonExistent_coa_lot = [] # get_hinken_dataに渡す(1次元ﾘｽﾄ)
+        nonExistent_coa_hinban = [] # spec_dataに渡す(1次元ﾘｽﾄ)
+
         for row in self.nonExistent_coa:
             if row[4] == '営業':
                 nonExistent_coa_lot.append(row[0])
@@ -50,6 +51,7 @@ class HinkanSheet(object):
 
         hinban = row[3]
         lot = row[0]
+        atesaki = row[6]
 
 
         coaName          = self.spec_data.loc[
@@ -181,7 +183,7 @@ class HinkanSheet(object):
                              self.hinken_data['ﾛｯﾄNo'] == lot, 'a値'].iloc[0]
         data_b_ti         = self.hinken_data.loc[
                              self.hinken_data['ﾛｯﾄNo'] == lot, 'b値'].iloc[0]
-
+        
 
         if data_hantei == '合格':
                              
@@ -257,6 +259,8 @@ class HinkanSheet(object):
             ws_work.Range("X7").Value = data_L_ti
             ws_work.Range("Y7").Value = data_a_ti
             ws_work.Range("Z7").Value = data_b_ti
+            ws_work.Range("E41").Value = atesaki
+
 
             HS_nonCreate_coa = self.shape_copy(ws_format, ws_inn, data_tantou, 
                                                         row, HS_nonCreate_coa)
@@ -367,6 +371,7 @@ class HinkanSheet(object):
             hinban     = row[3]
             tantou     = row[4]
             coa_format = row[5]
+            atesaki = row[6]
             
             if coa_format == '一般品':
                 sheet_format = '一般品'
@@ -382,7 +387,7 @@ class HinkanSheet(object):
             coa_data_copyの中でshape_copyを呼び出して印をする"""
             try:
                 HS_nonCreate_coa = self.coa_data_copy(ws_work, ws_format, 
-                                                ws_inn, row, HS_nonCreate_coa)
+                                                 ws_inn, row, HS_nonCreate_coa)
             except Exception as ex:
                 print('*****************成績書作成エラー*******************')
                 print('{}({})のcoaが作成できませんでした'.format(hinban, lot))

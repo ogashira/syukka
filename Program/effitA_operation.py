@@ -84,7 +84,6 @@ def start():
     UU_honsya = honsya.get_untinForUriage()
 
 
-
     del toke
     del honsya
 

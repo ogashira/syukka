@@ -88,6 +88,7 @@ if not (UU_toke.empty and UU_honsya.empty) and not uriage_sumi.empty:
 
     del modify
 
+
     # PH,UUを土気、本社に分ける
     modi_PH_toke = modified_PH.loc[modified_PH['出荷'] == '土気出荷', :]
     modi_PH_honsya = modified_PH.loc[modified_PH['出荷'] == '本社出荷', :]
@@ -226,6 +227,7 @@ if nonExistent_coa_honsya != []:
 coa.pyにnonExistent_coaを渡して、成績書を作ってもらう
 """
 
+"""
 if nonExistent_coa_toke != []:
     nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke, 
                                                                 coa_folder_toke)
@@ -254,3 +256,4 @@ recorder.out_file(txt)
 txt = ('\n *********プログラムは無事終了しました。********** \n')
 recorder.out_log(txt)
 recorder.out_file(txt)
+"""
