@@ -156,6 +156,10 @@ class HinkanSheet(object):
                         self.spec_data['入力名']== hinban, 'ﾄｯﾌﾟ上塗り性'].iloc[0]
         spec_overct      = self.spec_data.loc[
                     self.spec_data['入力名']== hinban, 'ﾄｯﾌﾟ上塗り性規格'].iloc[0]
+        judg_alcohol     = self.spec_data.loc[
+                           self.spec_data['入力名']== hinban, '耐ｱﾙｺｰﾙ性'].iloc[0]
+        spec_alcohol      = self.spec_data.loc[
+                           self.spec_data['入力名']== hinban, '耐ｱﾙｺｰﾙ性'].iloc[0]
         spec_2eki        = self.spec_data.loc[
                                 self.spec_data['入力名']== hinban, '２液'].iloc[0]
         # hinken_dataの情報を得る
@@ -242,6 +246,8 @@ class HinkanSheet(object):
             ws_work.Range("CA2").Value = spec_save
             ws_work.Range("CJ2").Value = judg_overct
             ws_work.Range("CK2").Value = spec_overct
+            ws_work.Range("CL2").Value = judg_alcohol
+            ws_work.Range("CM2").Value = spec_alcohol
             ws_work.Range("DF2").Value = spec_2eki
             
             # sheets("work")に転記する hinken_data
