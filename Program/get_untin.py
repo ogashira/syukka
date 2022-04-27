@@ -33,7 +33,7 @@ eigyoubi = Eigyoubi()
 sengetu = eigyoubi.get_sengetu()
 del eigyoubi
 
-myfolder = r'C:/Users/oga/Documents/Untin.csv'
+myfolder = r'C:/Users/toyo/Documents/Untin.csv'
 
 packing = Packing(uriagebi, sengetu)
 
