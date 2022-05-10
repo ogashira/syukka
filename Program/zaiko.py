@@ -276,6 +276,9 @@ class Zaiko:
                     if zaiko_date - J_date >= timedelta(0) \
                             and zaiko_souko[:2] == syukka_souko[:2]:
                         J_zaiko[zaiko_lot] = zaiko_cans
+            #↑　受注日よりも新しく、出荷倉庫にあるlotをJ_zaiko辞書に登録している。
+
+
                         
             #辞書をＬＯＴでソートするとリストになるので、また辞書にする。
             J_zaiko = sorted(J_zaiko.items())

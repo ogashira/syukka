@@ -218,7 +218,6 @@ class Packing :
                 #(r'([1-9][0-2]?/[1-9][0-9]?)')
 
 
-
         #備考から、本社出荷、を抜き出す
         moto_honsya['出荷'] = moto_honsya.loc[:,'備考'].str.extract \
                 (r'(本社出荷)')
@@ -300,7 +299,6 @@ class Packing :
 
 
 
-        
         #大阪直送、営業持参の場合は運賃計算しないように「住所１」を
         #「NoCalc」に変更しておく
         # tokeMoto.loc[tokeMoto['出荷'] =='営業持参','住所１'] = 'NoCalc'
