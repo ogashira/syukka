@@ -4,6 +4,9 @@
 import pprint
 import pyodbc
 import pandas as pd
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 
@@ -15,10 +18,10 @@ class SqlServer(object):
         self.uriagebi = uriagebi
         self.sengetu = sengetu
         self.driver = '{SQL Server}'
-        self.server = '192.168.1.245\SQL2016'
+        self.server = '192.168.1.245'
         self.database = '東洋工業塗料'
-        self.uid = 'sa'
-        self.pwd = 'toyo-mjsys'
+        self.uid = 'kanri'
+        self.pwd = 'daiji'
 
         
     # 2021/2/26変換できない文字ℓなどをテキストﾌｧｲﾙなどに書き込むときに
