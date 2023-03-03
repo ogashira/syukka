@@ -32,10 +32,10 @@ class EffitA(object):
 
         pf = platform.system()
         if pf == 'Windows':
-            subprocess.Popen(r'//192.168.1.245/effit_A/Menu/EMN300I.exe toyo_user' \
+            subprocess.Popen(r'//192.168.1.245/effit_A/Menu/EMN300I.exe toyo_2019' \
                              r',生産C10,1,admin,東洋工業塗料')
         else:
-            subprocess.Popen(r'/mnt/effitA/Menu/EMN300I.exe toyo_user' \
+            subprocess.Popen(r'/mnt/effitA/Menu/EMN300I.exe toyo_2019' \
                              r',生産C10,1,admin,東洋工業塗料')
         time.sleep(10)
         
