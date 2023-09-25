@@ -3,6 +3,7 @@
 
 import platform
 import pprint
+import sys
 
 from effitA import EffitA
 from eigyoubi import Eigyoubi
@@ -82,6 +83,18 @@ def start():
     honsya = Honsya(myfolder, uriagebi, sengetu)
     PH_honsya = honsya.get_packingHinban()
     UU_honsya = honsya.get_untinForUriage()
+
+    # TODO 後で消す
+    print("PH_honsya>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(PH_honsya)
+    print("UU_honsya>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(UU_honsya)
+    print("PH_toke>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(PH_toke)
+    print("UU_toke>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(UU_toke)
+    sys.exit()
+    # TODO 後で消す
 
 
     del toke

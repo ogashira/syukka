@@ -22,12 +22,19 @@ class Unsoutaiou_toke :
         else:
             mypath = r'../master/untin/unsoutaiou_toke.csv'
     
+        #TODO 後で消す
+        mypath = (r'../master/untin/unsoutaiou_toke.csv')
+        #TODO 後で消す
+
         dl_df = pd.read_csv(mypath, encoding='cp932')
 
 
         self.unsoutaiou = dl_df.rename(
                 columns={'相手先名称１':'納入先名称１','ｹｲﾋﾝ':'ｹｲﾋﾝ向'}
         )
+
+
+
 
         # 2021/2/16 納入先コードが全てNaNだとエラーになる？だからfillnaした
         self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': ''})
@@ -98,6 +105,10 @@ class Unsoutaiou_honsya :
         else:
             mypath = r'../master/untin/unsoutaiou_honsya.csv'
     
+        #TODO 後で消す
+        mypath = (r'../master/untin/unsoutaiou_toke.csv')
+        #TODO 後で消す
+
         dl_df = pd.read_csv(mypath, encoding='cp932')
 
         self.unsoutaiou = dl_df.rename(

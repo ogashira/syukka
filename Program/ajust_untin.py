@@ -41,8 +41,9 @@ class Ajust_toke:
             torr = row['ﾄｰﾙ']
             niigata = row['新潟']
             keihin = row['ｹｲﾋﾝ']
+            seinou = row['西濃']
 
-            dic = {'ﾄｰﾙ':float(torr), '新潟':float(niigata), 'ｹｲﾋﾝ':float(keihin)}
+            dic = {'ﾄｰﾙ':float(torr), '新潟':float(niigata), 'ｹｲﾋﾝ':float(keihin), '西濃':float(seinou)}
             
             #顧客指定運送屋がある場合はソレ、無い場合は最安値の運送屋を選ぶ
             #最安値が２つ以上ある場合を考慮して、リスト内包表記で求める。
@@ -65,8 +66,7 @@ class Ajust_toke:
 
         allHauler = untin[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
-                           'ﾄﾅﾐ差額','依頼先','輸出向先','顧客指定運送屋']]
-
+                           '西濃','依頼先','輸出向先','顧客指定運送屋']]
 
 
         # 依頼先のlistをリテラルにしておく
@@ -87,11 +87,12 @@ class Ajust_toke:
             
         allHauler4 = allHauler3[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
-                           'ﾄﾅﾐ差額','依頼先','輸出向先']]
+                           '西濃','依頼先','輸出向先']]
 
 
 
         allHauler_sort = allHauler4.sort_values('依頼先')
+
 
         return allHauler_sort
 
@@ -285,10 +286,10 @@ class Ajust_honsya:
             torr = row['ﾄｰﾙ']
             niigata = row['新潟']
             keihin = row['ｹｲﾋﾝ']
-            kurume = row['久留米']
+            #kurume = row['久留米']
 
 
-            dic = {'ﾄｰﾙ':float(torr), '新潟':float(niigata), 'ｹｲﾋﾝ':float(keihin), '久留米':float(kurume)}
+            dic = {'ﾄｰﾙ':float(torr), '新潟':float(niigata), 'ｹｲﾋﾝ':float(keihin)}
             
             #顧客指定運送屋がある場合はソレ、無い場合は最安値の運送屋を選ぶ
             #最安値が２つ以上ある場合を考慮して、リスト内包表記で求める。
@@ -310,7 +311,7 @@ class Ajust_honsya:
 
         allHauler = untin[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
-                           '久留米','ﾄﾅﾐ差額','依頼先','輸出向先','顧客指定運送屋']]
+                           '依頼先','輸出向先','顧客指定運送屋']]
 
 
 
@@ -331,8 +332,9 @@ class Ajust_honsya:
 
         allHauler4 = allHauler3[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',
-                           'ﾄﾅﾐ差額','依頼先','輸出向先']]
+                           '依頼先','輸出向先']]
         allHauler_sort = allHauler4.sort_values('依頼先')
+
 
 
         return allHauler_sort
