@@ -3,6 +3,7 @@
 
 import platform
 import pprint
+import sys
 
 from effitA import EffitA
 from eigyoubi import Eigyoubi
@@ -82,6 +83,7 @@ def start():
     honsya = Honsya(myfolder, uriagebi, sengetu)
     PH_honsya = honsya.get_packingHinban()
     UU_honsya = honsya.get_untinForUriage()
+
 
 
     del toke

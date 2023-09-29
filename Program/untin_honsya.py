@@ -40,26 +40,9 @@ class Untin_honsya :
         self.niigata_tyuukei= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/tonami_new_honsya.csv'
-                          ,encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.tonami_new = list(file_reader)
-        unsou_file.close()
-
-        unsou_file = open(r'../master/untin/tonami_old_honsya.csv'
-                          ,encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.tonami_old = list(file_reader)
-        unsou_file.close()
-
-        unsou_file = open(r'../master/untin/kurume_honsya.csv',encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.kurume = list(file_reader)
-        unsou_file.close()
 
 
-
-    def get_torr(self,dist,weight,YN,address,tyuukei):
+    def get_torr(self,dist,weight,YN,tyuukei):
 		
         '''
 		#どちらの運賃表を使うか？ 本社では広島、奈良の運賃表は無い
@@ -68,6 +51,8 @@ class Untin_honsya :
         else:
             untin_mtx = self.torr
        ''' 
+
+        HOKEN_FARE = 100
     
         #トールの運賃を求める
         if YN == '-':
@@ -101,11 +86,11 @@ class Untin_honsya :
                     tyuukei_fare = float(self.torr_tyuukei[1][1].replace(',', ''))
         
 
-        return float(std_fare) + float(tyuukei_fare)
+        return float(std_fare) + float(tyuukei_fare) + HOKEN_FARE
 
 
 
-    def get_niigata(self, dist, weight, YN, address, tyuukei) :
+    def get_niigata(self, dist, weight, YN, tyuukei) :
 
         if YN == '-':
             return float('inf')
@@ -232,29 +217,24 @@ class Untin_honsya :
         niigata_YN = df_row['新潟行く行かない']
         keihin = df_row['ｹｲﾋﾝ向']
         designation = df_row['顧客指定運送屋']
-        kurume_distYN = df_row['久留米距離']
+        #kurume_distYN = df_row['久留米距離']
 
         if address != 'NoCalc' and address is not np.nan:
-            torr_fare = self.get_torr(torr_dist,weight,torr_YN,address
+            torr_fare = self.get_torr(torr_dist,weight,torr_YN
                                       ,torr_tyuukei)
 
             niigata_fare = self.get_niigata(niigata_dist, weight, niigata_YN
-                                            , address, niigata_tyuukei)
+                                            , niigata_tyuukei)
 
             keihin_fare = self.get_keihin(keihin, weight)
 
-            kurume_fare = self.get_kurume(kurume_distYN, weight)
 
-            tonami_diff = self.get_tonami_diff(designation,weight) 
         else:
             torr_fare = 0
             niigata_fare = 0
             keihin_fare = 0
-            kurume_fare = 0
-            tonami_diff = 0
 
 
-        return pd.Series([torr_fare,niigata_fare, keihin_fare ,kurume_fare
-                         , tonami_diff])
+        return pd.Series([torr_fare,niigata_fare, keihin_fare])
 
 

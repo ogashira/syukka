@@ -4,6 +4,9 @@
 import pprint
 import pyodbc
 import pandas as pd
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 

@@ -332,13 +332,14 @@ class Packing :
             
             unsoutaiou_toke = Unsoutaiou_toke()
             tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto_gr)
+
             
             del unsoutaiou_toke
 
             untin_toke = Untin_toke()
             #applyでdfごと指定すれば、各行ごと関数に渡せる。複数の戻り値は、
             #Seriesにして返す。関数はUnsou_tokeｸﾗｽのget_untinﾒｿｯﾄﾞ。
-            tokeMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','ﾄﾅﾐ差額']] =  \
+            tokeMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','西濃']] =  \
                     tokeMoto_add_unsoutaiou.apply(untin_toke.get_untin, axis=1)
 
 
@@ -374,7 +375,7 @@ class Packing :
             untin_honsya = Untin_honsya()
             #applyでdfごと指定すれば、各行ごと関数に渡せる。複数の戻り値は、
             #Seriesにして返す。関数はUnsou_tokeｸﾗｽのget_untinﾒｿｯﾄﾞ。
-            honsyaMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','久留米','ﾄﾅﾐ差額']] \
+            honsyaMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ']] \
                     = honsyaMoto_add_unsoutaiou.apply(untin_honsya.get_untin, axis=1)
 
             del untin_honsya
