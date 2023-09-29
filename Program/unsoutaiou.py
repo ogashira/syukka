@@ -22,9 +22,6 @@ class Unsoutaiou_toke :
         else:
             mypath = r'../master/untin/unsoutaiou_toke.csv'
     
-        #TODO 後で消す
-        mypath = (r'../master/untin/unsoutaiou_toke.csv')
-        #TODO 後で消す
 
         dl_df = pd.read_csv(mypath, encoding='cp932')
 
@@ -105,9 +102,6 @@ class Unsoutaiou_honsya :
         else:
             mypath = r'../master/untin/unsoutaiou_honsya.csv'
     
-        #TODO 後で消す
-        mypath = (r'../master/untin/unsoutaiou_toke.csv')
-        #TODO 後で消す
 
         dl_df = pd.read_csv(mypath, encoding='cp932')
 
