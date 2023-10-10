@@ -94,6 +94,10 @@ class Ajust_toke:
         allHauler_sort = allHauler4.sort_values('依頼先')
 
 
+        print('土気の運賃一覧')
+        print(allHauler_sort)
+
+
         return allHauler_sort
 
 
@@ -336,6 +340,8 @@ class Ajust_honsya:
         allHauler_sort = allHauler4.sort_values('依頼先')
 
 
+        print('本社の運賃一覧')
+        print(allHauler_sort)
 
         return allHauler_sort
 
