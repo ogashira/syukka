@@ -140,6 +140,8 @@ class Kenpin(object):
                     df2.loc[:, '受注数量'] = int(v * ratio)
                 else:
                     df2.loc[:,'lot'] = None
+                    df2.loc[:,'cans'] = None
+                    df2.loc[:,'受注数量'] = None
                     
                 df_list2.append(df2)
         

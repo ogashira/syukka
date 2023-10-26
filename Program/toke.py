@@ -65,8 +65,24 @@ class Toke:
                                                     '受注行ＮＯ'], how = 'left')
 
             recorder = Recorder(self.myfolder)
+
+
+
+            recorder.out_log('')
+            txt ='運賃計算結果一覧（土気）' 
+            recorder.out_log(txt, '\n')
+            recorder.out_file(txt, '\n')
+
+            recorder.out_log(self.allHauler, '\n')
+            recorder.out_file(self.allHauler, '\n')
+
             recorder.out_log('')
             recorder.out_file('')
+
+            txt ='売上処理入力用ﾃﾞｰﾀ（土気）' 
+            recorder.out_log(txt, '\n')
+            recorder.out_file(txt, '\n')
+
             recorder.out_log(self.untinForUriage, '\n')
             recorder.out_file(self.untinForUriage, '\n')
             del recorder

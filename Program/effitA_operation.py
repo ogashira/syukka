@@ -89,6 +89,7 @@ def start():
     del toke
     del honsya
 
+
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     # sumi列の値をリストにする
     sumi_toke = list(UU_toke.loc[:, 'sumi'])

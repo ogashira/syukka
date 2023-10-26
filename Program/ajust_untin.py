@@ -6,7 +6,6 @@ import numpy as np
 from closeDate import *
 from zaiko import *
 from add_data import *
-from recorder import *
 from lead_time import *
 from modify_unsou import *
 
@@ -92,6 +91,7 @@ class Ajust_toke:
 
 
         allHauler_sort = allHauler4.sort_values('依頼先')
+
 
 
         return allHauler_sort
@@ -216,11 +216,7 @@ class Ajust_toke:
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         
         zaiko = Zaiko(self.myfolder, self.uriagebi, self.sengetu)
-        recorder = Recorder(self.myfolder)
         
-        txt ='売上処理入力用ﾃﾞｰﾀ（土気）' 
-        recorder.out_log(txt, '\n')
-        recorder.out_file(txt, '\n')
 
         untinForUriage2['lot'] = untinForUriage2.apply(zaiko.get_lot, axis=1)
         
@@ -234,7 +230,6 @@ class Ajust_toke:
         """
 
         del zaiko
-        del recorder
 
 
 
@@ -459,11 +454,7 @@ class Ajust_honsya:
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         zaiko = Zaiko(self.myfolder, self.uriagebi, self.sengetu)
-        recorder = Recorder(self.myfolder)
 
-        txt ='売上処理入力用ﾃﾞｰﾀ（本社）' 
-        recorder.out_log(txt, '\n')
-        recorder.out_file(txt, '\n')
 
         untinForUriage2['lot'] = untinForUriage2.apply(zaiko.get_lot, axis=1)
         
@@ -477,7 +468,6 @@ class Ajust_honsya:
         """
 
         del zaiko
-        del recorder
         
 
         return untinForUriage2

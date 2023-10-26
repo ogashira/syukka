@@ -61,8 +61,23 @@ class Honsya:
                                                     '受注行ＮＯ'], how = 'left')
 
             recorder = Recorder(self.myfolder)
+
+
+
+
+            txt ='運賃計算結果一覧（本社）' 
+            recorder.out_log(txt, '\n')
+            recorder.out_file(txt, '\n')
+
+            recorder.out_log(self.allHauler, '\n')
+            recorder.out_file(self.allHauler, '\n')
             recorder.out_log('')
             recorder.out_file('')
+
+            txt ='売上処理入力用ﾃﾞｰﾀ（本社）' 
+            recorder.out_log(txt, '\n')
+            recorder.out_file(txt, '\n')
+
             recorder.out_log(self.untinForUriage, '\n')
             recorder.out_file(self.untinForUriage, '\n')
             del recorder
