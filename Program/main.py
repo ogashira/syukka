@@ -7,6 +7,7 @@ import effitA_operation
 
 def main():
     effitA_operation.start()
+    #effitA_operation_notUriage_test.start()
 
 
 
