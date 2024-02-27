@@ -63,6 +63,7 @@ class Toke:
             
             self.untinForUriage = pd.merge(UU, merge_data, on= ['受注ＮＯ', 
                                                     '受注行ＮＯ'], how = 'left')
+            print(self.untinForUriage)
 
             recorder = Recorder(self.myfolder)
 

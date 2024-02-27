@@ -138,21 +138,20 @@ class Zaiko:
 
 
     # 受注DT.csv の取得
+    # JDTはダウンロードの際受注日でソートしておく事が必須
         if pf == 'Windows':
             sql = SqlServer(self.uriagebi, self.sengetu)
             JDT = sql.get_JDT()
-            JDT = JDT.drop_duplicates(['受注ＮＯ'])
+            JDT = JDT.drop_duplicates(['受注ＮＯ'], keep='last')
             JDT = JDT.loc[:,['受注ＮＯ','受注日']]
             self.JDT_d = dict(zip(JDT['受注ＮＯ'], JDT['受注日']))
         else:
             JDT = pd.read_csv(r'../master/effitA/受注DT.csv', skiprows = 1
                               , encoding = 'cp932')
-            JDT = JDT.drop_duplicates(['受注ＮＯ'])
+            JDT = JDT.drop_duplicates(['受注ＮＯ'], keep='last')
             JDT = JDT.loc[:,['受注ＮＯ','受注日']]
             self.JDT_d = dict(zip(JDT['受注ＮＯ'], JDT['受注日']))
     
- 
-
 # ↓ method
 
 
