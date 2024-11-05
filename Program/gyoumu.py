@@ -48,7 +48,7 @@ class Gyoumu:
             PH_domestic = PH_domestic.sort_values(by=['納入先名称１', 'mojiHenkan'])
 
             PH_domestic['dupli'] = PH_domestic.duplicated(
-                               subset=['納入先名称１', 'mojiHenkan'],keep='first')
+                               subset=['得意先コード', '納入先名称１', 'mojiHenkan'],keep='first')
 
             #輸出のdupli
             PH_export = PH_export.sort_values(by='得意先注文ＮＯ')

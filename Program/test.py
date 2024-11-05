@@ -16,7 +16,7 @@ import pprint
 
 #****test 
 
-MYFOLDER = r'C:/Users/oga/Documents/syukka/Program'
+MYFOLDER = r'D:/Documents/syukka/Program'
 
 while True:
     try:
@@ -120,6 +120,7 @@ if len(modi_PH_toke.index) != 0:
 if len(modi_PH_honsya.index) != 0:
     gyoumu.get_excel_style(filePath_gyoumu_honsya)
 
+'''
 # kenpin,出荷実績照会作成
 if not UU_toke.empty:
     kenpin_toke = Kenpin('toke', modi_PH_toke, modi_UU_toke, MYFOLDER)
@@ -133,6 +134,7 @@ if not UU_honsya.empty:
     kenpin_honsya.create_kenpin()
     kenpin_honsya.get_syukka_jisseki_syoukai()
     del kenpin_honsya
+'''
 
 del gyoumu
 
