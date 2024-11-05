@@ -47,6 +47,8 @@ class Gyoumu:
             PH_domestic.loc[:,'mojiHenkan'] = PH_domestic['備考'].map(moji_henkan)
             PH_domestic = PH_domestic.sort_values(by=['納入先名称１', 'mojiHenkan'])
 
+            # 2024/11/5 20241024の出荷で,南部化成向けと川真向けが同じになってしまった
+            # ﾊﾞｸﾞを修正->duplicatedの要素に得意先コードを追加した
             PH_domestic['dupli'] = PH_domestic.duplicated(
                                subset=['得意先コード', '納入先名称１', 'mojiHenkan'],keep='first')
 
