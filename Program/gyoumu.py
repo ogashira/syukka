@@ -22,7 +22,6 @@ class Gyoumu:
         PHはmodi_PHのこと
         """
 
-
         def get_dupli(packingHinban):
 
             '''輸出と国内にわけてからdupli後concatする
@@ -37,8 +36,6 @@ class Gyoumu:
                 moji = moji.replace('　', '')
                 moji = moji.upper()
                 return moji
-
-
 
 
             PH_domestic = packingHinban.loc[packingHinban['輸出向先'] \
@@ -73,7 +70,7 @@ class Gyoumu:
             PH_con = PH_con.drop('index', axis = 1) # index列を削除
             
             PH_con.reset_index(inplace=True, drop=True)
-
+            
             
             return PH_con
 
@@ -129,7 +126,6 @@ class Gyoumu:
         for i in range(len(df_list2)):
             if df_list2[i].loc[i, 'dupli'] != True:
                 df_list3.append(df_list2[i])
-
 
 
         # df_col = df_list3[0].columns
