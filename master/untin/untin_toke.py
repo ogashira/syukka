@@ -4,55 +4,71 @@
 import csv
 import pandas as pd
 import numpy as np
+#from unsoutaiou import *
 
 
-
-class Untin_honsya :
+class Untin_toke :
 
     def __init__ (self):
         #self.weight = weight
         #self.deli_name = deli_name
 
-        unsou_file = open(r'../master/untin/torr_honsya.csv',encoding='cp932')
+        unsou_file = open(r'../master/untin/torr_toke.csv',encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr = list(file_reader)
         unsou_file.close()
         
-        unsou_file = open(r'../master/untin/torr_tyuukei_honsya.csv'
+        unsou_file = open(r'../master/untin/torr_toke_nara_hirosima.csv'
+                          ,encoding='cp932')
+        file_reader = csv.reader(unsou_file)
+        self.torr_nara_hirosima = list(file_reader)
+        unsou_file.close()
+        
+        unsou_file = open(r'../master/untin/torr_tyuukei_toke.csv'
                           ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr_tyuukei= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/keihin_honsya.csv',encoding='cp932')
+        unsou_file = open(r'../master/untin/torr_surcharge_toke.csv'
+                          ,encoding='cp932')
+        file_reader = csv.reader(unsou_file)
+        self.torr_surcharge= list(file_reader)
+        unsou_file.close()
+
+        unsou_file = open(r'../master/untin/keihin_toke.csv',encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.keihin= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/niigata_honsya.csv',encoding='cp932')
+        unsou_file = open(r'../master/untin/niigata_toke.csv',encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.niigata= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/niigata_tyuukei_honsya.csv'
+        unsou_file = open(r'../master/untin/niigata_tyuukei_toke.csv'
                           ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.niigata_tyuukei= list(file_reader)
         unsou_file.close()
 
+        unsou_file = open(r'../master/untin/seinou_toke.csv'
+                          ,encoding='cp932')
+        file_reader = csv.reader(unsou_file)
+        self.seinou= list(file_reader)
+        unsou_file.close()
 
 
-    def get_torr(self,dist,weight,YN,tyuukei):
+    def get_torr(self,dist,weight,YN,address,tyuukei):
 		
-        '''
-		#どちらの運賃表を使うか？ 本社では広島、奈良の運賃表は無い
+        HOKEN_FARE = 100
+
+		#縺ｩ縺｡繧峨表を使うか？
         if '広島県'in address or '奈良県' in address:
             untin_mtx = self.torr_nara_hirosima
         else:
             untin_mtx = self.torr
-       ''' 
-
-        HOKEN_FARE = 100
+        
     
         #トールの運賃を求める
         if YN == '-':
@@ -60,19 +76,34 @@ class Untin_honsya :
         
         #基本料金std_fareを求める
         dist_idx = 0
-        for i  in range(len(self.torr[0])-1,0,-1): 
-            if float(self.torr[0][i].replace(',','')) >= dist : 
+        for i  in range(len(untin_mtx[0])-1,0,-1): 
+            if float(untin_mtx[0][i].replace(',', '')) >= dist : 
                 dist_idx = i
                 break
         std_fare = float('inf')
         if dist_idx== 0:
             std_fare = float('inf')
         else:
-            for i in range(len(self.torr)-1,0,-1):
-                if float(self.torr[i][0]) >= weight :
-                    std_fare = self.torr[i][dist_idx].replace(',', '')
+            for i in range(len(untin_mtx)-1,0,-1):
+                if float(untin_mtx[i][0]) >= weight :
+                    std_fare = untin_mtx[i][dist_idx].replace(',', '')
                     break
         
+        #surcharge surcharge_fareを求める
+        dist_idx = 0
+        for i  in range(len(self.torr_surcharge[0])-1,0,-1): 
+            if float(self.torr_surcharge[0][i].replace(',', '')) >= dist : 
+                dist_idx = i
+                break
+        surcharge_fare = float('inf')
+        if dist_idx== 0:
+            surcharge_fare = float('inf')
+        else:
+            for i in range(len(self.torr_surcharge)-1,0,-1):
+                if float(self.torr_surcharge[i][0]) >= weight :
+                    surcharge_fare = self.torr_surcharge[i][dist_idx].replace(',', '')
+                    break
+
         #中継料金を求める
         if tyuukei == 0:
             tyuukei_fare = 0
@@ -84,13 +115,14 @@ class Untin_honsya :
                     break
                 else:
                     tyuukei_fare = float(self.torr_tyuukei[1][1].replace(',', ''))
+
         
 
-        return float(std_fare) + float(tyuukei_fare) + HOKEN_FARE
+        return float(std_fare) + float(tyuukei_fare) + float(surcharge_fare) + HOKEN_FARE
 
 
 
-    def get_niigata(self, dist, weight, YN, tyuukei) :
+    def get_niigata(self, dist, weight, YN, address, tyuukei) :
 
         if YN == '-':
             return float('inf')
@@ -98,7 +130,7 @@ class Untin_honsya :
         #基本料金std_fareを求める
         dist_idx = 0
         for i in range(len(self.niigata[0])-1, 0, -1):
-            if float(self.niigata[0][i].replace(',','')) >= dist :
+            if float(self.niigata[0][i].replace(',', '')) >= dist :
                 dist_idx = i
                 break
         std_fare = float('inf')
@@ -159,6 +191,33 @@ class Untin_honsya :
         return keihin_fare
 
 
+    def get_seinou(self,dist,weight):
+		
+        HOKEN_FARE = 300
+
+    
+        #西濃運賃を求める
+        if dist == '-':
+            return float('inf')
+        
+        #基本料金std_fareを求める
+        dist_idx = 0
+        for i  in range(len(self.seinou[0])-1,0,-1): 
+            if float(self.seinou[0][i].replace(',', '')) >= dist : 
+                dist_idx = i
+                break
+        std_fare = float('inf')
+        if dist_idx== 0:
+            std_fare = float('inf')
+        else:
+            for i in range(len(self.seinou)-1,0,-1):
+                if float(self.seinou[i][0]) >= weight :
+                    std_fare = self.seinou[i][dist_idx].replace(',', '')
+                    break
+        
+
+        return float(std_fare) + HOKEN_FARE
+
     def get_tonami_diff(self, designation, weight):
         
         if designation != 'ﾄﾅﾐ':
@@ -167,9 +226,8 @@ class Untin_honsya :
         tonami_new = 0
         for i in range(len(self.tonami_new)-1, 0, -1):
             if float(self.tonami_new[i][0]) >= weight :
-                #コンマがあるケースがあるので...
                 tonami_new_price = self.tonami_new[i][1].replace(',', '')
-                break                        
+                break                        #コンマがあるケースがあるので...
         tonami_old = 0
         for i in range(len(self.tonami_old)-1, 0, -1):
             if float(self.tonami_old[i][0]) >= weight :
@@ -179,26 +237,7 @@ class Untin_honsya :
         return tonami_diff
             
 
-    def get_kurume(self, dist_YN, weight): 
-        #久留米の運賃を求める
-        if dist_YN == '-':
-            return float('inf')
-        
-        #基本料金std_fareを求める
-        dist_idx = 0
-        for i  in range(len(self.kurume[0])-1,0,-1): 
-            if float(self.kurume[0][i].replace(',','')) >= float(dist_YN) : 
-                dist_idx = i
-                break
-        std_fare = float('inf')
-        if dist_idx== 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(self.kurume)-1,0,-1):
-                if float(self.kurume[i][0]) >= weight :
-                    std_fare = self.kurume[i][dist_idx].replace(',', '')
-                    break
-        return std_fare
+
 
 
 	#applyでdfの行を受け取る
@@ -214,24 +253,37 @@ class Untin_honsya :
         niigata_YN = df_row['新潟行く行かない']
         keihin = df_row['ｹｲﾋﾝ向']
         designation = df_row['顧客指定運送屋']
-        #kurume_distYN = df_row['久留米距離']
+        seinou_dist = df_row['西濃距離']
 
         if address != 'NoCalc' and address is not np.nan:
-            torr_fare = self.get_torr(torr_dist,weight,torr_YN
+            torr_fare = self.get_torr(torr_dist,weight,torr_YN,address
                                       ,torr_tyuukei)
 
             niigata_fare = self.get_niigata(niigata_dist, weight, niigata_YN
-                                            , niigata_tyuukei)
+                                      , address, niigata_tyuukei)
 
             keihin_fare = self.get_keihin(keihin, weight)
 
-
+            seinou_fare = self.get_seinou(seinou_dist, weight)
         else:
             torr_fare = 0
             niigata_fare = 0
             keihin_fare = 0
+            seinou_fare = 0
+
+        return pd.Series([torr_fare,niigata_fare, keihin_fare, seinou_fare])
 
 
-        return pd.Series([torr_fare,niigata_fare, keihin_fare])
+
+
+
+
+
+
+
+
+
+
+
 
 
