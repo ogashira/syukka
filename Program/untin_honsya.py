@@ -133,9 +133,8 @@ class Untin_honsya :
             
         #基本料金std_fareを求める
         weight_idx = 0
-        for i in range(len(self.keihin[0])-1, 0, -1):
-            #ｹｲﾋﾝだけは重量が未満表示
-            if float(self.keihin[0][i].replace(',','')) > weight : 
+        for i in range(len(self.keihin[0])-1, 0, -1): # 6~1まで。0は実行しない
+            if float(self.keihin[0][i]) > weight : #ｹｲﾋﾝだけは重量が未満表示
                 weight_idx = i
                 break
         std_fare = float('inf')
@@ -149,17 +148,15 @@ class Untin_honsya :
         '''
         '-'ならば行かないから無限大、100以下の数値ならば重量を掛ける。
         それ以外の数値はそのまま運賃。
+        2025/5/21ケイヒン運賃表が更新。全て運賃が記載されているので、
+        重量を乗算する必要なくなった。
         '''
         if std_fare == '-':
             keihin_fare = float('inf')
         else:
-            if float(std_fare) < 100:
-                keihin_fare = float(std_fare) * weight
-            else:
-                keihin_fare = float(std_fare)
+            keihin_fare = float(std_fare)
 
         return keihin_fare
-
 
 
     def get_tonami_diff(self, designation, weight):
