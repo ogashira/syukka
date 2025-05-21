@@ -329,16 +329,29 @@ class Packing :
             )
             '''
 
+            '''
+            20240226 bug  修正
+            出荷の全てがサンプル999998で顧客の情報がない T0000の場合、住所１の情報が
+            一つもない場合は、tokeMoto_grのdataFrameがemptyになってしまいエラーになってしまう
+            (tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto_gr)
+            でエラーになるので、tokeMoto_grがemptyの時は空のデータフレームを作成するように
+            修正した。
+            '''
+            if tokeMoto_gr.shape[0] == 0:
+                tokeMoto_gr = pd.DataFrame(columns=['住所１', 'weight', 'cans'], index = [0])
+
+
             
             unsoutaiou_toke = Unsoutaiou_toke()
             tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto_gr)
+
             
             del unsoutaiou_toke
 
             untin_toke = Untin_toke()
             #applyでdfごと指定すれば、各行ごと関数に渡せる。複数の戻り値は、
             #Seriesにして返す。関数はUnsou_tokeｸﾗｽのget_untinﾒｿｯﾄﾞ。
-            tokeMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','ﾄﾅﾐ差額']] =  \
+            tokeMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','西濃']] =  \
                     tokeMoto_add_unsoutaiou.apply(untin_toke.get_untin, axis=1)
 
 
@@ -351,6 +364,7 @@ class Packing :
 
     def get_untin_honsya(self):
         honsya_moto = self.get_honsya_moto()
+
         
         if honsya_moto.shape[0] == 0:
             pass
@@ -365,17 +379,35 @@ class Packing :
             # honsya_moto_code = honsya_moto_code.drop_duplicates(['納入先名称１']) 
             # honsyaMoto = pd.merge(honsyaMoto, honsya_moto_code, how='left', 
                                   # on='納入先名称１')
+
+
+            '''
+            20240226 bug  修正
+            出荷の全てがサンプル999998で顧客の情報がない T0000の場合、住所１の情報が
+            一つもない場合は、honsyaMoto_grのdataFrameがemptyになってしまいエラーになってしまう
+            (honsyaMoto_add_unsoutaiou = unsoutaiou_honsya.add_unsoutaiou(honsyaMoto_gr)
+            でエラーになるので、honsyaMoto_grがemptyの時は空のデータフレームを作成するように
+            修正した。
+            '''
+            if honsyaMoto_gr.shape[0] == 0:
+                honsyaMoto_gr = pd.DataFrame(columns=['住所１', 'weight', 'cans'], index = [0])
+
+
+
             
             unsoutaiou_honsya = Unsoutaiou_honsya()
             honsyaMoto_add_unsoutaiou = unsoutaiou_honsya.add_unsoutaiou(honsyaMoto_gr)
+
+
 
             del unsoutaiou_honsya
 
             untin_honsya = Untin_honsya()
             #applyでdfごと指定すれば、各行ごと関数に渡せる。複数の戻り値は、
             #Seriesにして返す。関数はUnsou_tokeｸﾗｽのget_untinﾒｿｯﾄﾞ。
-            honsyaMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ','久留米','ﾄﾅﾐ差額']] \
+            honsyaMoto_add_unsoutaiou[['ﾄｰﾙ','新潟','ｹｲﾋﾝ']] \
                     = honsyaMoto_add_unsoutaiou.apply(untin_honsya.get_untin, axis=1)
+
 
             del untin_honsya
 

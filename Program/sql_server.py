@@ -4,6 +4,9 @@
 import pprint
 import pyodbc
 import pandas as pd
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 
@@ -164,7 +167,8 @@ class SqlServer(object):
         sqlQuery = ("SELECT LJYUCD.LjcJcDay, LJYUCD.LjcJCNo" 
                     " FROM dbo.LJYUCD"
                     " WHERE LJYUCD.LjcJcDay >=" + self.sengetu +
-                    " AND LJYUCD.LjcJcDay <=" + self.uriagebi )
+                    " AND LJYUCD.LjcJcDay <=" + self.uriagebi +
+                    " ORDER BY LJYUCD.LjcJcDay")
         df = pd.read_sql(sqlQuery, cnxn)
         df = df.rename(
            columns={

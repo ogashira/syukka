@@ -3,6 +3,7 @@
 
 import platform
 import pprint
+import sys
 
 from effitA import EffitA
 from eigyoubi import Eigyoubi
@@ -84,8 +85,10 @@ def start():
     UU_honsya = honsya.get_untinForUriage()
 
 
+
     del toke
     del honsya
+
 
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     # sumi列の値をリストにする

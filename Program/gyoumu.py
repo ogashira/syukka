@@ -22,7 +22,6 @@ class Gyoumu:
         PHはmodi_PHのこと
         """
 
-
         def get_dupli(packingHinban):
 
             '''輸出と国内にわけてからdupli後concatする
@@ -39,8 +38,6 @@ class Gyoumu:
                 return moji
 
 
-
-
             PH_domestic = packingHinban.loc[packingHinban['輸出向先'] \
                 != 'y',:].copy()
             PH_export = packingHinban.loc[packingHinban['輸出向先'] \
@@ -50,8 +47,10 @@ class Gyoumu:
             PH_domestic.loc[:,'mojiHenkan'] = PH_domestic['備考'].map(moji_henkan)
             PH_domestic = PH_domestic.sort_values(by=['納入先名称１', 'mojiHenkan'])
 
+            # 2024/11/5 20241024の出荷で,南部化成向けと川真向けが同じになってしまった
+            # ﾊﾞｸﾞを修正->duplicatedの要素に得意先コードを追加した
             PH_domestic['dupli'] = PH_domestic.duplicated(
-                               subset=['納入先名称１', 'mojiHenkan'],keep='first')
+                               subset=['得意先コード', '納入先名称１', 'mojiHenkan'],keep='first')
 
             #輸出のdupli
             PH_export = PH_export.sort_values(by='得意先注文ＮＯ')
@@ -73,7 +72,7 @@ class Gyoumu:
             PH_con = PH_con.drop('index', axis = 1) # index列を削除
             
             PH_con.reset_index(inplace=True, drop=True)
-
+            
             
             return PH_con
 
@@ -129,7 +128,6 @@ class Gyoumu:
         for i in range(len(df_list2)):
             if df_list2[i].loc[i, 'dupli'] != True:
                 df_list3.append(df_list2[i])
-
 
 
         # df_col = df_list3[0].columns
