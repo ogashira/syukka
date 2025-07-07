@@ -13,47 +13,42 @@ class Untin_toke :
         #self.weight = weight
         #self.deli_name = deli_name
 
-        unsou_file = open(r'../master/untin/torr_toke.csv',encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/torr_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr = list(file_reader)
         unsou_file.close()
         
-        unsou_file = open(r'../master/untin/torr_toke_nara_hirosima.csv'
-                          ,encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untintorr_toke_nara_hirosima.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr_nara_hirosima = list(file_reader)
         unsou_file.close()
         
-        unsou_file = open(r'../master/untin/torr_tyuukei_toke.csv'
-                          ,encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untintorr_tyuukei_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr_tyuukei= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/torr_surcharge_toke.csv'
-                          ,encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untintorr_surcharge_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr_surcharge= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/keihin_toke.csv',encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untinkeihin_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.keihin= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/niigata_toke.csv',encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untinniigata_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.niigata= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/niigata_tyuukei_toke.csv'
-                          ,encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untinniigata_tyuukei_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.niigata_tyuukei= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'../master/untin/seinou_toke.csv'
-                          ,encoding='cp932')
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untinseinou_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.seinou= list(file_reader)
         unsou_file.close()
