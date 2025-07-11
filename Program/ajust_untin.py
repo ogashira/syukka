@@ -44,6 +44,7 @@ class Ajust_toke:
 
             dic = {'ﾄｰﾙ':float(torr), '新潟':float(niigata), 'ｹｲﾋﾝ':float(keihin), '西濃':float(seinou)}
             
+            
             #顧客指定運送屋がある場合はソレ、無い場合は最安値の運送屋を選ぶ
             #最安値が２つ以上ある場合を考慮して、リスト内包表記で求める。
             if address == 'NoCalc':
@@ -68,12 +69,13 @@ class Ajust_toke:
                            '西濃','依頼先','輸出向先','顧客指定運送屋']]
 
 
+
         # 依頼先のlistをリテラルにしておく
         allHauler2 = allHauler.copy()
         allHauler2.loc[:,'依頼先'] = allHauler2['依頼先'].map(lambda x : x[0])
 
 
-        allHauler2['依頼先'] = allHauler2.apply(self.get_siteiUnsou, axis = 1)
+
 
 
         # modify_unsouを呼び出して、運送屋の調整をする
@@ -82,7 +84,9 @@ class Ajust_toke:
         allHauler3 = modi_unsou.get_modified_AH(allHauler2)
         del modi_unsou
 
-        # 顧客指定運送屋がある場合は修正する
+        # 最後に顧客指定運送屋がある場合は修正する
+        allHauler2['依頼先'] = allHauler2.apply(self.get_siteiUnsou, axis = 1)
+
             
         allHauler4 = allHauler3[['出荷予定日','住所１','納入先名称１','得意先コード',
                            '納入先コード','weight','cans','ﾄｰﾙ','新潟','ｹｲﾋﾝ',

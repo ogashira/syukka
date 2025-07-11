@@ -15,51 +15,61 @@ class Untin_toke :
 
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/torr_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.torr = list(file_reader)
+        self.torr: list[list[str]] = list(file_reader)
         unsou_file.close()
         
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/torr_toke_nara_hirosima.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.torr_nara_hirosima = list(file_reader)
+        self.torr_nara_hirosima: list[list[str]] = list(file_reader)
         unsou_file.close()
         
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/torr_tyuukei_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.torr_tyuukei= list(file_reader)
+        self.torr_tyuukei: list[list[str]]= list(file_reader)
         unsou_file.close()
 
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/torr_surcharge_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.torr_surcharge= list(file_reader)
+        self.torr_surcharge: list[list[str]]= list(file_reader)
         unsou_file.close()
 
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/keihin_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.keihin= list(file_reader)
+        self.keihin: list[list[str]]= list(file_reader)
         unsou_file.close()
 
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/niigata_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.niigata= list(file_reader)
+        self.niigata: list[list[str]]= list(file_reader)
         unsou_file.close()
 
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/niigata_tyuukei_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.niigata_tyuukei= list(file_reader)
+        self.niigata_tyuukei: list[list[str]]= list(file_reader)
+        unsou_file.close()
+
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/niigata_surcharge_toke.csv' ,encoding='cp932')
+        file_reader = csv.reader(unsou_file)
+        self.niigata_surcharge: list[list[str]]= list(file_reader)
         unsou_file.close()
 
         unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/seinou_toke.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
-        self.seinou= list(file_reader)
+        self.seinou: list[list[str]]= list(file_reader)
+        unsou_file.close()
+
+        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/seinou_surcharge_toke.csv' ,encoding='cp932')
+        file_reader = csv.reader(unsou_file)
+        self.seinou_surcharge: list[list[str]]= list(file_reader)
         unsou_file.close()
 
 
-    def get_torr(self,dist,weight,YN,address,tyuukei):
+    def get_torr(self, dist: int, weight: float, YN: str, address: str, tyuukei: int)-> float:
 		
-        HOKEN_FARE = 100
+        HOKEN_FARE: float = 100.0
 
 		#縺ｩ縺｡繧峨表を使うか？
-        if '広島県'in address or '奈良県' in address:
+        if '広島県' in address or '奈良県' in address:
             untin_mtx = self.torr_nara_hirosima
         else:
             untin_mtx = self.torr
@@ -70,86 +80,91 @@ class Untin_toke :
             return float('inf')
         
         #基本料金std_fareを求める
-        dist_idx = 0
+        dist_idx: int = 0
+        weight_idx: int = 0
         for i  in range(len(untin_mtx[0])-1,0,-1): 
             if float(untin_mtx[0][i].replace(',', '')) >= dist : 
                 dist_idx = i
                 break
+        for i  in range(len(untin_mtx)-1,0,-1): 
+            if float(untin_mtx[i][0].replace(',', '')) >= weight : 
+                weight_idx = i
+                break
         std_fare = float('inf')
-        if dist_idx== 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(untin_mtx)-1,0,-1):
-                if float(untin_mtx[i][0]) >= weight :
-                    std_fare = untin_mtx[i][dist_idx].replace(',', '')
-                    break
+        if dist_idx!= 0 and weight_idx!= 0:
+            std_fare = float(untin_mtx[weight_idx][dist_idx].replace(',', ''))
         
         #surcharge surcharge_fareを求める
-        dist_idx = 0
+        dist_idx: int = 0
+        weight_idx: int = 0
         for i  in range(len(self.torr_surcharge[0])-1,0,-1): 
             if float(self.torr_surcharge[0][i].replace(',', '')) >= dist : 
                 dist_idx = i
                 break
-        surcharge_fare = float('inf')
-        if dist_idx== 0:
-            surcharge_fare = float('inf')
-        else:
-            for i in range(len(self.torr_surcharge)-1,0,-1):
-                if float(self.torr_surcharge[i][0]) >= weight :
-                    surcharge_fare = self.torr_surcharge[i][dist_idx].replace(',', '')
-                    break
+        for i  in range(len(self.torr_surcharge)-1,0,-1): 
+            if float(self.torr_surcharge[i][0].replace(',', '')) >= weight : 
+                weight_idx = i
+                break
+        surcharge_fare: float = float('inf')
+        if dist_idx!= 0 and weight_idx!= 0:
+            surcharge_fare = float(self.torr_surcharge[weight_idx][dist_idx].replace(',', ''))
 
         #中継料金を求める
-        if tyuukei == 0:
-            tyuukei_fare = 0
-        else:
-            for i in range(len(self.torr_tyuukei)-1,0,-1):
-                if float(self.torr_tyuukei[i][0]) >=weight :
-                    tyuukei_fare = self.torr_tyuukei[i][1].replace(',', '')
-                    tyuukei_fare = float(tyuukei_fare) * float(tyuukei)
-                    break
-                else:
-                    tyuukei_fare = float(self.torr_tyuukei[1][1].replace(',', ''))
+        tyuukei_fare: float= 0.0
+        for i in range(len(self.torr_tyuukei)-1,0,-1):
+            if float(self.torr_tyuukei[i][0]) >=weight :
+                tyuukei_fare = float(self.torr_tyuukei[i][1].replace(',', '')) * float(tyuukei)
+                break
 
         
 
-        return float(std_fare) + float(tyuukei_fare) + float(surcharge_fare) + HOKEN_FARE
+        return std_fare + tyuukei_fare + surcharge_fare + HOKEN_FARE
 
 
 
-    def get_niigata(self, dist, weight, YN, address, tyuukei) :
+    def get_niigata(self, dist, weight, YN, tyuukei) :
 
         if YN == '-':
             return float('inf')
 
         #基本料金std_fareを求める
-        dist_idx = 0
-        for i in range(len(self.niigata[0])-1, 0, -1):
-            if float(self.niigata[0][i].replace(',', '')) >= dist :
+        dist_idx: int = 0
+        weight_idx: int = 0
+        for i  in range(len(self.niigata[0])-1,0,-1): 
+            if float(self.niigata[0][i].replace(',', '')) >= dist : 
                 dist_idx = i
                 break
+        for i  in range(len(self.niigata)-1,0,-1): 
+            if float(self.niigata[i][0].replace(',', '')) >= weight : 
+                weight_idx = i
+                break
         std_fare = float('inf')
-        if dist_idx == 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(self.niigata)-1, 0, -1):
-                if float(self.niigata[i][0]) >= weight :
-                    std_fare = self.niigata[i][dist_idx].replace(',', '')
-                    break
+        if dist_idx!= 0 and weight_idx!= 0:
+            std_fare = float(self.niigata[weight_idx][dist_idx].replace(',', ''))
+
+        # サーチャージを求める
+        dist_idx: int = 0
+        weight_idx: int = 0
+        for i  in range(len(self.niigata_surcharge[0])-1,0,-1): 
+            if float(self.niigata_surcharge[0][i].replace(',', '')) >= dist : 
+                dist_idx = i
+                break
+        for i  in range(len(self.niigata_surcharge)-1,0,-1): 
+            if float(self.niigata_surcharge[i][0].replace(',', '')) >= weight : 
+                weight_idx = i
+                break
+        surcharge_fare = float('inf')
+        if dist_idx!= 0 and weight_idx!= 0:
+            surcharge_fare = float(self.niigata_surcharge[weight_idx][dist_idx].replace(',', ''))
        
         #中継料金を求める
-        if tyuukei == 0:
-            tyuukei_fare = 0
-        else:
-            for i in range(len(self.niigata_tyuukei)-1,0,-1):
-                if float(self.niigata_tyuukei[i][0]) >=weight :
-                    tyuukei_fare = self.niigata_tyuukei[i][1].replace(',', '')
-                    tyuukei_fare = float(tyuukei_fare) * float(tyuukei)
-                    break
-                else:
-                    tyuukei_fare = float(self.niigata_tyuukei[1][1].replace(',', ''))
+        tyuukei_fare: float= 0.0
+        for i in range(len(self.niigata_tyuukei)-1,0,-1):
+            if float(self.niigata_tyuukei[i][0]) >=weight :
+                tyuukei_fare = float(self.niigata_tyuukei[i][1].replace(',', '')) * float(tyuukei)
+                break
 
-        return float(std_fare) + float(tyuukei_fare)
+        return std_fare + surcharge_fare + tyuukei_fare
                 
         
         
@@ -196,24 +211,45 @@ class Untin_toke :
             return float('inf')
         
         #基本料金std_fareを求める
-        dist_idx = 0
+        dist_idx: int = 0
+        weight_idx: int = 0
         for i  in range(len(self.seinou[0])-1,0,-1): 
             if float(self.seinou[0][i].replace(',', '')) >= dist : 
                 dist_idx = i
                 break
+        for i  in range(len(self.seinou)-1,0,-1): 
+            if float(self.seinou[i][0].replace(',', '')) >= weight : 
+                weight_idx = i
+                break
         std_fare = float('inf')
-        if dist_idx== 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(self.seinou)-1,0,-1):
-                if float(self.seinou[i][0]) >= weight :
-                    std_fare = self.seinou[i][dist_idx].replace(',', '')
-                    break
-        
+        if dist_idx!= 0 and weight_idx!= 0:
+            std_fare = float(self.seinou[weight_idx][dist_idx].replace(',', ''))
 
-        return float(std_fare) + HOKEN_FARE
+        # サーチャージを求める
+        dist_idx: int = 0
+        weight_idx: int = 0
+        for i  in range(len(self.seinou_surcharge[0])-1,0,-1): 
+            if float(self.seinou_surcharge[0][i].replace(',', '')) >= dist : 
+                dist_idx = i
+                break
+        for i  in range(len(self.seinou_surcharge)-1,0,-1): 
+            if float(self.seinou_surcharge[i][0].replace(',', '')) >= weight : 
+                weight_idx = i
+                break
+        surcharge_fare = float('inf')
+        if dist_idx!= 0 and weight_idx!= 0:
+            surcharge_fare = float(self.seinou_surcharge[weight_idx][dist_idx].replace(',', ''))
+       
+        #中継料金を求める
+        tyuukei_fare: float= 0.0
+
+        return std_fare + surcharge_fare + tyuukei_fare + HOKEN_FARE
+
 
     def get_tonami_diff(self, designation, weight):
+        '''
+        使っていない
+        '''
         
         if designation != 'ﾄﾅﾐ':
             return 0
@@ -255,7 +291,7 @@ class Untin_toke :
                                       ,torr_tyuukei)
 
             niigata_fare = self.get_niigata(niigata_dist, weight, niigata_YN
-                                      , address, niigata_tyuukei)
+                                      , niigata_tyuukei)
 
             keihin_fare = self.get_keihin(keihin, weight)
 

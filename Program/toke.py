@@ -6,6 +6,7 @@ from packing import *
 from ajust_untin import *
 from gyoumu import *
 from recorder import *
+import sys
 
 
 pd.set_option('display.unicode.east_asian_width', True)
@@ -45,8 +46,7 @@ class Toke:
                     self.allHauler)
             self.untinForUriage = ajust_toke.get_untinForUriage(self.toke_moto,
                     self.allHauler)
-
-
+            #print(self.toke_untin)
 
             # untinForUriageにpackingHinbanの'出荷予定倉庫'を取り入れる>>>>>>>>>
             # この時点でuntinForUriageから出荷予定倉庫を削除して、packingHinbanの
