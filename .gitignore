@@ -9,6 +9,7 @@ __pycache__
 *.swo
 *.swn
 *.pdf
+*.yaml
 土気業務_packing.csv
 本社業務_packing.csv
 土気業務_packing.xlsx

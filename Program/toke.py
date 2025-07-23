@@ -9,6 +9,7 @@ from recorder import *
 import sys
 
 
+
 pd.set_option('display.unicode.east_asian_width', True)
 pd.set_option('display.max_rows', None)
 pd.set_option('display.width', None)
@@ -66,6 +67,7 @@ class Toke:
             print(self.untinForUriage)
 
             recorder = Recorder(self.myfolder)
+
 
 
 
@@ -157,6 +159,3 @@ class Toke:
     def get_packingCoa(self):
         return self.packingCoa
     """
-
-
-
