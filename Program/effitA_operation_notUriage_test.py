@@ -91,6 +91,7 @@ def start():
     PH_honsya = honsya.get_packingHinban()
     UU_honsya = honsya.get_untinForUriage()
 
+    '''
     # TODO 後で消す
     print("PH_honsya>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     print(PH_honsya)
@@ -100,9 +101,7 @@ def start():
     print(PH_toke)
     print("UU_toke>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     print(UU_toke)
-    sys.exit()
-    # TODO 後で消す
-
+    '''
 
     del toke
     del honsya
@@ -132,6 +131,7 @@ def start():
 
 
 
+        '''
         effita = EffitA(myfolder)
         effita.launch_effitA()
         # 売上入力実施 UU_tokeが空ではなく、sumiが全部'済 'でなかったら実行
@@ -145,8 +145,9 @@ def start():
             effita.uriage_nyuuryoku(UU_honsya)
             effita.close_uriage_nyuuryoku()
 
-        
-        txt = '売上入力終了しました'
+       ''' 
+
+        txt = 'これはテスト用のプログラムです。effitAの出荷処理は行っていません'
         recorder.out_log(txt, '\n')
         recorder.out_file(txt, '\n')
 
@@ -159,8 +160,10 @@ def start():
         """
 
 
+        '''
         # effitAを閉じる
         effita.close_effitA()
+        '''
 
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -237,7 +240,7 @@ def start():
 
 
 
-    txt = ('\n**売上入力、業務用fileは作成は終了しました。*** \n\n'
+    txt = ('\n**テスト用プログラムです。業務用fileは作成は終了しました。*** \n\n'
             '検査成績書を探し、無ければ発行します。\n\n')
 
     recorder.out_log(txt)
@@ -356,8 +359,9 @@ def start():
 
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    txt = ('\n *********プログラムは無事終了しました。********** \n')
+    txt = ('\n *********プログラムは無事終了しました。********** \n'
+           'テスト用プログラムのためLINEでの通知は行いません \n')
     recorder.out_log(txt)
     recorder.out_file(txt)
     
-    import line
+    # import line
