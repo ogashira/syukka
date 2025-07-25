@@ -25,17 +25,17 @@ class UntinKeisanSheet(object):
         self.uriage_day = str(untin_moto.loc[0, '出荷予定日'])
         folder_name = self.uriage_day
         # ﾌｫﾙﾀﾞが存在しなければ作る（出荷予定日のﾌｫﾙﾀﾞ名）
-        if os.path.exists(r'../tmp/{}'.format(folder_name)):
+        if os.path.exists(r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/addCount/{}'.format(folder_name)):
             pass
         else:
-            os.mkdir(r'../tmp/{}'.format(folder_name))
+            os.mkdir(r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/addCount/{}'.format(folder_name))
 
-
+# \\192.168.1.247\共有\営業課ﾌｫﾙﾀﾞ\01出荷OutPut\addCount
             
     def sheet_add_cnt(self):
         folder_name = self.uriage_day
-        if os.path.exists(r'../tmp/{}/add_cnt.csv'.format(folder_name)):
-            add_cnt = pd.read_csv(r'../tmp/{}/add_cnt.csv'.format(folder_name), 
+        if os.path.exists(r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/addCount/{}/add_cnt.csv'.format(folder_name)):
+            add_cnt = pd.read_csv(r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/addCount/{}/add_cnt.csv'.format(folder_name), 
                                                                encoding='cp932')
             cnt = add_cnt['add'].max()
             moto_add = pd.merge(self.untin_moto, add_cnt, 
@@ -48,7 +48,7 @@ class UntinKeisanSheet(object):
 
         moto_add_after = moto_add[['受注ＮＯ', '受注行ＮＯ', 'add']]
         moto_add_after = moto_add_after.drop_duplicates(['受注ＮＯ', '受注行ＮＯ'])
-        moto_add_after.to_csv(r'../tmp/{}/add_cnt.csv'.format(folder_name), 
+        moto_add_after.to_csv(r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/addCount/{}/add_cnt.csv'.format(folder_name), 
                                                             encoding = 'cp932')
 
         return moto_add

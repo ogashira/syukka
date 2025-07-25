@@ -304,17 +304,3 @@ class Untin_toke :
 
         return pd.Series([torr_fare,niigata_fare, keihin_fare, seinou_fare])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
