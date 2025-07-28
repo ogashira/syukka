@@ -24,16 +24,16 @@ class Kenpin(object):
         # ﾃｽﾄ用にmyfolderが'C:/Users/oga/Documents/syukka/Programだった
         # らｶﾚﾝﾄﾃﾞｨﾚｸﾄﾘに入れる
         if factory == 'toke':
-            if myfolder == r'C:/Users/oga/Documents/syukka/Program':
-                self.kenpin_folder = r'./kenpin_toke.csv'
+            if platform.system() == 'Linux':
+                self.kenpin_folder = r'./kenpin/kenpin_toke.csv'
             else:
                 self.kenpin_folder = (r'\\192.168.3.204\effitA_HT\送信データ'
                                                                  r'\kenpin.csv')
             self.syukka_koujou = '出荷工場：@0002 土気工場'
             self.factory = '土気'
         elif factory == 'honsya':
-            if myfolder == r'C:/Users/oga/Documents/syukka/Program':
-                self.kenpin_folder = r'./kenpin_honsya.csv'
+            if platform.system() == 'Linux':
+                self.kenpin_folder = r'./kenpin/kenpin_honsya.csv'
             else:
                 self.kenpin_folder = r'C:\effitA_HT\送信データ\kenpin.csv'
 
@@ -49,7 +49,6 @@ class Kenpin(object):
         self.untinForUriage = untinForUriage
 
         self.myfolder = myfolder
-
 
 
 
