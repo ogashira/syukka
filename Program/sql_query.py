@@ -2,26 +2,21 @@
 # -*- coding: utf-8 -*-
 
 import pprint
-import pyodbc
 import pandas as pd
 import warnings
+from sql_server import SqlServer
 
-warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore', category=UserWarning)
 
 
 
 
-class SqlServer(object):
+class SqlQuery(object):
 
     def __init__(self, uriagebi, sengetu):
 
         self.uriagebi = uriagebi
         self.sengetu = sengetu
-        self.driver = '{SQL Server}'
-        self.server = '192.168.1.245'
-        self.database = '東洋工業塗料'
-        self.uid = 'kanri'
-        self.pwd = 'daiji'
 
         
     # 2021/2/26変換できない文字ℓなどをテキストﾌｧｲﾙなどに書き込むときに
@@ -38,17 +33,11 @@ class SqlServer(object):
 
 
     def get_untin_keisan_sheet(self):
+        sql_server:SqlServer = SqlServer()
+        cnxn = sql_server.get_cnxn()
+        
 
-
-        cnxn = pyodbc.connect('DRIVER=' + self.driver + 
-                              ';SERVER=' + self.server + 
-                              ';DATABASE=' + self.database +
-                              ';UID=' + self.uid +
-                              ';PWD=' + self.pwd + 
-                              ';CHARSET = cp932'
-                             )
-
-        cursor = cnxn.cursor()
+        # cursor = cnxn.cursor()
 
         sqlQuery = ("SELECT RJYUCD.RjcTokCD, RJYUCD.RjcNonyuCD, RJYUCH.RjcTokNam1," 
                     " RJYUCH.RjcNonyuNam1, RJYUCH.RjcNonyuNam2, RJYUCD.RjcSKDay,"
@@ -71,11 +60,11 @@ class SqlServer(object):
         df = df.sort_values(['得意先コード','納入先コード'])
         df = df.reset_index(drop = True)
 
-        cursor.close()
-        cnxn.close()
+        sql_server.close()
 
         # henkanに渡して、変換できない文字ℓなどを？に変換する。    
-        df = df.applymap(self.henkan)
+        #df = df.applymap(self.henkan) applymapは廃止される予定なので変更
+        df = df.apply(lambda col: col.map(self.henkan))
 
 
         return df
@@ -83,16 +72,9 @@ class SqlServer(object):
 
 
     def get_uriage_sumi(self):
+        sql_server:SqlServer = SqlServer()
+        cnxn = sql_server.get_cnxn()
 
-        cnxn = pyodbc.connect('DRIVER=' + self.driver + 
-                              ';SERVER=' + self.server + 
-                              ';DATABASE=' + self.database +
-                              ';UID=' + self.uid +
-                              ';PWD=' + self.pwd +
-                              ';CHARSET = cp932'
-                             )
-
-        cursor = cnxn.cursor()
 
         sqlQuery = ("SELECT RURIDT.RurUNo, RURIDT.RurUGNo, RuRMEI.RmeSeqNo," 
                     " RURIDT.RurUriDay, RURIDT.RurToriKBN, RURIDT.RurTokCD,"
@@ -142,27 +124,20 @@ class SqlServer(object):
         df = df.sort_values(['売上ＮＯ','売上行ＮＯ','連番'])
         df = df.reset_index(drop = True)
 
-
-        cursor.close()
-        cnxn.close()
+        sql_server.close()
 
         # henkanに渡して、変換できない文字ℓなどを？に変換する。    
-        df = df.applymap(self.henkan)
+        # df = df.applymap(self.henkan)
+        df = df.apply(lambda col: col.map(self.henkan))
+
         return df
 
 
 
     def get_JDT(self):
+        sql_server:SqlServer = SqlServer()
+        cnxn = sql_server.get_cnxn()
         
-        cnxn = pyodbc.connect('DRIVER=' + self.driver + 
-                              ';SERVER=' + self.server + 
-                              ';DATABASE=' + self.database +
-                              ';UID=' + self.uid +
-                              ';PWD=' + self.pwd +
-                              ';CHARSET = cp932'
-                             )
-
-        cursor = cnxn.cursor()
 
         sqlQuery = ("SELECT LJYUCD.LjcJcDay, LJYUCD.LjcJCNo" 
                     " FROM dbo.LJYUCD"
@@ -179,12 +154,11 @@ class SqlServer(object):
         df = df.sort_values(['受注日','受注ＮＯ'])
         df = df.reset_index(drop = True)
 
-
-        cursor.close()
-        cnxn.close()
+        sql_server.close()
 
         # henkanに渡して、変換できない文字ℓなどを？に変換する。    
-        df = df.applymap(self.henkan)
+        # df = df.applymap(self.henkan)
+        df = df.apply(lambda col: col.map(self.henkan))
         return df
 
 
@@ -192,16 +166,8 @@ class SqlServer(object):
     def get_genzaiko(self):
         
         souko_dic = {'S0001':'本社倉庫', 'S0021':'土気倉庫', 'S0031':'大阪倉庫'}
-
-        cnxn = pyodbc.connect('DRIVER=' + self.driver + 
-                              ';SERVER=' + self.server + 
-                              ';DATABASE=' + self.database +
-                              ';UID=' + self.uid +
-                              ';PWD=' + self.pwd +
-                              ';CHARSET = cp932'
-                             )
-
-        cursor = cnxn.cursor()
+        sql_server:SqlServer = SqlServer()
+        cnxn = sql_server.get_cnxn()
 
         sqlQuery = ("SELECT ZaiHinCD AS '品番', ZaiLotNo AS 'ロットNo',"
                     " ZaiZaiSuG AS '在庫数量（現在）', ZaiBuCD AS '倉庫'"
@@ -216,24 +182,14 @@ class SqlServer(object):
         # 倉庫名をS0000から本社倉庫などにする
         df['倉庫'] = df['倉庫'].map(souko_dic)
 
-        cursor.close()
-        cnxn.close()
-
+        sql_server.close()
         return df
 
 
     def get_tokuisaki_sime(self):
+        sql_server:SqlServer = SqlServer()
+        cnxn = sql_server.get_cnxn()
         
-        cnxn = pyodbc.connect('DRIVER=' + self.driver + 
-                              ';SERVER=' + self.server + 
-                              ';DATABASE=' + self.database +
-                              ';UID=' + self.uid +
-                              ';PWD=' + self.pwd +
-                              ';CHARSET = cp932'
-                             )
-
-        cursor = cnxn.cursor()
-
         sqlQuery = ("SELECT TokTokCD AS '得意先コード', TokSimD1 AS '締め日１'"
                     " From dbo.MTOKUI"
                     " WHERE TokTokCD < 'T6000'"
@@ -244,7 +200,5 @@ class SqlServer(object):
         df = df.reset_index(drop = True)
 
 
-        cursor.close()
-        cnxn.close()
-
+        sql_server.close()
         return df

@@ -115,6 +115,7 @@ class Gyoumu:
                     for j in range(j,len(df_list2)):
                         if df_list2[j].loc[j,'dupli'] == True:
                             df_list2[i] = pd.concat([df_list2[i], df_list2[j]])
+                            df_list2[i]['dupli'] = df_list2[i]['dupli'].astype(object)
                             df_list2[i].loc[:,'dupli'] = 'concat'
                         else:
                             break

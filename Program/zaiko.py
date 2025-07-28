@@ -6,7 +6,7 @@ import os
 import platform
 from datetime import datetime, date, timedelta
 from recorder import *
-from sql_server import *
+from sql_query import *
 
 
 '''
@@ -92,8 +92,8 @@ class Zaiko:
 
 
     # 現在庫ﾃﾞｰﾀの取得 
-        if pf == 'Windows':
-            sql = SqlServer(self.uriagebi, self.sengetu)
+        if pf == 'Windows' or pf == 'Linux':
+            sql = SqlQuery(self.uriagebi, self.sengetu)
             zaiko = sql.get_genzaiko()
         else:
             zaiko = pd.read_csv(r'../master/effitA/zaiko.csv',encoding='cp932')
@@ -139,8 +139,8 @@ class Zaiko:
 
     # 受注DT.csv の取得
     # JDTはダウンロードの際受注日でソートしておく事が必須
-        if pf == 'Windows':
-            sql = SqlServer(self.uriagebi, self.sengetu)
+        if pf == 'Windows' or pf == 'Linux':
+            sql = SqlQuery(self.uriagebi, self.sengetu)
             JDT = sql.get_JDT()
             JDT = JDT.drop_duplicates(['受注ＮＯ'], keep='last')
             JDT = JDT.loc[:,['受注ＮＯ','受注日']]

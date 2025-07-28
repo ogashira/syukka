@@ -14,7 +14,7 @@ from untin_toke import *
 from untin_honsya import *
 from toyo_untin import *
 from untin_keisan_sheet import *
-from sql_server import *
+from sql_query import *
 
 
 
@@ -46,18 +46,15 @@ class Packing :
         
         #運賃計算ｼｰﾄ_改の元ｼｰﾄ
 
-        if pf == 'Windows':
-            sql = SqlServer(uriagebi, sengetu)
+        if pf == 'Windows' or pf == 'Linux':
+            sql = SqlQuery(uriagebi, sengetu)
             self.untin_moto = sql.get_untin_keisan_sheet()
-            self.untin_moto = self.untin_moto.applymap(
-                                           lambda x : np.nan if x == ' ' else x)
+            self.untin_moto = self.untin_moto.apply(
+                    lambda col: col.map(lambda x : np.nan if x == ' ' else x))
             # self.untin_moto['備考.1'] = self.untin_moto['備考.1'].map(
                                                              # lambda x : float(x))
             # self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
                                                      # encoding='cp932',skiprows=1)
-        elif pf == 'Linux':
-            self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
-                                                    encoding='cp932',skiprows=1)
         else:
             self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
                                                     encoding='cp932',skiprows=1)

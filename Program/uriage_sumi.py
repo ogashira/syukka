@@ -7,7 +7,7 @@ import numpy as np
 import pickle
 import platform
 from recorder import *
-from sql_server import *
+from sql_query import *
 
 
 
@@ -20,11 +20,11 @@ class UriageSumi(object):
         self.sengetu = sengetu
 
         pf = platform.system()
-        if pf == 'Windows':
-            sql = SqlServer(self.uriagebi, self.sengetu)
+        if pf == 'Windows' or pf == 'Linux':
+            sql = SqlQuery(self.uriagebi, self.sengetu)
             uriage_sumi = sql.get_uriage_sumi()
-            uriage_sumi = uriage_sumi.applymap(
-                                           lambda x : np.nan if x == ' ' else x)
+            uriage_sumi = uriage_sumi.apply(
+                    lambda col: col.map(lambda x : np.nan if x == ' ' else x))
             del sql
         else:
             uriage_sumi = pd.read_csv(

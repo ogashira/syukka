@@ -3,23 +3,33 @@
 
 import csv
 import pandas as pd
+import platform
 
 class Toyo_untin:
 
     def __init__(self, moto):
         self.moto = moto
 
-        f = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/toyo_untin_tyuukei_ari.csv', encoding='cp932')
+        file_path = './'
+        if platform.system() == 'Windows':
+            file_path = r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/'
+        elif platform.system() == 'Linux':
+            file_path = r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/'
+        else:
+            file_path = './'
+
+
+        f = open(file_path + 'toyo_untin_tyuukei_ari.csv', encoding='cp932')
         file_reader = csv.reader(f)
         self.toyoUntinTyuukeiAri = list(file_reader)
         f.close()
     
-        f = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/toyo_untin_tyuukei_nasi.csv', encoding='cp932')
+        f = open(file_path + 'toyo_untin_tyuukei_nasi.csv', encoding='cp932')
         file_reader = csv.reader(f)
         self.toyoUntinTyuukeiNasi= list(file_reader)
         f.close()
 
-        f = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/toyo_untin_seikyuusaki.csv', encoding='cp932')
+        f = open(file_path + 'toyo_untin_seikyuusaki.csv', encoding='cp932')
         file_reader = csv.reader(f)
         toyoUntinSeikyuuSaki= list(file_reader)
         f.close()

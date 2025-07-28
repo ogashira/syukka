@@ -120,6 +120,7 @@ class Kenpin(object):
         for i in range(len(kenpin)):
             df = kenpin.iloc[[i]]
             df_list.append(df)
+
         
         # lotのkeyとvalueをcansと受注数量に入れながら、ｺﾋﾟｰを
         # df_list2に入れていく
@@ -130,8 +131,9 @@ class Kenpin(object):
                 lots = {'short':0}
             for k, v in lots.items():
                 df2 = df.copy()
-                cans = df2.loc[:, 'cans']
-                kg = df2.loc[:,'受注数量']
+                df2 = df2.reset_index(drop=True)
+                cans = df2.loc[0, 'cans']
+                kg = df2.loc[0,'受注数量']
                 ratio = kg/cans
                 # lotが２種類以上あった場合のcansとkgを計算する。
                 df2.loc[:,'lot'] = k
@@ -144,10 +146,13 @@ class Kenpin(object):
                     df2.loc[:,'受注数量'] = None
                     
                 df_list2.append(df2)
+
+
+
         
-        df_col = df_list2[0].columns
+        # df_col = df_list2[0].columns
         
-        df_kara = pd.DataFrame(index=[], columns=df_col)
+        df_kara = df_list2[0].iloc[0:0].copy()
         for line in df_list2:
             df_kara = pd.concat([df_kara, line])
         

@@ -4,36 +4,43 @@
 import csv
 import pandas as pd
 import numpy as np
+import platform
 
 
 
 class Untin_honsya :
 
     def __init__ (self):
-        #self.weight = weight
-        #self.deli_name = deli_name
 
-        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/torr_honsya.csv',encoding='cp932')
+        if platform.system() == 'Windows':
+            file_path = r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/'
+        elif platform.system() == 'Linux':
+            file_path = r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/'
+        else:
+            file_path = './'
+
+
+        unsou_file = open(file_path + 'torr_honsya.csv',encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr = list(file_reader)
         unsou_file.close()
         
-        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/torr_tyuukei_honsya.csv' ,encoding='cp932')
+        unsou_file = open(file_path + 'torr_tyuukei_honsya.csv' ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.torr_tyuukei= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/keihin_honsya.csv',encoding='cp932')
+        unsou_file = open(file_path + 'keihin_honsya.csv',encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.keihin= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/niigata_honsya.csv',encoding='cp932')
+        unsou_file = open(file_path + 'niigata_honsya.csv',encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.niigata= list(file_reader)
         unsou_file.close()
 
-        unsou_file = open(r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/niigata_tyuukei_honsya.csv'
+        unsou_file = open(file_path + 'niigata_tyuukei_honsya.csv'
                           ,encoding='cp932')
         file_reader = csv.reader(unsou_file)
         self.niigata_tyuukei= list(file_reader)
