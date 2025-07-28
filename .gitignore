@@ -10,6 +10,10 @@ __pycache__
 *.swn
 *.pdf
 *.yaml
+C:*
+\\*
+Program/C:*
+Program/\\*
 土気業務_packing.csv
 本社業務_packing.csv
 土気業務_packing.xlsx
