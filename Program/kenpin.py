@@ -27,15 +27,14 @@ class Kenpin(object):
             if platform.system() == 'Linux':
                 self.kenpin_folder = r'./kenpin/kenpin_toke.csv'
             else:
-                self.kenpin_folder = (r'\\192.168.3.204\effitA_HT\送信データ'
-                                                                 r'\kenpin.csv')
+                self.kenpin_folder = (r'//192.168.3.204/effitA_HT/送信データ/kenpin.csv')
             self.syukka_koujou = '出荷工場：@0002 土気工場'
             self.factory = '土気'
         elif factory == 'honsya':
             if platform.system() == 'Linux':
                 self.kenpin_folder = r'./kenpin/kenpin_honsya.csv'
             else:
-                self.kenpin_folder = r'C:\effitA_HT\送信データ\kenpin.csv'
+                self.kenpin_folder = r'C:/effitA_HT/送信データ/kenpin.csv'
 
             self.syukka_koujou = '出荷工場：@0001 本社工場'
             self.factory = '本社'

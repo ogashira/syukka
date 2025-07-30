@@ -1,210 +1,20 @@
 #! python
 # -*- coding: utf-8 -*-
 
-import csv
 import pandas as pd
 import numpy as np
-import platform
+from hauler_factory import HaulerFactory
 
 
 
 class Untin_honsya :
 
-    def __init__ (self):
+    def __init__ (self) -> None:
 
-        if platform.system() == 'Windows':
-            file_path = r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/'
-        elif platform.system() == 'Linux':
-            file_path = r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/untin/'
-        else:
-            file_path = './'
-
-
-        unsou_file = open(file_path + 'torr_honsya.csv',encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.torr = list(file_reader)
-        unsou_file.close()
-        
-        unsou_file = open(file_path + 'torr_tyuukei_honsya.csv' ,encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.torr_tyuukei= list(file_reader)
-        unsou_file.close()
-
-        unsou_file = open(file_path + 'keihin_honsya.csv',encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.keihin= list(file_reader)
-        unsou_file.close()
-
-        unsou_file = open(file_path + 'niigata_honsya.csv',encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.niigata= list(file_reader)
-        unsou_file.close()
-
-        unsou_file = open(file_path + 'niigata_tyuukei_honsya.csv'
-                          ,encoding='cp932')
-        file_reader = csv.reader(unsou_file)
-        self.niigata_tyuukei= list(file_reader)
-        unsou_file.close()
-
-
-
-    def get_torr(self,dist,weight,YN,tyuukei):
-		
-        '''
-		#どちらの運賃表を使うか？ 本社では広島、奈良の運賃表は無い
-        if '広島県'in address or '奈良県' in address:
-            untin_mtx = self.torr_nara_hirosima
-        else:
-            untin_mtx = self.torr
-       ''' 
-
-        HOKEN_FARE = 100
-    
-        #トールの運賃を求める
-        if YN == '-':
-            return float('inf')
-        
-        #基本料金std_fareを求める
-        dist_idx = 0
-        for i  in range(len(self.torr[0])-1,0,-1): 
-            if float(self.torr[0][i].replace(',','')) >= dist : 
-                dist_idx = i
-                break
-        std_fare = float('inf')
-        if dist_idx== 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(self.torr)-1,0,-1):
-                if float(self.torr[i][0]) >= weight :
-                    std_fare = self.torr[i][dist_idx].replace(',', '')
-                    break
-        
-        #中継料金を求める
-        if tyuukei == 0:
-            tyuukei_fare = 0
-        else:
-            for i in range(len(self.torr_tyuukei)-1,0,-1):
-                if float(self.torr_tyuukei[i][0]) >=weight :
-                    tyuukei_fare = self.torr_tyuukei[i][1].replace(',', '')
-                    tyuukei_fare = float(tyuukei_fare) * float(tyuukei)
-                    break
-                else:
-                    tyuukei_fare = float(self.torr_tyuukei[1][1].replace(',', ''))
-        
-
-        return float(std_fare) + float(tyuukei_fare) + HOKEN_FARE
-
-
-
-    def get_niigata(self, dist, weight, YN, tyuukei) :
-
-        if YN == '-':
-            return float('inf')
-
-        #基本料金std_fareを求める
-        dist_idx = 0
-        for i in range(len(self.niigata[0])-1, 0, -1):
-            if float(self.niigata[0][i].replace(',','')) >= dist :
-                dist_idx = i
-                break
-        std_fare = float('inf')
-        if dist_idx == 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(self.niigata)-1, 0, -1):
-                if float(self.niigata[i][0]) >= weight :
-                    std_fare = self.niigata[i][dist_idx].replace(',', '')
-                    break
-       
-        #中継料金を求める
-        if tyuukei == 0:
-            tyuukei_fare = 0
-        else:
-            for i in range(len(self.niigata_tyuukei)-1,0,-1):
-                if float(self.niigata_tyuukei[i][0]) >=weight :
-                    tyuukei_fare = self.niigata_tyuukei[i][1].replace(',', '')
-                    tyuukei_fare = float(tyuukei_fare) * float(tyuukei)
-                    break
-                else:
-                    tyuukei_fare = float(self.niigata_tyuukei[1][1].replace(',', ''))
-
-        return float(std_fare) + float(tyuukei_fare)
-                
-        
-        
-    def get_keihin(self, keihin, weight):
-        #keihin = '愛知','横浜','-', など 
-        if keihin == '-':
-            return float('inf')
-            
-        #基本料金std_fareを求める
-        weight_idx = 0
-        for i in range(len(self.keihin[0])-1, 0, -1): # 6~1まで。0は実行しない
-            if float(self.keihin[0][i]) > weight : #ｹｲﾋﾝだけは重量が未満表示
-                weight_idx = i
-                break
-        std_fare = float('inf')
-        if weight_idx == 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(self.keihin)-1, 0, -1):
-                if self.keihin[i][0] == keihin :
-                    std_fare = self.keihin[i][weight_idx].replace(',', '')
-                    break
-        '''
-        '-'ならば行かないから無限大、100以下の数値ならば重量を掛ける。
-        それ以外の数値はそのまま運賃。
-        2025/5/21ケイヒン運賃表が更新。全て運賃が記載されているので、
-        重量を乗算する必要なくなった。
-        '''
-        if std_fare == '-':
-            keihin_fare = float('inf')
-        else:
-            keihin_fare = float(std_fare)
-
-        return keihin_fare
-
-
-    def get_tonami_diff(self, designation, weight):
-        
-        if designation != 'ﾄﾅﾐ':
-            return 0
-
-        tonami_new = 0
-        for i in range(len(self.tonami_new)-1, 0, -1):
-            if float(self.tonami_new[i][0]) >= weight :
-                #コンマがあるケースがあるので...
-                tonami_new_price = self.tonami_new[i][1].replace(',', '')
-                break                        
-        tonami_old = 0
-        for i in range(len(self.tonami_old)-1, 0, -1):
-            if float(self.tonami_old[i][0]) >= weight :
-                tonami_old_price = self.tonami_old[i][1].replace(',', '')
-                break
-        tonami_diff = float(tonami_new_price) - float(tonami_old_price)
-        return tonami_diff
-            
-
-    def get_kurume(self, dist_YN, weight): 
-        #久留米の運賃を求める
-        if dist_YN == '-':
-            return float('inf')
-        
-        #基本料金std_fareを求める
-        dist_idx = 0
-        for i  in range(len(self.kurume[0])-1,0,-1): 
-            if float(self.kurume[0][i].replace(',','')) >= float(dist_YN) : 
-                dist_idx = i
-                break
-        std_fare = float('inf')
-        if dist_idx== 0:
-            std_fare = float('inf')
-        else:
-            for i in range(len(self.kurume)-1,0,-1):
-                if float(self.kurume[i][0]) >= weight :
-                    std_fare = self.kurume[i][dist_idx].replace(',', '')
-                    break
-        return std_fare
+        hauler_factory: HaulerFactory = HaulerFactory('honsya')
+        self.torr:IHauler =hauler_factory.create_torr()
+        self.niigata:IHauler= hauler_factory.create_niigata()
+        self.keihin:IHauler = hauler_factory.create_keihin()
 
 
 	#applyでdfの行を受け取る
@@ -223,14 +33,32 @@ class Untin_honsya :
         #kurume_distYN = df_row['久留米距離']
 
         if address != 'NoCalc' and address is not np.nan:
-            torr_fare = self.get_torr(torr_dist,weight,torr_YN
-                                      ,torr_tyuukei)
+            '''
+            tokeの運賃では引数にaddressを渡して、奈良広島向け運賃表か、通常の運賃表かを
+            判定しているが、honsyaの場合は通常運賃表のみなのでaddressは渡さない。
+            addressはデフォルト引数で渡さないと"''"空文字になる
+            '''
+            torr_fare:float = self.torr.calc_fare(
+                            torr_dist,
+                            weight,
+                            torr_YN,
+                            torr_tyuukei,
+                            )
 
-            niigata_fare = self.get_niigata(niigata_dist, weight, niigata_YN
-                                            , niigata_tyuukei)
+            niigata_fare:float = self.niigata.calc_fare(
+                            niigata_dist,
+                            weight,
+                            niigata_YN,
+                            niigata_tyuukei
+                            )  
 
-            keihin_fare = self.get_keihin(keihin, weight)
-
+            #ケイヒンの運賃表は横軸が重量、縦軸が行先（横浜、静岡..など）
+            #dictは0(使用しない)とし、縦軸の行先を仮引数addressに設定する
+            keihin_fare:float = self.keihin.calc_fare(
+                            0,
+                            weight,
+                            YN = keihin,
+                            )
 
         else:
             torr_fare = 0
