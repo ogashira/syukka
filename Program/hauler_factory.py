@@ -8,7 +8,14 @@ import numpy as np
 from typing import List
 
 # サーバー のpython_moduleﾌｫﾙﾀﾞをsys.pathに追加してimport可能にする
-shared_folder_path:str = r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/python_module'
+shared_folder_path:str = r'./'
+if platform.system() == 'Linux':
+    shared_folder_path = r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/python_module'
+elif platform.system() == 'Windows':
+    shared_folder_path = r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/運賃計算関係/python_module'
+else:
+    shared_folder_path = r'./'
+
 sys.path.append(shared_folder_path)
 
 from i_hauler import IHauler
