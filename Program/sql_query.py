@@ -5,6 +5,7 @@ import pprint
 import pandas as pd
 import warnings
 from sql_server import SqlServer
+from typing import cast
 
 warnings.filterwarnings('ignore', category=UserWarning)
 
@@ -32,7 +33,7 @@ class SqlQuery(object):
 
 
 
-    def get_untin_keisan_sheet(self):
+    def get_untin_keisan_sheet(self) -> pd.DataFrame:
         sql_server:SqlServer = SqlServer()
         cnxn = sql_server.get_cnxn()
         
@@ -48,7 +49,7 @@ class SqlQuery(object):
                     " LEFT JOIN dbo.RJYUCH"
                     " ON RJYUCD.RjcJCNo = RJYUCH.RjcJCNo"
                     " WHERE RJYUCD.RjcSKDay =" + self.uriagebi)
-        df = pd.read_sql(sqlQuery, cnxn)
+        df: pd.DataFrame = pd.read_sql(sqlQuery, cnxn)
         df = df.rename(columns={'RjcTokCD': '得意先コード', 'RjcNonyuCD': '納入先コード', 
                                 'RjcTokNam1': '得意先名称１','RjcNonyuNam1': '納入先名称１', 
                                 'RjcNonyuNam2': '納入先名称２', 'RjcSKDay': '出荷予定日', 
@@ -64,7 +65,7 @@ class SqlQuery(object):
 
         # henkanに渡して、変換できない文字ℓなどを？に変換する。    
         #df = df.applymap(self.henkan) applymapは廃止される予定なので変更
-        df = df.apply(lambda col: col.map(self.henkan))
+        df = cast(pd.DataFrame, df.apply(lambda col: col.map(self.henkan), axis=0))
 
 
         return df

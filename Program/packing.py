@@ -15,7 +15,7 @@ from untin_honsya import *
 from toyo_untin import *
 from untin_keisan_sheet import *
 from sql_query import *
-
+from typing import List, cast
 
 
 
@@ -41,16 +41,17 @@ class Packing :
         #self.tanjuu = [品番、品名、単重]
         self.tanjuu = []
         for line in hinban:
-        	lines = [ line[0], line[7], line[41] ]
-        	self.tanjuu.append(lines)
+            lines:List[str] = [ line[0], line[7], line[41] ]
+            self.tanjuu.append(lines)
         
         #運賃計算ｼｰﾄ_改の元ｼｰﾄ
 
+        self.untin_moto:pd.DataFrame = pd.DataFrame() 
         if pf == 'Windows' or pf == 'Linux':
             sql = SqlQuery(uriagebi, sengetu)
             self.untin_moto = sql.get_untin_keisan_sheet()
-            self.untin_moto = self.untin_moto.apply(
-                    lambda col: col.map(lambda x : np.nan if x == ' ' else x))
+            self.untin_moto = cast(pd.DataFrame, self.untin_moto.apply(
+                    lambda col: col.map(lambda x : np.nan if x == ' ' else x),axis=0))
             # self.untin_moto['備考.1'] = self.untin_moto['備考.1'].map(
                                                              # lambda x : float(x))
             # self.untin_moto = pd.read_csv(r'../master/effitA/運賃計算ｼｰﾄ_改.csv',
