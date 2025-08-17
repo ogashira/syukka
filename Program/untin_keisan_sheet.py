@@ -8,7 +8,6 @@ from sql_query import *
 import numpy as np
 
 
-
 class UntinKeisanSheet(object):
     '''
     packingからuntin_motoを受けて、運賃計算ｼｰﾄにadd回数を表示する。
@@ -56,7 +55,7 @@ class UntinKeisanSheet(object):
             moto_add['add'] = cnt
 
         moto_add_after = moto_add[['受注ＮＯ', '受注行ＮＯ', 'add']]
-        moto_add_after = moto_add_after.drop_duplicates(['受注ＮＯ', '受注行ＮＯ'])
+        moto_add_after = moto_add_after.drop_duplicates(subset= ['受注ＮＯ', '受注行ＮＯ'])
         moto_add_after.to_csv(self.folder_path + '/{}/add_cnt.csv'.format(folder_name), 
                                                             encoding = 'cp932')
 
