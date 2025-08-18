@@ -38,6 +38,9 @@ class UntinKeisanSheet(object):
         else:
             os.mkdir(self.folder_path + '{}'.format(folder_name))
 
+
+
+
 # \\192.168.1.247\共有\営業課ﾌｫﾙﾀﾞ\01出荷OutPut\addCount
             
     def sheet_add_cnt(self):
