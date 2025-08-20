@@ -37,10 +37,10 @@ class Unsoutaiou_toke :
         self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': ''})
 
     def add_unsoutaiou(self, df):
-        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１'])
+        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１','得意先コード', '納入先コード'])
 
         add_unsoutaiou = pd.merge(
-                df,dup_unsoutaiou, on='住所１', 
+                df,dup_unsoutaiou, on=['住所１', '得意先コード', '納入先コード'], 
                 how='left'
         )
 
@@ -113,9 +113,9 @@ class Unsoutaiou_honsya :
         self.unsoutaiou = self.unsoutaiou.fillna({'納入先コード': ''})
 
     def add_unsoutaiou(self, df):
-        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１'])
+        dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１', '得意先コード', '納入先コード'])
         add_unsoutaiou = pd.merge(
-                df, dup_unsoutaiou, on='住所１',
+                df, dup_unsoutaiou, on=['住所１', '得意先コード', '納入先コード'],
                 how='left'
         )
         return add_unsoutaiou

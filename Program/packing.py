@@ -316,7 +316,7 @@ class Packing :
             pass
         else:
 
-            tokeMoto_gr = toke_moto.groupby('住所１',as_index=False) \
+            tokeMoto_gr = toke_moto.groupby(['住所１', '得意先コード', '納入先コード'],as_index=False) \
                     [['weight', 'cans']].sum()
 
 
@@ -336,12 +336,13 @@ class Packing :
             修正した。
             '''
             if tokeMoto_gr.shape[0] == 0:
-                tokeMoto_gr = pd.DataFrame(columns=['住所１', 'weight', 'cans'], index = [0])
+                tokeMoto_gr = pd.DataFrame(columns=['住所１', '得意先コード', '納入先コード', 'weight', 'cans'], index = [0])
 
 
             
             unsoutaiou_toke = Unsoutaiou_toke()
             tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto_gr)
+
 
             
             del unsoutaiou_toke
@@ -367,7 +368,7 @@ class Packing :
         if honsya_moto.shape[0] == 0:
             pass
         else:
-            honsyaMoto_gr = honsya_moto.groupby('住所１',as_index=False) \
+            honsyaMoto_gr = honsya_moto.groupby(['住所１', '得意先コード', '納入先コード'], as_index=False) \
                     [['weight','cans']].sum()
             
             #honsya_motoが持っている「得意先コード」、「納入先コード」をくっつける
@@ -388,7 +389,7 @@ class Packing :
             修正した。
             '''
             if honsyaMoto_gr.shape[0] == 0:
-                honsyaMoto_gr = pd.DataFrame(columns=['住所１', 'weight', 'cans'], index = [0])
+                honsyaMoto_gr = pd.DataFrame(columns=['住所１', '得意先コード', '納入先コード', 'weight', 'cans'], index = [0])
 
 
 
