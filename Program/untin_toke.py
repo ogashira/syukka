@@ -10,11 +10,10 @@ class Untin_toke :
 
     def __init__ (self) -> None:
 
-        hauler_factory: HaulerFactory = HaulerFactory('toke')
-        self.torr:IHauler =hauler_factory.create_torr()
-        self.niigata:IHauler= hauler_factory.create_niigata()
-        self.keihin:IHauler = hauler_factory.create_keihin()
-        self.seinou:IHauler = hauler_factory.create_seinou()
+        self.torr:IHauler = HaulerFactory.create_torr('toke')
+        self.niigata:IHauler= HaulerFactory.create_niigata('toke')
+        self.keihin:IHauler = HaulerFactory.create_keihin('toke')
+        self.seinou:IHauler = HaulerFactory.create_seinou('toke')
 
 
 

@@ -11,10 +11,9 @@ class Untin_honsya :
 
     def __init__ (self) -> None:
 
-        hauler_factory: HaulerFactory = HaulerFactory('honsya')
-        self.torr:IHauler =hauler_factory.create_torr()
-        self.niigata:IHauler= hauler_factory.create_niigata()
-        self.keihin:IHauler = hauler_factory.create_keihin()
+        self.torr:IHauler =HaulerFactory.create_torr('honsya')
+        self.niigata:IHauler= HaulerFactory.create_niigata('honsya')
+        self.keihin:IHauler = HaulerFactory.create_keihin('honsya')
 
 
 	#applyでdfの行を受け取る
