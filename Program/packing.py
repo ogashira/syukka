@@ -248,6 +248,7 @@ class Packing :
         #moto_honsyaは大阪顧客を除いた本社、土気出荷分の元データ
 
 
+
     def get_NoCalc(self, row):
         bikou = row['備考']
         add1 = row['住所１']

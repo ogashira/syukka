@@ -47,7 +47,8 @@ class Toke:
                     self.allHauler)
             self.untinForUriage = ajust_toke.get_untinForUriage(self.toke_moto,
                     self.allHauler)
-            #print(self.toke_untin)
+
+
 
             # untinForUriageにpackingHinbanの'出荷予定倉庫'を取り入れる>>>>>>>>>
             # この時点でuntinForUriageから出荷予定倉庫を削除して、packingHinbanの
@@ -66,7 +67,6 @@ class Toke:
                                                     '受注行ＮＯ'], how = 'left')
 
             recorder = Recorder(self.myfolder)
-
 
 
 
@@ -90,14 +90,12 @@ class Toke:
             del recorder
 
 
-
             
             #untinForUriageをいったん保存
             filePath_eigyou = '{}/{}営業_uriage.xlsx'.format(self.myfolder, '土気')
             self.untinForUriage.to_excel(filePath_eigyou)
 
             
-
             gyoumu = Gyoumu(self.myfolder)
 
             '''
@@ -113,6 +111,7 @@ class Toke:
             # sortingのスタイル調整して再保存
             # gyoumu.get_excel_style(filePath_gyoumu)
             # untinForUriageのスタイル調整して再保存
+
             gyoumu.get_excel_style(filePath_eigyou)
 
 

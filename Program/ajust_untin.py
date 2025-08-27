@@ -103,8 +103,8 @@ class Ajust_toke:
 
     def get_packingHinban(self, moto, allHauler):
         
-        allHauler = allHauler[['住所１','依頼先','輸出向先']]
-        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='住所１')
+        allHauler = allHauler[['住所１','依頼先','輸出向先', '得意先コード', '納入先コード']]
+        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on=['住所１', '得意先コード', '納入先コード'])
         packingHinban = moto_addHinban[['出荷予定日','依頼先','cans','weight',
                                         '得意先コード','納入先コード',
                                         '納入先名称１', 'hinban', '品名','受注数量',
@@ -184,8 +184,8 @@ class Ajust_toke:
 
         
     def get_untinForUriage(self, moto, allHauler):
-        allHauler = allHauler[['住所１','依頼先','輸出向先']]
-        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='住所１')
+        allHauler = allHauler[['住所１','依頼先','輸出向先', '得意先コード', '納入先コード']]
+        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on=['住所１', '得意先コード', '納入先コード'])
         untinForUriage = moto_addHauler[['出荷予定日','得意先コード',
                                          '納入先コード','依頼先','備考',
                                          '出荷予定倉庫','受注ＮＯ',
@@ -342,8 +342,8 @@ class Ajust_honsya:
 
     def get_packingHinban(self, moto, allHauler):
         
-        allHauler = allHauler[['住所１','依頼先','輸出向先']]
-        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on='住所１')
+        allHauler = allHauler[['住所１','依頼先','輸出向先', '得意先コード', '納入先コード']]
+        moto_addHinban = pd.merge(moto, allHauler, how= 'left', on=['住所１', '得意先コード', '納入先コード'])
         packingHinban = moto_addHinban[['出荷予定日', '依頼先','cans','weight','得意先コード',
                                         '納入先コード','納入先名称１', 'hinban', '品名',
                                         '受注数量','受注単位','得意先注文ＮＯ',
@@ -423,8 +423,8 @@ class Ajust_honsya:
 
 
     def get_untinForUriage(self,moto, allHauler):
-        allHauler = allHauler[['住所１','依頼先','輸出向先']]
-        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on='住所１')
+        allHauler = allHauler[['住所１','依頼先','輸出向先', '得意先コード', '納入先コード']]
+        moto_addHauler = pd.merge(moto, allHauler, how= 'left', on=['住所１', '得意先コード', '納入先コード'])
         untinForUriage = moto_addHauler[['出荷予定日','得意先コード',
                                          '納入先コード','依頼先','備考',
                                          '出荷予定倉庫','受注ＮＯ','受注行ＮＯ',
