@@ -77,7 +77,14 @@ class Packing :
         
         
         #ｱﾄﾛﾝﾍﾟｰﾙ缶使用の品番（缶の重さ3kg）
-        AT_file = open(r'../master/selfMade/AT_un_pl.csv', encoding='cp932')
+        at_path = r'../master/selfMade/AT_un_pl.csv'
+        if pf == 'Windows':
+            at_path = r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/AT_un_pl.csv'
+        elif pf == 'Linux':
+            at_path = r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/AT_un_pl.csv'
+        else:
+            at_path = r'../master/AT_un_pl.csv'
+        AT_file = open(at_path, encoding='cp932')
         file_reader = csv.reader(AT_file)
 
         self.AT_un_pl = []
