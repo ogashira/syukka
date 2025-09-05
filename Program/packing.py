@@ -22,33 +22,27 @@ from typing import List, cast
 class Packing :
 	
     def __init__(self, uriagebi, sengetu):
+        sql = SqlQuery(uriagebi, sengetu)
         pf = platform.system()
-        if pf == 'Windows':
-            mypath = (r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/'\
-                      r'hinban.csv') 
-        elif pf == 'Linux':
-            mypath = (r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/hinban.csv')
+        if pf == 'Windows' or pf=='Linux': #sqlからリストを取得
+            self.tanjuu = sql.get_hinban()
         else:
-            mypath = r'../master/hinban.csv'
-
-        hinban_file = open(mypath, encoding='cp932')
-
-        file_reader = csv.reader(hinban_file)
-        header = next(file_reader)
-        hinban = list(file_reader)
-        hinban_file.close()
-        
-        #self.tanjuu = [品番、品名、単重]
-        self.tanjuu = []
-        for line in hinban:
-            lines:List[str] = [ line[0], line[7], line[41] ]
-            self.tanjuu.append(lines)
+            mypath = r'../master/hinban.csv' #hinban.csvからリストを作る
+            hinban_file = open(mypath, encoding='cp932')
+            file_reader = csv.reader(hinban_file)
+            header = next(file_reader)
+            hinban = list(file_reader)
+            hinban_file.close()
+            #self.tanjuu = [品番、品名、単重]
+            self.tanjuu = []
+            for line in hinban:
+                lines:List[str] = [ line[0], line[7], line[41] ]
+                self.tanjuu.append(lines)
         
         #運賃計算ｼｰﾄ_改の元ｼｰﾄ
 
         self.untin_moto:pd.DataFrame = pd.DataFrame() 
         if pf == 'Windows' or pf == 'Linux':
-            sql = SqlQuery(uriagebi, sengetu)
             self.untin_moto = sql.get_untin_keisan_sheet()
             self.untin_moto = cast(pd.DataFrame, self.untin_moto.apply(
                     lambda col: col.map(lambda x : np.nan if x == ' ' else x),axis=0))

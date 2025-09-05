@@ -203,3 +203,25 @@ class SqlQuery(object):
 
         sql_server.close()
         return df
+
+
+    def get_hinban(self):
+        sql_server:SqlServer = SqlServer()
+        cnxn = sql_server.get_cnxn()
+        cur = cnxn.cursor()
+        
+        sqlQuery = ("SELECT HinHinCD, HinRyaku, HinTju"
+                    " From dbo.MHINCD"
+                    " ORDER BY HinHinCD"
+                    )
+
+        cur.execute(sqlQuery)
+        
+        hinban_list = [list(row) for row in cur.fetchall()]
+
+        sql_server.close()
+
+        return hinban_list
+
+
+
