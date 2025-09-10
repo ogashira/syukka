@@ -253,7 +253,7 @@ class Packing :
     def get_NoCalc(self, row):
         bikou = row['備考']
         add1 = row['住所１']
-        if '営業持参' in bikou or '大阪直送' in bikou:
+        if '営業持参' in bikou or '大阪直送' in bikou or '引取り' in bikou:
             return 'NoCalc'
         else:
             return add1

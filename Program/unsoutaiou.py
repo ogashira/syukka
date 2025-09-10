@@ -40,9 +40,31 @@ class Unsoutaiou_toke :
         dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１','得意先コード', '納入先コード'])
 
         add_unsoutaiou = pd.merge(
-                df,dup_unsoutaiou, on=['住所１', '得意先コード', '納入先コード'], 
+                df,dup_unsoutaiou, on=['得意先コード', '納入先コード'], 
                 how='left'
         )
+        add_unsoutaiou = add_unsoutaiou.rename(columns = {'住所１_x': '住所１'})
+        add_unsoutaiou = (add_unsoutaiou[['住所１', 
+                                          '得意先コード', 
+                                          '納入先コード', 
+                                          'weight', 
+                                          'cans', 
+                                          'k', 
+                                          '相手先コード１', 
+                                          '納入先名称１', 
+                                          '郵便番号１', 
+                                          '郵便番号２', 
+                                          'ﾄｰﾙ距離', 
+                                          'ﾄｰﾙ中継回数', 
+                                          'ﾄｰﾙ行く行かない', 
+                                          '新潟距離', 
+                                          '新潟中継回数', 
+                                          '新潟行く行かない', 
+                                          'ｹｲﾋﾝ向', 
+                                          '顧客指定運送屋', 
+                                          '輸出向先', 
+                                          '西濃距離', 
+                                          'Unnamed: 18']])
 
         return add_unsoutaiou
 
