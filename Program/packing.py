@@ -321,7 +321,6 @@ class Packing :
             tokeMoto_gr = toke_moto.groupby(['住所１', '得意先コード', '納入先コード'],as_index=False) \
                     [['weight', 'cans']].sum()
 
-
             '''
             toke_moto_dup = toke_moto.drop_duplicates(['住所１']) 
             tokeMoto_gr = pd.merge(
@@ -345,7 +344,22 @@ class Packing :
             unsoutaiou_toke = Unsoutaiou_toke()
             tokeMoto_add_unsoutaiou = unsoutaiou_toke.add_unsoutaiou(tokeMoto_gr)
 
-
+            # 20250919 修正 20250922出荷でｹｲﾋﾝがひとつにまとまらないバグを修正
+            tokeMoto_gr_only_add = tokeMoto_gr.groupby(['住所１'],as_index=False) \
+                                                       [['weight', 'cans']].sum()
+            tokeMoto_gr_only_add = tokeMoto_gr_only_add.rename(columns= 
+                            {'weight': 'weight_only_add', 'cans': 'cans_only_add'})
+            tokeMoto_add_unsoutaiou = pd.merge(tokeMoto_add_unsoutaiou, tokeMoto_gr_only_add, on=['住所１'], how ='left')
+            tokeMoto_add_unsoutaiou['weight'] = tokeMoto_add_unsoutaiou['weight_only_add']
+            tokeMoto_add_unsoutaiou['cans'] = tokeMoto_add_unsoutaiou['cans_only_add']
+            tokeMoto_add_unsoutaiou = (tokeMoto_add_unsoutaiou[['住所１', '得意先コード', 
+                                     '納入先コード', 'weight', 'cans', 'k', '相手先コード１', 
+                                     '納入先名称１','郵便番号１', '郵便番号２', 'ﾄｰﾙ距離', 
+                                     'ﾄｰﾙ中継回数', 'ﾄｰﾙ行く行かない', '新潟距離', 
+                                     '新潟中継回数','新潟行く行かない', 'ｹｲﾋﾝ向', 
+                                     '顧客指定運送屋', '輸出向先', '西濃距離', 
+                                     'Unnamed: 18']]
+                                      )
             
             del unsoutaiou_toke
 
@@ -394,11 +408,25 @@ class Packing :
                 honsyaMoto_gr = pd.DataFrame(columns=['住所１', '得意先コード', '納入先コード', 'weight', 'cans'], index = [0])
 
 
-
-            
             unsoutaiou_honsya = Unsoutaiou_honsya()
             honsyaMoto_add_unsoutaiou = unsoutaiou_honsya.add_unsoutaiou(honsyaMoto_gr)
 
+            # 20250919 修正 20250922出荷でｹｲﾋﾝがひとつにまとまらないバグを修正
+            honsyaMoto_gr_only_add = honsyaMoto_gr.groupby(['住所１'],as_index=False) \
+                                                       [['weight', 'cans']].sum()
+            honsyaMoto_gr_only_add = honsyaMoto_gr_only_add.rename(columns= 
+                            {'weight': 'weight_only_add', 'cans': 'cans_only_add'})
+            honsyaMoto_add_unsoutaiou = pd.merge(honsyaMoto_add_unsoutaiou, honsyaMoto_gr_only_add, on=['住所１'], how ='left')
+            honsyaMoto_add_unsoutaiou['weight'] = honsyaMoto_add_unsoutaiou['weight_only_add']
+            honsyaMoto_add_unsoutaiou['cans'] = honsyaMoto_add_unsoutaiou['cans_only_add']
+            honsyaMoto_add_unsoutaiou = (honsyaMoto_add_unsoutaiou[['住所１', '得意先コード', 
+                                     '納入先コード', 'weight', 'cans', '事業所コード', '相手先コード１', 
+                                     '納入先名称１','郵便番号１', '郵便番号２', 'ﾄｰﾙ距離', 
+                                     'ﾄｰﾙ中継回数', 'ﾄｰﾙ行く行かない', '新潟距離', 
+                                     '新潟中継回数','新潟行く行かない', 'ｹｲﾋﾝ向', 
+                                     '顧客指定運送屋', '輸出向先', '久留米距離', 
+                                     'Unnamed: 18']]
+                                      )
 
 
             del unsoutaiou_honsya

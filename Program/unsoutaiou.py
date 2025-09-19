@@ -138,8 +138,8 @@ class Unsoutaiou_honsya :
         dup_unsoutaiou = self.unsoutaiou.drop_duplicates(['住所１', '得意先コード', '納入先コード'])
         add_unsoutaiou = pd.merge(
                 df, dup_unsoutaiou, on=['住所１', '得意先コード', '納入先コード'],
-                how='left'
-        )
+                how='left')
+
         return add_unsoutaiou
 
 
