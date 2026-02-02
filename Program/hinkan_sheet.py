@@ -39,7 +39,6 @@ class HinkanSheet(object):
         self.spec_data = self.spec_data.iloc[:,:111 ] # 92列までを取得
 
 
-
     def coa_data_copy(self, ws_work, ws_format, ws_inn, row, HS_nonCreate_coa):
         """
         品管ｼｰﾄのworkに、品質試験ﾃﾞｰﾀとﾌｫｰﾏｯﾄ用ﾃﾞｰﾀ(spec)を転記する

@@ -1,13 +1,15 @@
-#! python
-# -*- coding: utf-8 -*-
-
 import glob
+import pdfplumber
+from pathlib import Path
 import shutil
 import pandas as pd
+from typing import List
 from add_data import AddData
 from recorder import *
-from hinkan_sheet import *
-from metal_hinkan_sheet import *
+from tss_coa_from_hs import TssCoaFromHs
+from tss_coa_from_mhs import TssCoaFromMhs
+from hinkan_sheet import HinkanSheet
+from metal_hinkan_sheet import MetalHinkanSheet
 
 import pprint
 
@@ -17,8 +19,7 @@ class Coa(object):
     def __init__(self, modi_PH, modi_UU, myfolder):
         self.modi_PH = modi_PH
         self.modi_UU = modi_UU
-        self.myfolder = myfolder
-
+        self.recorder = Recorder(myfolder)
 
     def get_packingCoa(self):
         """
@@ -119,22 +120,21 @@ class Coa(object):
             else:
                 nonExistent_coa.append(row)
 
-        recorder = Recorder(self.myfolder)
         txt = ('{}分の検査成績書を所定のﾌｫﾙﾀﾞ―にｺﾋﾟｰしました。\n'.format(factory))
-        recorder.out_log(txt)
-        recorder.out_file(txt)
+        self.recorder.out_log(txt)
+        self.recorder.out_file(txt)
         if nonExistent_coa == []:
             txt = ('{}分の検査成績書は全て完了です。\n'.format(factory))
-            recorder.out_log(txt)
-            recorder.out_file(txt)
+            self.recorder.out_log(txt)
+            self.recorder.out_file(txt)
         else:
             txt = ('{}分の検査成績書の以下が見つかりません。\n'
                    '新たに検査成績書を作成します。\n'.format(factory))
             
-            recorder.out_log(txt)
-            recorder.out_file(txt)
-            recorder.out_log(pprint.pformat(nonExistent_coa), '\n\n')
-            recorder.out_file(pprint.pformat(nonExistent_coa), '\n\n')
+            self.recorder.out_log(txt)
+            self.recorder.out_file(txt)
+            self.recorder.out_log(pprint.pformat(nonExistent_coa), '\n\n')
+            self.recorder.out_file(pprint.pformat(nonExistent_coa), '\n\n')
 
         return nonExistent_coa
 
@@ -167,6 +167,44 @@ class Coa(object):
         return GIJUTU_nonExistent_coa
 
 
+    def warning_hatumono(self, coa_folder)-> None:
+
+        def check_is_hatumono(pdf_path)-> bool:
+            
+            is_hatumono = False
+            target_text = "初物 要チェック"
+
+            with pdfplumber.open(pdf_path) as pdf:
+
+                # 1ページずつループ
+                for i, page in enumerate(pdf.pages):
+                    # ページからテキストを抽出
+                    text = page.extract_text()
+                    
+                    # テキストが存在し、かつターゲット文字列が含まれているか
+                    if text and target_text in text:
+                        is_hatumono = True
+            
+            return is_hatumono
+
+
+        txt = ('Coa_土気が[初物 要チェック」でないか調査します\n')
+        # フォルダのパスをオブジェクト化
+        directory = Path(coa_folder)
+        # .pdf または .PDF ファイルを取得
+        # rglob にするとサブフォルダの中まで探しに行きます
+        pdf_files = list(directory.glob("*.pdf")) 
+
+        for pdf_file in pdf_files:
+            is_hatumono = check_is_hatumono(pdf_file)
+
+            txt = f'初物ではありません-> {pdf_file}\n'
+            if is_hatumono:
+                txt = f'NG[初物です] -> {pdf_file}\n'
+            self.recorder.out_log(txt)
+            self.recorder.out_file(txt)
+
+
     def create_coa(self, nonExistent_coa, coa_folder):
         """
         HS_nonExistent_coa, MHS_nonExistent_coa, GIJUTU_nonExistent_coaに
@@ -176,7 +214,6 @@ class Coa(object):
         """
         
         factory = coa_folder[-2 :]
-        recorder = Recorder(self.myfolder)
 
         HS_nonExistent_coa = self.get_HS_nonExistent_coa(nonExistent_coa)
         MHS_nonExistent_coa = self.get_MHS_nonExistent_coa(nonExistent_coa)
@@ -191,14 +228,19 @@ class Coa(object):
             txt = ('{}分の技術発行の以下の検査成績書がありません。\n'
                    '技術部に連絡してください\n'.format(factory))
             
-            recorder.out_log(txt)
-            recorder.out_file(txt)
-            recorder.out_log(pprint.pformat(GIJUTU_nonExistent_coa), '\n\n')
-            recorder.out_file(pprint.pformat(GIJUTU_nonExistent_coa), '\n\n')
+            self.recorder.out_log(txt)
+            self.recorder.out_file(txt)
+            self.recorder.out_log(pprint.pformat(GIJUTU_nonExistent_coa), '\n\n')
+            self.recorder.out_file(pprint.pformat(GIJUTU_nonExistent_coa), '\n\n')
 
+        '''
+        Excelで作るか、TSSで作るかの分岐
+        '''
         if HS_nonExistent_coa != [] :
             HS = HinkanSheet(HS_nonExistent_coa, coa_folder)
             HS_nonCreate_coa = HS.HS_create_coa()
+            #HS: TssCoaFromHs = TssCoaFromHs(HS_nonExistent_coa, coa_folder) 
+            #HS_nonCreate_coa: List[List[str]] = HS.create_coa()
             """品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
             """
             for row in HS_nonCreate_coa:
@@ -208,14 +250,17 @@ class Coa(object):
                 txt = ('{}分の以下の成績書が品管ｼｰﾄから作成できませんでした\n'
                        .format(factory))
                 
-                recorder.out_log(txt)
-                recorder.out_file(txt)
-                recorder.out_log(pprint.pformat(HS_nonCreate_coa), '\n\n')
-                recorder.out_file(pprint.pformat(HS_nonCreate_coa), '\n\n')
+                self.recorder.out_log(txt)
+                self.recorder.out_file(txt)
+                self.recorder.out_log(pprint.pformat(HS_nonCreate_coa), '\n\n')
+                self.recorder.out_file(pprint.pformat(HS_nonCreate_coa), '\n\n')
 
+        # メタルのcoa作成
         if MHS_nonExistent_coa != []:
             MHS = MetalHinkanSheet(MHS_nonExistent_coa, coa_folder)
             MHS_nonCreate_coa = MHS.MHS_create_coa()
+            #MHS: TssCoaFromMhs = TssCoaFromMhs(MHS_nonExistent_coa, coa_folder) 
+            #MHS_nonCreate_coa: List[List[str]] = MHS.create_coa()
 
             """ﾒﾀﾙ品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
             """
@@ -226,9 +271,12 @@ class Coa(object):
                 txt = ('{}分の以下の成績書が品管ｼｰﾄから作成できませんでした\n'
                        .format(factory))
                 
-                recorder.out_log(txt)
-                recorder.out_file(txt)
-                recorder.out_log(pprint.pformat(MHS_nonCreate_coa), '\n\n')
-                recorder.out_file(pprint.pformat(MHS_nonCreate_coa), '\n\n')
+                self.recorder.out_log(txt)
+                self.recorder.out_file(txt)
+                self.recorder.out_log(pprint.pformat(MHS_nonCreate_coa), '\n\n')
+                self.recorder.out_file(pprint.pformat(MHS_nonCreate_coa), '\n\n')
+
+        # 初物チェックして初物だったらワーニングを出す
+        self.warning_hatumono(coa_folder)
 
         return nonCreate_coa

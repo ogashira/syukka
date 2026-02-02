@@ -12,7 +12,7 @@ from honsya import *
 from recorder import Recorder
 from kenpin import *
 from modify_output import *
-# from coa import *
+from coa import *
 
 '''
 2023/9/30 
@@ -250,10 +250,10 @@ def start():
 
     # ここからCOA作成>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    """ 
     # packingCoa_listを作る
     packingCoa_list_toke = []
     packingCoa_list_honsya = []
+    coa_toke = None
     if not modi_PH_toke.empty:
         coa_toke = Coa(modi_PH_toke, modi_UU_toke, myfolder)
         packingCoa_toke = coa_toke.get_packingCoa()
@@ -296,7 +296,6 @@ def start():
             shutil.rmtree(coa_folder_toke)
             os.makedirs(coa_folder_toke)
 
-
         nonExistent_coa_toke = coa_toke.copy_coa(coa_folder_toke, 
                                                   packingCoa_list_toke)
 
@@ -314,6 +313,7 @@ def start():
         nonExistent_coa_honsya = coa_honsya.copy_coa(coa_folder_honsya, 
                                                   packingCoa_list_honsya)
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    '''
     nonExistent_coa_toke を品管ｼｰﾄ分とﾒﾀﾙ品管ｼｰﾄ分の２つに分ける
     nonExistent_coa_honsyaも同様に２つに分ける。合計４つになる。
     HS:品管ｼｰﾄ、MHS:ﾒﾀﾙ品管ｼｰﾄ
@@ -326,15 +326,15 @@ def start():
                                                             nonExistent_coa_honsya)
         MHS_nonExistent_coa_honsya = coa.get_MHS_nonExistent_coa(
                                                             nonExistent_coa_honsya)
-    """
+    '''
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     """ 
     作成済みの成績書が無い場合は（nonExistent_coaが空でない場合は)
     coa.pyにnonExistent_coaを渡して、成績書を作ってもらう
     """
 
-    '''
     if nonExistent_coa_toke != []:
+        # Excelで作成
         nonCreate_coa_toke = coa_toke.create_coa(nonExistent_coa_toke, 
                                                                     coa_folder_toke)
     else:
@@ -352,12 +352,11 @@ def start():
     txt = ('\n{}\n'
             '成績書最終結果 \n'
             '土気分の未発行成績書：\n{}\n\n'
-            '本社分の未発行成績書：\n{}\n')
+            '本社分の未発行成績書：\n{}\n'
             '{}\n'.format(kubun, pprint.pformat(nonCreate_coa_toke), 
                                     pprint.pformat(nonCreate_coa_honsya), kubun))
     recorder.out_log(txt)
     recorder.out_file(txt)
-    '''
 
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
