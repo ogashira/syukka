@@ -2,12 +2,12 @@ import glob
 import pdfplumber
 from pathlib import Path
 import shutil
+import platform
+import sys
 import pandas as pd
 from typing import List
 from add_data import AddData
 from recorder import *
-from tss_coa_from_hs import TssCoaFromHs
-from tss_coa_from_mhs import TssCoaFromMhs
 from hinkan_sheet import HinkanSheet
 from metal_hinkan_sheet import MetalHinkanSheet
 
@@ -188,7 +188,9 @@ class Coa(object):
             return is_hatumono
 
 
-        txt = ('Coa_土気が[初物 要チェック」でないか調査します\n')
+        txt = ('作成したCoaが[初物 要チェック」でないか調査します\n')
+        self.recorder.out_log(txt)
+        self.recorder.out_file(txt)
         # フォルダのパスをオブジェクト化
         directory = Path(coa_folder)
         # .pdf または .PDF ファイルを取得
@@ -212,6 +214,26 @@ class Coa(object):
         作成する。作成できなかった成績書はreturnして、nonCreate_coaに
         appendする
         """
+        '''
+        サーバーにあるsql_server.pyをモジュールとして使う
+        importするためにsys.path.appendでpathを認識させて
+        importと生成を行う
+        '''
+        shared_folder_path:str = r'./'
+        if platform.system() == 'Linux':
+            shared_folder_path = \
+                 r'/mnt/public/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/sql_python_module'
+        elif platform.system() == 'Windows':
+            shared_folder_path = \
+        r'//192.168.1.247/共有/技術課ﾌｫﾙﾀﾞ/200. effit_data/ﾏｽﾀ/sql_python_module'
+        else:
+            pass
+
+        #自作モジュールをインポートする
+        sys.path.append(shared_folder_path)
+        from tss_coa_from_hs import TssCoaFromHs
+        from tss_coa_from_mhs import TssCoaFromMhs
+        
         
         factory = coa_folder[-2 :]
 
@@ -237,12 +259,19 @@ class Coa(object):
         Excelで作るか、TSSで作るかの分岐
         '''
         if HS_nonExistent_coa != [] :
-            HS = HinkanSheet(HS_nonExistent_coa, coa_folder)
-            HS_nonCreate_coa = HS.HS_create_coa()
-            #HS: TssCoaFromHs = TssCoaFromHs(HS_nonExistent_coa, coa_folder) 
-            #HS_nonCreate_coa: List[List[str]] = HS.create_coa()
-            """品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
-            """
+            #HS = HinkanSheet(HS_nonExistent_coa, coa_folder)
+            #HS_nonCreate_coa = HS.HS_create_coa()
+            HS_nonCreate_coa: List[List[str]] = []
+            HS: TssCoaFromHs = TssCoaFromHs() 
+            for line in HS_nonExistent_coa:
+                lot:str = line[0]
+                mksk:str = line[5]
+                is_success_or_failed: str = HS.create_coa(mksk, lot, coa_folder)
+                if is_success_or_failed != 'success':
+                    line.append(is_success_or_failed)
+                    HS_nonCreate_coa.append(line)
+            # is_success_or_failedがfailedの場合はreturncodeが追記されている
+
             for row in HS_nonCreate_coa:
                 nonCreate_coa.append(row)
 
@@ -257,10 +286,18 @@ class Coa(object):
 
         # メタルのcoa作成
         if MHS_nonExistent_coa != []:
-            MHS = MetalHinkanSheet(MHS_nonExistent_coa, coa_folder)
-            MHS_nonCreate_coa = MHS.MHS_create_coa()
-            #MHS: TssCoaFromMhs = TssCoaFromMhs(MHS_nonExistent_coa, coa_folder) 
-            #MHS_nonCreate_coa: List[List[str]] = MHS.create_coa()
+            # MHS = MetalHinkanSheet(MHS_nonExistent_coa, coa_folder)
+            # MHS_nonCreate_coa = MHS.MHS_create_coa()
+
+            MHS_nonCreate_coa: List[List[str]] = []
+            MHS: TssCoaFromMhs = TssCoaFromMhs() 
+            for line in MHS_nonExistent_coa:
+                lot:str = line[0]
+                is_success_or_failed: str = MHS.create_coa(lot, coa_folder)
+                if is_success_or_failed != 'success':
+                    line.append(is_success_or_failed)
+                    MHS_nonCreate_coa.append(line)
+            # is_success_or_failedがfailedの場合はreturncodeが追記されている
 
             """ﾒﾀﾙ品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
             """
