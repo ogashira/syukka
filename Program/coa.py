@@ -234,7 +234,8 @@ class Coa(object):
         from tss_coa_from_hs import TssCoaFromHs
         from tss_coa_from_mhs import TssCoaFromMhs
         
-        
+        #coa_folder = r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/01出荷OutPut/' + dt_now + '_og' + '/Coa_土気'
+
         factory = coa_folder[-2 :]
 
         HS_nonExistent_coa = self.get_HS_nonExistent_coa(nonExistent_coa)
@@ -266,7 +267,7 @@ class Coa(object):
             for line in HS_nonExistent_coa:
                 lot:str = line[0]
                 mksk:str = line[5]
-                is_success_or_failed: str = HS.create_coa(mksk, lot, coa_folder)
+                is_success_or_failed: str = HS.create_coa(lot, coa_folder, mksk)
                 if is_success_or_failed != 'success':
                     line.append(is_success_or_failed)
                     HS_nonCreate_coa.append(line)
