@@ -107,6 +107,7 @@ class Coa(object):
 
         directory = r'//192.168.1.247/共有/営業課ﾌｫﾙﾀﾞ/testreport/櫻田/'
         for row in packingCoa_list:
+            is_exists: bool = False
             if row[5] != 'ﾒﾀﾙ':
                 path = directory + '*' + row[0] + '*' + row[5] + '.pdf'
             else:
@@ -115,9 +116,12 @@ class Coa(object):
             files = glob.glob(path)
             if len(files) > 0:
                 for file in files:
-                    shutil.copy(file, coa_folder)
-                    break
-            else:
+                    if not self.check_is_hatumono(file): # 初物でなかったらコピー
+                        shutil.copy(file, coa_folder)
+                        is_exists = True
+                        break
+
+            if not is_exists:
                 nonExistent_coa.append(row)
 
         txt = ('{}分の検査成績書を所定のﾌｫﾙﾀﾞ―にｺﾋﾟｰしました。\n'.format(factory))
@@ -167,28 +171,27 @@ class Coa(object):
         return GIJUTU_nonExistent_coa
 
 
+    def check_is_hatumono(self, pdf_path)-> bool:
+        
+        is_hatumono = False
+        target_text = "初物 要チェック"
+
+        with pdfplumber.open(pdf_path) as pdf:
+
+            # 1ページずつループ
+            for i, page in enumerate(pdf.pages):
+                # ページからテキストを抽出
+                text = page.extract_text()
+                
+                # テキストが存在し、かつターゲット文字列が含まれているか
+                if text and target_text in text:
+                    is_hatumono = True
+        
+        return is_hatumono
+
+
     def warning_hatumono(self, coa_folder)-> None:
-
-        def check_is_hatumono(pdf_path)-> bool:
-            
-            is_hatumono = False
-            target_text = "初物 要チェック"
-
-            with pdfplumber.open(pdf_path) as pdf:
-
-                # 1ページずつループ
-                for i, page in enumerate(pdf.pages):
-                    # ページからテキストを抽出
-                    text = page.extract_text()
-                    
-                    # テキストが存在し、かつターゲット文字列が含まれているか
-                    if text and target_text in text:
-                        is_hatumono = True
-            
-            return is_hatumono
-
-
-        txt = ('作成したCoaが[初物 要チェック」でないか調査します\n')
+        txt = ('フォルダ中のCOAが[初物 要チェック」でないか調査します\n')
         self.recorder.out_log(txt)
         self.recorder.out_file(txt)
         # フォルダのパスをオブジェクト化
@@ -198,7 +201,7 @@ class Coa(object):
         pdf_files = list(directory.glob("*.pdf")) 
 
         for pdf_file in pdf_files:
-            is_hatumono = check_is_hatumono(pdf_file)
+            is_hatumono = self.check_is_hatumono(pdf_file)
 
             txt = f'初物ではありません-> {pdf_file}\n'
             if is_hatumono:
