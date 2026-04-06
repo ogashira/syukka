@@ -270,11 +270,10 @@ class Coa(object):
             for line in HS_nonExistent_coa:
                 lot:str = line[0]
                 mksk:str = line[5]
-                is_success_or_failed: str = HS.create_coa(lot, coa_folder, mksk)
-                if is_success_or_failed != 'success':
-                    line.append(is_success_or_failed)
+                returncode: int = HS.create_coa(lot, coa_folder, mksk)
+                if returncode != 1:
+                    line.append(f"returncode={returncode}")
                     HS_nonCreate_coa.append(line)
-            # is_success_or_failedがfailedの場合はreturncodeが追記されている
 
             for row in HS_nonCreate_coa:
                 nonCreate_coa.append(row)
@@ -297,11 +296,10 @@ class Coa(object):
             MHS: TssCoaFromMhs = TssCoaFromMhs() 
             for line in MHS_nonExistent_coa:
                 lot:str = line[0]
-                is_success_or_failed: str = MHS.create_coa(lot, coa_folder)
-                if is_success_or_failed != 'success':
-                    line.append(is_success_or_failed)
+                returncode: int = MHS.create_coa(lot, coa_folder)
+                if returncode != 1:
+                    line.append(f"returncode={returncode}")
                     MHS_nonCreate_coa.append(line)
-            # is_success_or_failedがfailedの場合はreturncodeが追記されている
 
             """ﾒﾀﾙ品管ｼｰﾄでcoa作り、作れなかったﾘｽﾄが返ってくる
             """
