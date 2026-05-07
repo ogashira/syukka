@@ -95,6 +95,12 @@ class LeadTime(object):
         # 戻る。出荷日が出荷予定日よりも後（大きい）だったら「曜日違い」とする。
         # 0列:年月日,1列:東洋休日, 2列:運送屋休日
 
+
+        '''unsou_eigyoubi
+        [['2026/01/01', '休', '休'], ['2026/01/02', '休', '休'], .......]
+        '''
+
+
         for i in range(len(self.unsou_eigyoubi)):
             if self.unsou_eigyoubi[i][0]== syukkabi:
                 syukka_idx = i                          #出荷日予定日のindex

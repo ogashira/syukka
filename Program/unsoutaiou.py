@@ -63,8 +63,7 @@ class Unsoutaiou_toke :
                                           'ｹｲﾋﾝ向', 
                                           '顧客指定運送屋', 
                                           '輸出向先', 
-                                          '西濃距離', 
-                                          'Unnamed: 18']])
+                                          '西濃距離']])
 
         return add_unsoutaiou
 

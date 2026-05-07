@@ -38,6 +38,7 @@ class Toyo_untin:
         for line in toyoUntinSeikyuuSaki:
             self.seikyuu[(line[0],line[2])] = [line[13],line[14]]
             
+        # {('T0060','朝日真空株式会社'): [300, 0], ......}
 
     def get_toyoUntin(self):
         

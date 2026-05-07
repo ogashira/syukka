@@ -51,6 +51,7 @@ class Kenpin(object):
 
 
 
+
     def get_kenpin(self):
         
         # data.pickleからﾀﾞｳﾝﾛｰﾄﾞ

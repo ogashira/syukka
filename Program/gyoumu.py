@@ -56,7 +56,7 @@ class Gyoumu:
             PH_export = PH_export.sort_values(by='得意先注文ＮＯ')
             PH_export['dupli'] = PH_export.duplicated(subset=['得意先注文ＮＯ'] \
                                                       ,keep='first')
-            
+
             #concat後indexをreset
             PH_con = pd.concat([PH_domestic, PH_export], sort=True)
             PH_con.loc[:,'dupli'] = PH_con.loc[:, 'dupli'].map(lambda x: bool(x))
